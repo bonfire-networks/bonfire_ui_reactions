@@ -1,0 +1,14 @@
+<div class="w-full flex flex-col mx-auto">
+  <StatefulComponent
+    module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
+    id={ComponentID.new(Bonfire.UI.Social.FeedLive, @feed_name, __MODULE__)}
+    feed_name={@feed_name}
+    feed_title={@feed_title}
+    feed={@feed}
+    page_info={@page_info}
+    showing_within={@showing_within}
+    verb_default="like"
+    loading={@loading}
+    hide_tabs
+  />
+</div>
