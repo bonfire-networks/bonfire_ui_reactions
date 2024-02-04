@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Reactions.ProfilePinsLive do
 
   # prop page_title, :string, required: true
   # prop page, :string, required: true
-  prop selected_tab, :string, default: "highlights"
+  prop selected_tab, :any, default: "highlights"
   # prop smart_input, :boolean, required: true
   # prop smart_input_opts, :map, default: %{}
   # prop search_placeholder, :string
