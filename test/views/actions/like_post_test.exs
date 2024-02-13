@@ -112,7 +112,7 @@ defmodule Bonfire.Social.Activities.LikePost.Test do
     {:ok, view, _html} = live(conn, "/feed/local")
     live_pubsub_wait(view)
 
-    view |> open_browser()
+    # view |> open_browser()
     refute has_element?(view, "[data-role=liked_by]")
   end
 
