@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Reactions.BookmarkActionLive do
   # prop label, :string, default: nil
   # prop showing_within, :atom, default: nil
 
+  # done in `ActionsLive` via `Bonfire.Social.Feeds.LiveHandler` instead
   # def update_many(assigns_sockets),
   #   do: Bonfire.Social.Bookmarks.LiveHandler.update_many(assigns_sockets, caller_module: __MODULE__)
 end

@@ -53,7 +53,9 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
       my_bookmark: bookmarked?
     )
 
-    {:noreply, socket}
+    {:noreply,
+     socket
+     |> assign(my_bookmark: bookmarked?)}
   end
 
   def bookmarker_count(%{"current_count" => a}), do: a |> String.to_integer()
