@@ -18,9 +18,9 @@
         title={l("Boost this")}
       >
         <#Icon iconify="system-uicons:retweet" class="icon w-5 h-5 text-base-content/70" />
-        <!-- <span class="sr-only">
+        <span class="sr-only">
             {if @my_boost, do: l("Boosted"), else: l("Boost")}
-          </span> -->
+          </span>
       </button>
       <span
         class="ml-1 text-[13px] text-base-content/70"
