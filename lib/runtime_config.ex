@@ -1,8 +1,15 @@
 defmodule Bonfire.UI.Reactions.RuntimeConfig do
   use Bonfire.Common.Localise
+  import Bonfire.Common.Modularity.DeclareHelpers
 
   @behaviour Bonfire.Common.ConfigModule
   def config_module, do: true
+
+  declare_extension("Reactions",
+    # icon: "noto:newspaper",
+    # emoji: "📰",
+    exclude_from_nav: true
+  )
 
   @doc """
   NOTE: you can override this default config in your app's `runtime.exs`, by placing similarly-named config keys below the `Bonfire.Common.Config.LoadExtensionsConfig.load_configs()` line
