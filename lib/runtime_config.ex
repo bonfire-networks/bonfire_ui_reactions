@@ -6,8 +6,8 @@ defmodule Bonfire.UI.Reactions.RuntimeConfig do
   def config_module, do: true
 
   declare_extension("Reactions",
-    # icon: "noto:newspaper",
-    # emoji: "📰", 
+    icon: "material-symbols:add-reaction",
+    emoji: "👏",
     description: l("Likes, boosts, pins, bookmarks, etc."),
     exclude_from_nav: true
   )
