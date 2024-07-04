@@ -1,7 +1,8 @@
 <div class="w-full flex flex-col mx-auto">
   <StatefulComponent
     module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
-    id={ComponentID.new(Bonfire.UI.Social.FeedLive, @feed_name, __MODULE__)}
+    id={ComponentID.new(Bonfire.UI.Social.FeedLive, e(@feed_id, :likes), __MODULE__)}
+    feed_id={@feed_id}
     feed_name={@feed_name}
     feed_title={@feed_title}
     feed={@feed}

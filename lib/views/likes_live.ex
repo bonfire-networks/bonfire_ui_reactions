@@ -22,6 +22,7 @@ defmodule Bonfire.UI.Reactions.LikesLive do
      |> assign(
        nav_items: Bonfire.Common.ExtensionModule.default_nav(),
        feed: nil,
+       feed_id: :likes,
        page_info: nil,
        page_title: l("Likes"),
        showing_within: :likes,
