@@ -2,7 +2,7 @@
   :if={@object}
   id={Text.random_string()}
   no_actions
-  open_btn_wrapper_class="flex items-center gap-2 text-sm text-base-content/70 w-full flex-1"
+  open_btn_wrapper_class="flex items-center gap-2 text-sm w-full flex-1"
 >
   {#if @scope != :instance}
     {#if current_user(@__context__) && Bonfire.Social.Pins.pinned?(current_user(@__context__), @object)}
@@ -74,7 +74,7 @@
     {/if}
   {/if}
   <:open_btn>
-    <div class="flex items-center w-full gap-2 text-sm text-base-content/70">
+    <div class="flex items-center w-full gap-2 text-sm">
       <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
       {if @scope == :instance, do: l("Pin to instance"), else: l("Pin to your profile")}
     </div>
