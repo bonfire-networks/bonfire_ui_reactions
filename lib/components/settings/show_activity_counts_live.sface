@@ -8,5 +8,6 @@
     )}
     keys={[:ui, :show_activity_counts]}
     scope={@scope}
+    compact
   />
 </form>
