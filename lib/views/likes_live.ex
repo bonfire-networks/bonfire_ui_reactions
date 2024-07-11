@@ -33,17 +33,4 @@ defmodule Bonfire.UI.Reactions.LikesLive do
      )}
   end
 
-  # def handle_params(%{"tab" => tab} = _params, _url, socket) do
-  #   {:noreply,
-  #    assign(socket,
-  #      selected_tab: tab
-  #    )}
-  # end
-
-  # def handle_params(%{} = _params, _url, socket) do
-  #   {:noreply,
-  #    assign(socket,
-  #      current_user: Fake.user_live()
-  #    )}
-  # end
 end
