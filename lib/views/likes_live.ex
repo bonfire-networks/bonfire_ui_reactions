@@ -32,5 +32,4 @@ defmodule Bonfire.UI.Reactions.LikesLive do
        feed_title: l("Likes")
      )}
   end
-
 end
