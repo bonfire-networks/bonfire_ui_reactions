@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Reactions.BookmarksLive do
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.UserRequired]}
 
   def mount(_params, _session, socket) do
-    current_user = current_user_required!(socket)
+    # current_user = current_user_required!(socket)
 
     # %{edges: feed, page_info: page_info} =
     #   Bonfire.Social.Bookmarks.list_my(current_user: current_user)
