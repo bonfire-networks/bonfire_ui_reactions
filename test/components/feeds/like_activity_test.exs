@@ -245,7 +245,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
 
     feed = Bonfire.Social.FeedActivities.my_feed(bob)
     # |> IO.inspect
-    fp = feed.edges |> List.first()
+    fp = feed.edges |> Enums.first!()
 
     assert doc =
              render_stateful(Bonfire.UI.Social.ActivityLive, %{
