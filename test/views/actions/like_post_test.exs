@@ -141,4 +141,51 @@ defmodule Bonfire.Social.Activities.LikePost.Test do
   #     |> List.last
   #     |> Floki.text =~ "Like (1)"
   # end
+
+  @tag :todo
+  test "can paginate my likes" do
+    account = Fake.fake_account!()
+    alice = Fake.fake_user!(account)
+    bob = Fake.fake_user!(account)
+
+    attrs = %{
+      post_content: %{
+        summary: "summary",
+        name: "name",
+        html_body: "<p>epic html message</p>"
+      }
+    }
+
+    assert {:ok, post} =
+             Posts.publish(
+               current_user: bob,
+               post_attrs: attrs,
+               boundary: "public"
+             )
+
+    assert {:ok, p1} =
+             Posts.publish(
+               current_user: bob,
+               post_attrs: attrs,
+               boundary: "public"
+             )
+
+    assert {:ok, p2} =
+             Posts.publish(
+               current_user: bob,
+               post_attrs: attrs,
+               boundary: "public"
+             )
+
+    assert {:ok, _like} = Likes.like(alice, post)
+    assert {:ok, _like1} = Likes.like(alice, p1)
+    assert {:ok, _like2} = Likes.like(alice, p2)
+
+    # assert %{edges: [fetched_liked]} = Likes.list_my(current_user: alice)
+    conn = conn(user: alice, account: account)
+    {:ok, view, _html} = live(conn, "/likes")
+    # open_browser(view)
+    assert true == false
+    # TODO!
+  end
 end
