@@ -23,13 +23,14 @@ defmodule Bonfire.UI.Reactions.RuntimeConfig do
 
     config :bonfire, :ui,
       profile: [
-        # TODO: make dynamic based on active extensions
+        # TODO: make dynamic based on enabled modules
         sections: [
           boosts: Bonfire.UI.Reactions.ProfileBoostsLive,
           highlights: Bonfire.UI.Reactions.ProfilePinsLive
         ],
         navigation: [
           boosts: l("Boosts")
+          # highlights: l("Highlights") # TODO: fix preloads
         ],
         widgets: []
       ]

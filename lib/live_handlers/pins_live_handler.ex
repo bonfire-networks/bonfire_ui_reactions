@@ -5,8 +5,8 @@ defmodule Bonfire.Social.Pins.LiveHandler do
   # pin in LV stateful
   def handle_event(
         "pin",
-        %{"direction" => "up"} = params,
-        %{assigns: %{object: object}} = socket
+        %{"direction" => "up", "id" => id} = params,
+        %{assigns: %{object: %{id: id} = object}} = socket
       ) do
     do_pin(object, params, socket)
   end
@@ -22,21 +22,40 @@ defmodule Bonfire.Social.Pins.LiveHandler do
            Bonfire.Social.Pins.unpin(
              current_user_required!(socket),
              id,
-             maybe_to_atom(e(params, "scope", nil))
+             scoped(params)
            ) do
-      pin_action(id, false, params, socket)
+      after_pin(id, false, params, socket)
     end
   end
 
+  defp scoped(%{"scope" => "instance"}) do
+    :instance
+  end
+
+  defp scoped(%{"scope" => "profile"}) do
+    nil
+  end
+
+  defp scoped(%{"scope" => scope}) when is_binary(scope) do
+    ulid(scope)
+  end
+
+  defp scoped(_) do
+    nil
+  end
+
+  #   defp scoped(%{"scope"=> scope}) do
+  #       maybe_to_atom(scope)
+  #       |> debug()
+  # end
+
   def do_pin(object, params, socket) do
-    scope =
-      maybe_to_atom(e(params, "scope", nil))
-      |> debug()
+    scope = scoped(params)
 
     with {:ok, current_user} <- current_user_or_remote_interaction(socket, l("pin"), object),
          {:ok, _pin} <-
            Bonfire.Social.Pins.pin(current_user, object, scope) do
-      pin_action(object, true, params, socket)
+      after_pin(object, true, params, socket)
     else
       {:error,
        %Ecto.Changeset{
@@ -45,7 +64,7 @@ defmodule Bonfire.Social.Pins.LiveHandler do
          ]
        }} ->
         debug("previously pinned, but UI didn't know")
-        pin_action(object, true, params, socket)
+        after_pin(object, true, params, socket)
 
       {:error, e} ->
         error(e)
@@ -56,9 +75,9 @@ defmodule Bonfire.Social.Pins.LiveHandler do
     end
   end
 
-  defp pin_action(object, pinned?, params, socket) do
+  defp after_pin(object, pinned?, params, socket) do
     ComponentID.send_updates(
-      e(params, "component", Bonfire.UI.Common.PinActionLive),
+      e(params, "component", Bonfire.UI.Reactions.PinActionLive),
       ulid(object),
       my_pin: pinned?
     )
