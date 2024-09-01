@@ -6,7 +6,9 @@
 >
   {#case @scope}
     {#match :thread}
-      {#if current_user(@__context__) && Bonfire.Social.Pins.pinned?(current_user(@__context__), @object)}
+      {#if @pinned? ||
+          (current_user_id(@__context__) &&
+             Bonfire.Social.Pins.pinned?(current_user(@__context__), @object))}
         <h3 class="font-bold text-base flex-1 modal-title">{l("You have already pinned this")}</h3>
         <p class="mt-2 prose-sm prose">{l("You can unpin it to remove it from the top of the thread")}</p>
         <button
@@ -40,7 +42,7 @@
         </button>
       {/if}
     {#match :instance}
-      {#if current_user(@__context__) && Bonfire.Social.Pins.pinned?(:instance, @object)}
+      {#if @pinned? || Bonfire.Social.Pins.pinned?(:instance, @object)}
         <h3 class="font-bold text-base flex-1 modal-title">{l("You have already pinned this activity")}</h3>
         <p class="mt-2 prose-sm prose">{l("You can unpin this activity to remove it from the instance highlights tab")}</p>
         <button
@@ -74,7 +76,8 @@
         </button>
       {/if}
     {#match _profile}
-      {#if current_user(@__context__) && Bonfire.Social.Pins.pinned?(current_user(@__context__), @object)}
+      {#if @pinned? ||
+          (current_user(@__context__) && Bonfire.Social.Pins.pinned?(current_user(@__context__), @object))}
         <h3 class="font-bold text-base flex-1 modal-title">{l("You have already pinned this activity")}</h3>
         <p class="mt-2 prose-sm prose">{l("You can unpin this activity to remove it from your profile highlights tab")}</p>
         <button
@@ -111,11 +114,19 @@
   <:open_btn>
     <div class="flex items-center w-full gap-2 text-sm">
       <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
-      {case @scope do
-        :thread -> l("Pin to top of thread")
-        :instance -> l("Pin to instance")
-        _profile -> l("Pin to your profile")
-      end}
+      {#if @pinned?}
+        {case @scope do
+          :thread -> l("Unpin from top of thread")
+          :instance -> l("Unpin from instance")
+          _profile -> l("Unpin from your profile")
+        end}
+      {#else}
+        {case @scope do
+          :thread -> l("Pin to top of thread")
+          :instance -> l("Pin to instance")
+          _profile -> l("Pin to your profile")
+        end}
+      {/if}
     </div>
   </:open_btn>
 </Bonfire.UI.Common.OpenModalLive>
