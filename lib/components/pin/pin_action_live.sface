@@ -5,10 +5,46 @@
   open_btn_wrapper_class="flex items-center gap-2 text-sm w-full flex-1"
 >
   {#case @scope}
+    {#match :thread_answer}
+      {#if @pinned? ||
+          (current_user_id(@__context__) &&
+             Bonfire.Social.Pins.pinned?(@scope_object || @scope, @object))}
+        <h3 class="font-bold text-base flex-1 modal-title">{l("You have already marked this as an answer")}</h3>
+        <p class="mt-2 prose-sm prose">{l("You can remove it if you like")}</p>
+        <button
+          phx-click="Bonfire.Social.Pins:pin"
+          phx-value-direction="down"
+          phx-value-id={id(@object)}
+          phx-value-scope={@scope_object || @scope}
+          phx-value-component={__MODULE__}
+          type="button"
+          class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
+        >
+          <#Icon iconify="mdi:message-check" class="w-4 h-4" />
+          {l("Unmark as answer")}
+        </button>
+      {#else}
+        <h3 class="font-bold text-base flex-1 modal-title">{l("Mark as answer")}</h3>
+        <p class="mt-2 prose-sm prose">{l("It will then be highlighted in the thread.")}</p>
+
+        <button
+          :if={@object}
+          data-id="pin_action"
+          phx-click="Bonfire.Social.Pins:pin"
+          phx-value-direction="up"
+          phx-value-id={id(@object)}
+          phx-value-scope={@scope_object || @scope}
+          phx-value-component={__MODULE__}
+          class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
+        >
+          <#Icon iconify="mdi:message-check" class="w-4 h-4" />
+          {l("Mark as answer")}
+        </button>
+      {/if}
     {#match :thread}
       {#if @pinned? ||
           (current_user_id(@__context__) &&
-             Bonfire.Social.Pins.pinned?(current_user(@__context__), @object))}
+             Bonfire.Social.Pins.pinned?(@scope_object || @scope, @object))}
         <h3 class="font-bold text-base flex-1 modal-title">{l("You have already pinned this")}</h3>
         <p class="mt-2 prose-sm prose">{l("You can unpin it to remove it from the top of the thread")}</p>
         <button
@@ -113,16 +149,24 @@
   {/case}
   <:open_btn>
     <div class="flex items-center w-full gap-2 text-sm">
-      <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+      {#case @scope}
+        {#match :thread_answer}
+          <#Icon iconify="mdi:message-check" class="w-4 h-4" />
+        {#match _}
+          <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+      {/case}
+
       {#if @pinned?}
         {case @scope do
           :thread -> l("Unpin from top of thread")
+          :thread_answer -> l("Unmark as answer")
           :instance -> l("Unpin from instance")
           _profile -> l("Unpin from your profile")
         end}
       {#else}
         {case @scope do
           :thread -> l("Pin to top of thread")
+          :thread_answer -> l("Mark as answer")
           :instance -> l("Pin to instance")
           _profile -> l("Pin to your profile")
         end}
