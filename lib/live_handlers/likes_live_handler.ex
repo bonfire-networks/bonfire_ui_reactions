@@ -50,7 +50,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
     # TODO: send this to ActionsLive if using feed_live_update_many_preloads :async_actions
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.LikeActionLive),
-      ulid(object),
+      uid(object),
       my_like: liked?
     )
 
@@ -85,7 +85,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
     %{
       component_id: assigns.id,
       object: object || e(assigns, :object_id, nil),
-      object_id: e(assigns, :object_id, nil) || ulid(object),
+      object_id: e(assigns, :object_id, nil) || uid(object),
       previous_my_like: e(assigns, :my_like, nil),
       previous_like_count: e(assigns, :like_count, nil)
     }
@@ -123,7 +123,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   end
 
   # defp list_my_liked(current_user, objects) when is_list(objects) do
-  #   Cache.cached_preloads_for_objects("my_like:#{ulid(current_user)}:", objects, fn list_of_ids -> do_list_my_liked(current_user, list_of_ids) end)
+  #   Cache.cached_preloads_for_objects("my_like:#{uid(current_user)}:", objects, fn list_of_ids -> do_list_my_liked(current_user, list_of_ids) end)
   # end
 
   defp do_list_my_liked(current_user, list_of_ids)

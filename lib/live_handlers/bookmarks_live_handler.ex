@@ -49,7 +49,7 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
   defp bookmark_action(object, bookmarked?, params, socket) do
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.BookmarkActionLive),
-      ulid(object),
+      uid(object),
       my_bookmark: bookmarked?
     )
 
@@ -84,7 +84,7 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
     %{
       component_id: assigns.id,
       object: object || e(assigns, :object_id, nil),
-      object_id: e(assigns, :object_id, nil) || ulid(object),
+      object_id: e(assigns, :object_id, nil) || uid(object),
       previous_my_bookmark: e(assigns, :my_bookmark, nil),
       previous_bookmark_count: e(assigns, :bookmark_count, nil)
     }
@@ -124,7 +124,7 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
   end
 
   # defp list_my_bookmarked(current_user, objects) when is_list(objects) do
-  #   Cache.cached_preloads_for_objects("my_bookmark:#{ulid(current_user)}:", objects, fn list_of_ids -> do_list_my_bookmarked(current_user, list_of_ids) end)
+  #   Cache.cached_preloads_for_objects("my_bookmark:#{uid(current_user)}:", objects, fn list_of_ids -> do_list_my_bookmarked(current_user, list_of_ids) end)
   # end
 
   defp do_list_my_bookmarked(current_user, list_of_ids)

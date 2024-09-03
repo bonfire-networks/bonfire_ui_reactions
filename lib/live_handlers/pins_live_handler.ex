@@ -37,7 +37,7 @@ defmodule Bonfire.Social.Pins.LiveHandler do
   end
 
   defp scoped(%{"scope" => scope}) when is_binary(scope) do
-    ulid(scope)
+    uid(scope)
   end
 
   defp scoped(_) do
@@ -78,7 +78,7 @@ defmodule Bonfire.Social.Pins.LiveHandler do
   defp after_pin(object, pinned?, params, socket) do
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.PinActionLive),
-      ulid(object),
+      uid(object),
       my_pin: pinned?
     )
 
@@ -88,7 +88,7 @@ defmodule Bonfire.Social.Pins.LiveHandler do
   end
 
   # defp list_my_pinned(current_user, objects) when is_list(objects) do
-  #   Cache.cached_preloads_for_objects("my_pin:#{ulid(current_user)}:", objects, fn list_of_ids -> do_list_my_pinned(current_user, list_of_ids) end)
+  #   Cache.cached_preloads_for_objects("my_pin:#{uid(current_user)}:", objects, fn list_of_ids -> do_list_my_pinned(current_user, list_of_ids) end)
   # end
 
   # defp do_list_my_pinned(current_user, list_of_ids)

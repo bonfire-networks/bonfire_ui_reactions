@@ -31,7 +31,7 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
     # TODO: send this to ActionsLive if using feed_live_update_many_preloads :async_actions
     ComponentID.send_updates(
       Bonfire.UI.Reactions.BoostActionLive,
-      ulid(object),
+      uid(object),
       my_boost: boost?
     )
 
@@ -58,7 +58,7 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
     %{
       component_id: assigns.id,
       object: object || e(assigns, :object_id, nil),
-      object_id: e(assigns, :object_id, nil) || ulid(object),
+      object_id: e(assigns, :object_id, nil) || uid(object),
       previous_my_boost: e(assigns, :my_boost, nil),
       previous_boost_count: e(assigns, :boost_count, nil)
     }
