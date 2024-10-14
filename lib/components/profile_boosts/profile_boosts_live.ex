@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Reactions.ProfileBoostsLive do
   prop user, :map
   prop feed, :list, default: nil
   prop page_info, :any, default: nil
-  prop follows_me, :boolean, default: false
+  # prop follows_me, :boolean, default: false
   prop loading, :boolean, default: false
   prop feed_component_id, :any, default: nil
   prop hide_tabs, :boolean, default: false
