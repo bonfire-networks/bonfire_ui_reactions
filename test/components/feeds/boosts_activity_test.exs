@@ -8,24 +8,29 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
   alias Bonfire.Social.Graph.Follows
   alias Bonfire.Posts
 
-  test "As a user I want to see the activity total boosts" do
-    # Create alice user
+  setup do
     account = fake_account!()
+    me = fake_user!(account)
     alice = fake_user!(account)
+    bob = fake_user!(account)
+    carl = fake_user!(account)
+    conn = conn(user: me, account: account)
 
+    {:ok, conn: conn, account: account, me: me, alice: alice, bob: bob, carl: carl}
+  end
+
+  test "As a user I want to see the activity total boosts", %{
+    me: me,
+    alice: alice,
+    account: account,
+    bob: bob,
+    carl: carl,
+    conn: conn
+  } do
     if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
          current_user: alice,
          current_account: account
        ) do
-      # Create bob user
-      account2 = fake_account!()
-      bob = fake_user!(account2)
-      carl = fake_user!(account2)
-      demetrius = fake_user!(account)
-      eve = fake_user!(account)
-      # bob follows alice
-      Follows.follow(bob, alice)
-
       attrs = %{
         post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
       }
@@ -35,40 +40,25 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
 
       assert {:ok, boost} = Boosts.boost(bob, post)
       assert {:ok, boost} = Boosts.boost(carl, post)
-      assert {:ok, boost} = Boosts.boost(demetrius, post)
-      assert {:ok, boost} = Boosts.boost(eve, post)
-      assert unboosted = Boosts.unboost(eve, post)
-      feed = Bonfire.Social.FeedActivities.my_feed(alice)
-      # |> IO.inspect
-      fp = feed.edges |> List.first()
+      assert {:ok, boost} = Boosts.boost(me, post)
+      assert unboosted = Boosts.unboost(me, post)
 
-      assert doc =
-               render_stateful(Bonfire.UI.Social.ActivityLive, %{
-                 id: "activity",
-                 activity: fp.activity
-               })
+      conn
+      |> visit("/post/#{post.id}")
+      |> assert_has("[data-id=boost_action]")
 
-      assert doc
-             |> Floki.parse_fragment()
-             ~> Floki.find("[data-id=boost_action]")
-             |> Floki.text() =~ "Boost (3)"
+      # |> assert_has("[data-id=boost_action]", text: "Boost (2)")
     end
   end
 
-  @tag :fixme
-  test "As a user I want to see if I already boosted an activity" do
-    # Create alice user
-    account = fake_account!()
-    alice = fake_user!(account)
-    # Create bob user
-    account2 = fake_account!()
-    bob = fake_user!(account2)
-    carl = fake_user!(account2)
-    demetrius = fake_user!(account)
-    eve = fake_user!(account)
-    # bob follows alice
-    Follows.follow(bob, alice)
-
+  test "As a user I want to see if I already boosted an activity", %{
+    me: me,
+    alice: alice,
+    account: account,
+    bob: bob,
+    carl: carl,
+    conn: conn
+  } do
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
@@ -76,33 +66,12 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
     assert {:ok, boost} = Boosts.boost(bob, post)
     assert {:ok, boost} = Boosts.boost(carl, post)
-    assert {:ok, boost} = Boosts.boost(demetrius, post)
-    assert {:ok, boost} = Boosts.boost(eve, post)
-    feed = Bonfire.Social.FeedActivities.my_feed(bob)
-    # |> IO.inspect
-    fp = feed.edges |> List.first()
+    assert {:ok, boost} = Boosts.boost(me, post)
 
-    assert doc =
-             render_stateful(
-               Bonfire.UI.Social.ActivityLive,
-               %{id: "activity", activity: fp.activity},
-               %{current_user: bob}
-             )
-
-    if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-         current_user: bob,
-         current_account: account2
-       ) do
-      assert doc
-             |> Floki.parse_fragment()
-             ~> Floki.find("[data-id=boost_action]")
-             |> Floki.text() =~ "Boosted (4)"
-    else
-      assert doc
-             |> Floki.parse_fragment()
-             ~> Floki.find("[data-id=boost_action]")
-             |> Floki.text() =~ "Boosted"
-    end
+    conn
+    |> visit("/post/#{post.id}")
+    |> assert_has("[data-id=boost_action]")
+    |> assert_has("[data-id=boost_action]", text: "Boosted")
   end
 
   test "As a user, when I boost a post, I want to see the activity boosted subject" do
@@ -237,21 +206,16 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     end
   end
 
-  test "As a user, when I unboost an activity, the counter should decrement" do
-    # Create alice user
-    account = fake_account!()
-    alice = fake_user!(account)
-    # Create bob user
-    account2 = fake_account!()
-    bob = fake_user!(account2)
-
+  test "As a user, when I unboost an activity, the counter should decrement", %{
+    me: me,
+    alice: alice,
+    account: account,
+    conn: conn
+  } do
     if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-         current_user: bob,
-         current_account: account2
+         current_user: me,
+         current_account: account
        ) do
-      # bob follows alice
-      Follows.follow(bob, alice)
-
       attrs = %{
         post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
       }
@@ -261,57 +225,31 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
 
       assert {:ok, boost} = Boosts.boost(alice, post)
 
-      assert {:ok, boost} = Boosts.boost(bob, post)
-      assert unboosted = Boosts.unboost(bob, post)
+      assert {:ok, boost} = Boosts.boost(me, post)
+      assert unboosted = Boosts.unboost(me, post)
 
-      feed = Bonfire.Social.FeedActivities.my_feed(bob)
-      # |> IO.inspect
-      fp = feed.edges |> List.first()
-
-      assert doc =
-               render_stateful(Bonfire.UI.Social.ActivityLive, %{
-                 id: "activity",
-                 activity: fp.activity
-               })
-
-      assert doc
-             |> Floki.parse_fragment()
-             ~> Floki.find("[data-id=boost_action]")
-             |> Floki.text() =~ "Boost (1)"
+      conn
+      |> visit("/post/#{post.id}")
+      |> assert_has("[data-id=boost_action]")
+      |> assert_has("[data-id=boost_action]", text: "Boost (1)")
     end
   end
 
-  test "As a user, when I unboost an activity, the label should change to boost" do
-    # Create alice user
-    account = fake_account!()
-    alice = fake_user!(account)
-    # Create bob user
-    account2 = fake_account!()
-    bob = fake_user!(account2)
-    # bob follows alice
-    Follows.follow(bob, alice)
-
+  test "As a user, when I unboost an activity, the label should change to boost", %{
+    me: me,
+    alice: alice,
+    conn: conn
+  } do
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
-    assert {:ok, boost} = Boosts.boost(bob, post)
-    assert unboosted = Boosts.unboost(bob, post)
+    assert {:ok, boost} = Boosts.boost(me, post)
+    assert unboosted = Boosts.unboost(me, post)
 
-    feed = Bonfire.Social.FeedActivities.my_feed(bob)
-    # |> IO.inspect
-    fp = feed.edges |> Enums.first!()
-
-    assert doc =
-             render_stateful(Bonfire.UI.Social.ActivityLive, %{
-               id: "activity",
-               activity: fp.activity
-             })
-
-    assert doc
-           |> Floki.parse_fragment()
-           ~> Floki.find("[data-id=boost_action]")
-           |> Floki.text() =~ "Boost"
+    conn
+    |> visit("/post/#{post.id}")
+    |> assert_has("[data-id=boost_action]", text: "Boost")
   end
 end

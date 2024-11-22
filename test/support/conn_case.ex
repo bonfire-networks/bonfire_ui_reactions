@@ -27,12 +27,18 @@ defmodule Bonfire.UI.Reactions.ConnCase do
 
       import Phoenix.LiveViewTest
       import Surface.LiveViewTest
-      # import Bonfire.UI.Social.ConnCase
-      import Bonfire.UI.Social.Test.ConnHelpers
-      import Bonfire.UI.Social.Test.FakeHelpers
 
-      use Bonfire.Common.Utils
-      # alias Bonfire.UI.Social.Router.Helpers, as: Routes
+      import PhoenixTest
+
+      # import Bonfire.UI.Reactions.ConnCase
+      import Bonfire.UI.Reactions.Test.ConnHelpers
+      import Bonfire.UI.Reactions.Test.FakeHelpers
+      import Bonfire.Common.Simulation
+      import Bonfire.Me.Fake.Helpers
+
+      import Untangle
+      use Arrows
+      # alias Bonfire.UI.Reactions.Web.Router.Helpers, as: Routes
 
       # The default endpoint for testing
       @endpoint Application.compile_env!(:bonfire, :endpoint_module)
@@ -40,8 +46,6 @@ defmodule Bonfire.UI.Reactions.ConnCase do
   end
 
   setup tags do
-    # import Bonfire.UI.Social.Integration
-
     Bonfire.Common.Test.Interactive.setup_test_repo(tags)
 
     {:ok, []}

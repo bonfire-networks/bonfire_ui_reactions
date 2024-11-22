@@ -1,4 +1,4 @@
-defmodule Bonfire.Social.Activities.LikePost.Test do
+defmodule Bonfire.UI.Reactions.LikePostTest do
   use Bonfire.UI.Reactions.ConnCase, async: true
   alias Bonfire.Social.Fake
   alias Bonfire.Posts
