@@ -63,13 +63,14 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
 
+    Bonfire.Common.Config.put(:feed_live_update_many_preloads, :inline)
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
     assert {:ok, boost} = Boosts.boost(bob, post)
     assert {:ok, boost} = Boosts.boost(carl, post)
     assert {:ok, boost} = Boosts.boost(me, post)
 
     conn
-    |> visit("/post/#{post.id}")
+    |> visit("/feed/local")
     |> assert_has("[data-id=boost_action]")
     |> assert_has("[data-id=boost_action]", text: "Boosted")
   end
@@ -244,12 +245,13 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
 
+    Bonfire.Common.Config.put(:feed_live_update_many_preloads, :inline)
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
     assert {:ok, boost} = Boosts.boost(me, post)
     assert unboosted = Boosts.unboost(me, post)
 
     conn
-    |> visit("/post/#{post.id}")
+    |> visit("/feed/local")
     |> assert_has("[data-id=boost_action]", text: "Boost")
   end
 end

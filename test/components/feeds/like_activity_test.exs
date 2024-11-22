@@ -132,6 +132,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     alice = fake_user!(account)
     account2 = fake_account!()
     bob = fake_user!(account2)
+    Bonfire.Common.Config.put(:feed_live_update_many_preloads, :inline)
 
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
@@ -141,10 +142,10 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     assert {:ok, like} = Likes.like(bob, post)
 
     conn = conn(user: bob, account: account)
-    next = "/likes"
 
-    {:ok, view, _html} = live(conn, next)
-    assert has_element?(view, "a[data-id=subject_name]", alice.profile.name)
+    conn
+    |> visit("/likes")
+    |> assert_has("[data-id=subject_name]", text: alice.profile.name)
   end
 
   @tag :fixme
@@ -234,6 +235,8 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     # bob follows alice
     Follows.follow(bob, alice)
     # Alice posts a message
+    Bonfire.Common.Config.put(:feed_live_update_many_preloads, :inline)
+
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
@@ -243,18 +246,10 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     assert {:ok, like} = Likes.like(bob, post)
     assert unlike = Likes.unlike(bob, post)
 
-    feed = Bonfire.Social.FeedActivities.my_feed(bob)
-    # |> IO.inspect
-    fp = feed.edges |> Enums.first!()
+    conn = conn(user: bob, account: account2)
 
-    assert doc =
-             render_stateful(Bonfire.UI.Social.ActivityLive, %{
-               id: "activity",
-               activity: fp.activity
-             })
-
-    assert doc
-           |> Floki.parse_fragment()
-           ~> Floki.text() =~ "Like"
+    conn
+    |> visit("/feed/local")
+    |> assert_has("[data-id=feed] article [data-id='like_action']", text: "Like")
   end
 end
