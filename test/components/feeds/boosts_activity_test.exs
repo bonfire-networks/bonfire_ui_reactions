@@ -63,7 +63,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
 
-    Bonfire.Common.Config.put(:feed_live_update_many_preloads, :inline)
+    Bonfire.Common.Config.put(:feed_live_update_many_preload_mode, :inline)
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
     assert {:ok, boost} = Boosts.boost(bob, post)
     assert {:ok, boost} = Boosts.boost(carl, post)
@@ -245,7 +245,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
 
-    Bonfire.Common.Config.put(:feed_live_update_many_preloads, :inline)
+    Bonfire.Common.Config.put(:feed_live_update_many_preload_mode, :inline)
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
     assert {:ok, boost} = Boosts.boost(me, post)
     assert unboosted = Boosts.unboost(me, post)

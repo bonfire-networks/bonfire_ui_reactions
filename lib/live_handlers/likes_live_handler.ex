@@ -47,7 +47,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   end
 
   defp like_action(object, liked?, params, socket) do
-    # TODO: send this to ActionsLive if using feed_live_update_many_preloads :async_actions
+    # TODO: send this to ActionsLive if using feed_live_update_many_preload_mode :async_actions
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.LikeActionLive),
       uid(object),

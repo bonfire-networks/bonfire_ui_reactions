@@ -28,7 +28,7 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
   end
 
   defp boost_action(object, boost?, _params, socket) do
-    # TODO: send this to ActionsLive if using feed_live_update_many_preloads :async_actions
+    # TODO: send this to ActionsLive if using feed_live_update_many_preload_mode :async_actions
     ComponentID.send_updates(
       Bonfire.UI.Reactions.BoostActionLive,
       uid(object),
