@@ -17,6 +17,7 @@
         num_replies: l("Amount of replies")
       ]}
     default_value={false}
+    current_value={@sort_by}
     scope={@scope}
   />
   <!-- compact={@compact} -->
