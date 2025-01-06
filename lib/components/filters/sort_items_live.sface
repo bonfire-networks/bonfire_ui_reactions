@@ -17,7 +17,7 @@
         num_replies: l("Amount of replies")
       ]}
     default_value={false}
-    current_value={@sort_by}
+    current_value={@sort_by || :load_from_settings}
     scope={@scope}
   />
   <!-- compact={@compact} -->
