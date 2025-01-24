@@ -9,5 +9,8 @@ defmodule Bonfire.UI.Reactions.SortItemsLive do
   prop compact, :boolean, default: false
   prop sort_by, :atom, default: nil
 
-  declare_settings_component(l("Sort by reactions"), icon: "fluent:people-team-16-filled")
+  declare_settings_component(l("Sort by reactions"),
+    icon: "fluent:people-team-16-filled",
+    description: l("Choose how to order items in the feed")
+  )
 end
