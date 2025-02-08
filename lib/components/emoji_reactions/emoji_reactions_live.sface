@@ -1,0 +1,19 @@
+<div class="" phx-hook="Tooltip" id={"tooltip-#{@object_id}"}>
+  <div
+    data-object-id={@object_id}
+    id={"reaction-picker-#{@object_id}"}
+    :hook
+    class="relative inline-flex"
+  >
+    <button
+      type="button"
+      data-object-id={@object_id}
+      data-tooltip-id={"tooltip-#{@object_id}"}
+      class="tooltip-button reaction-button btn opacity-50 btn-ghost btn-sm btn-circle"
+      title="Add reaction"
+    >
+      <#Icon iconify="fluent:emoji-sparkle-16-regular" class="w-5 h-5" />
+    </button>
+    <emoji-picker class="hidden tooltip absolute bottom-full right-0 z-50 mb-2" />
+  </div>
+</div>

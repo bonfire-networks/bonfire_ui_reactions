@@ -2,6 +2,18 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
+  def handle_event("add_reaction", %{"emoji" => emoji, "id" => id} = _params, socket) do
+    current_user = current_user(socket)
+
+    with {:ok, like} <-
+           Bonfire.Social.Likes.like(current_user, id, reaction_emoji: {emoji, %{label: emoji}}) do
+      {:noreply,
+       socket
+       |> assign(:my_like, like)
+       |> assign_flash(:info, l("Added reaction"))}
+    end
+  end
+
   # like in LV stateful
   def handle_event(
         "like",
