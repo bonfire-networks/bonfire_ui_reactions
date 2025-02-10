@@ -20,7 +20,6 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
   #       }
   #     end)
   #     |> Jason.encode!()
-  #     |> debug("CAZZO")
   #   {:ok, assign(socket, custom_emojis: custom_emojis)}
   # end
 
@@ -35,7 +34,6 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
         }
       end)
       |> Jason.encode!()
-      |> debug("CAZZO")
 
     {:ok, assign(socket, custom_emojis: custom_emojis)}
   end

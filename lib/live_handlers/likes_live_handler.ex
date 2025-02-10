@@ -24,9 +24,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
           url: emoji.url
         }
       end)
-      |> debug("CAZZOOO")
 
-    IO.inspect(custom_emojis, label: "CAZZOOO")
     {:reply, %{custom_emoji: custom_emojis}, socket}
   end
 
