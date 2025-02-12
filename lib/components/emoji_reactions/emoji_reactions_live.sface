@@ -1,7 +1,7 @@
-<div class="" phx-hook="Tooltip" id={"tooltip-#{@object_id}"}>
+<div class="" phx-hook="Tooltip" id={"tooltip-#{@object_id}-#{@showing_within}"}>
   <div
     data-object-id={@object_id}
-    id={"reaction-picker-#{@object_id}"}
+    id={"reaction-picker-#{@object_id}-#{@showing_within}"}
     :hook
     class="relative inline-flex"
   >

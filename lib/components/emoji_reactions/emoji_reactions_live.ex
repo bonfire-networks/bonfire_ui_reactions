@@ -2,11 +2,12 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   prop object_id, :any
+  prop showing_within, :atom, default: nil
+
   # prop object_type, :any
   # prop object_boundary, :any, default: nil
   # prop like_count, :any, default: 0
   # prop label, :string, default: nil
-  # prop showing_within, :atom, default: nil
   # prop my_like, :any, default: nil
 
   # def mount(socket) do
