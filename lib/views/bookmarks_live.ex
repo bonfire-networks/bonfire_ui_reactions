@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Reactions.BookmarksLive do
   declare_nav_link(l("Bookmarks"),
     page: "bookmarks",
     href: "/bookmarks",
-    icon: "carbon:bookmark",
+    icon: "carbon:bookmark-filled",
     icon_active: "carbon:bookmark-filled"
   )
 
