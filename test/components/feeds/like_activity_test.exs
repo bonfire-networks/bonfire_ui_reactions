@@ -144,7 +144,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     conn = conn(user: bob, account: account)
 
     conn
-    |> visit("/likes")
+    |> visit("/feed/likes")
     |> assert_has("[data-id=subject_name]", text: alice.profile.name)
   end
 

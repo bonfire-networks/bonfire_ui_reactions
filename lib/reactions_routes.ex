@@ -13,12 +13,11 @@ defmodule Bonfire.UI.Reactions.Routes do
         pipe_through(:browser)
         pipe_through(:user_required)
 
-        live("/bookmarks", Bonfire.UI.Reactions.BookmarksLive, :bookmarks,
-          as: Bonfire.Data.Social.Bookmark
-        )
+        # live("/feed/bookmarks", Bonfire.UI.Reactions.BookmarksLive, :bookmarks,
+        #   as: Bonfire.Data.Social.Bookmark
+        # )
 
-        # live("/likes", Bonfire.UI.Social.FeedsLive, :likes, as: Bonfire.Data.Social.Like)
-        live("/likes", Bonfire.UI.Reactions.LikesLive, :likes, as: Bonfire.Data.Social.Like)
+        # live("/feed/likes", Bonfire.UI.Reactions.LikesLive, :likes, as: Bonfire.Data.Social.Like)
       end
 
       # pages you need an account to view

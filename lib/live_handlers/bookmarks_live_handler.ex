@@ -93,7 +93,7 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
   defp do_preload(list_of_components, list_of_ids, current_user) do
     my_states = if current_user, do: do_list_my_bookmarked(current_user, list_of_ids), else: %{}
 
-    # debug(my_states, "my_bookmarks")
+    # debug(my_states, "bookmarks")
 
     objects_counts =
       if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
