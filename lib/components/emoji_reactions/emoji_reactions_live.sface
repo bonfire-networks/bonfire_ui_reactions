@@ -2,7 +2,7 @@
   class=""
   phx-update="ignore"
   phx-hook="Tooltip"
-  id={"tooltip-#{@object_id}-#{@showing_within}"}
+  id={"tooltip-#{@parent_id}-#{@object_id}-#{@showing_within}"}
 >
   <div
     data-object-id={@object_id}

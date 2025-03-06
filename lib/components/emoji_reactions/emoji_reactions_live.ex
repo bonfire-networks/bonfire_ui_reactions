@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
 
   prop object_id, :any
   prop showing_within, :atom, default: nil
-
+  prop parent_id, :any, default: nil
   # prop object_type, :any
   # prop object_boundary, :any, default: nil
   # prop like_count, :any, default: 0
