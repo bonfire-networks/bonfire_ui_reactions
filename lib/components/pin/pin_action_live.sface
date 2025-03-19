@@ -1,6 +1,6 @@
 <Bonfire.UI.Common.OpenModalLive
   :if={@object}
-  id={random_dom_id()}
+  id={deterministic_dom_id("pin_modal", id(@object), @scope, @parent_id)}
   no_actions
   open_btn_wrapper_class="flex items-center gap-2 text-sm w-full flex-1"
 >
