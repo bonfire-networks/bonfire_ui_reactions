@@ -2,6 +2,8 @@
   class=""
   phx-update="ignore"
   phx-hook="Tooltip"
+  data-trigger="click"
+  data-close-on-inside-click="true"
   id={"tooltip-#{@parent_id}-#{@object_id}-#{@showing_within}"}
 >
   <div
