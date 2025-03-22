@@ -2,11 +2,13 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
-  def handle_event("add_reaction", %{"emoji" => emoji, "id" => id} = _params, socket) do
+  def handle_event("add_reaction", %{"emoji" => emoji, "id" => id} = params, socket) do
     current_user = current_user(socket)
 
     with {:ok, like} <-
-           Bonfire.Social.Likes.like(current_user, id, reaction_emoji: {emoji, %{label: emoji}}) do
+           Bonfire.Social.Likes.like(current_user, id,
+             reaction_emoji: {emoji, %{label: params["label"] || emoji}}
+           ) do
       {:noreply,
        socket
        |> assign(:my_like, like)
@@ -158,8 +160,9 @@ defmodule Bonfire.Social.Likes.LiveHandler do
       preload: false,
       skip_boundary_check: true
     )
-    |> debug()
-    |> Map.new(fn l -> {e(l, :edge, :object_id, nil), true} end)
+    |> repo().maybe_preload(edge: [:emoji])
+    # |> debug()
+    |> Map.new(fn l -> {e(l, :edge, :object_id, nil), e(l, :edge, :emoji, nil) || true} end)
   end
 
   defp do_list_my_liked(_, _objects), do: %{}
