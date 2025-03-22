@@ -2,6 +2,18 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
+  def handle_event("add_reaction", %{"emoji_id" => emoji_id, "id" => id} = params, socket) do
+    current_user = current_user(socket)
+
+    with {:ok, like} <-
+           Bonfire.Social.Likes.like(current_user, id, reaction_emoji: emoji_id) do
+      {:noreply,
+       socket
+       |> assign(:my_like, like)
+       |> assign_flash(:info, l("Reaction sent to author"))}
+    end
+  end
+
   def handle_event("add_reaction", %{"emoji" => emoji, "id" => id} = params, socket) do
     current_user = current_user(socket)
 
@@ -12,7 +24,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
       {:noreply,
        socket
        |> assign(:my_like, like)
-       |> assign_flash(:info, l("Added reaction"))}
+       |> assign_flash(:info, l("Reaction sent to author"))}
     end
   end
 
@@ -161,8 +173,14 @@ defmodule Bonfire.Social.Likes.LiveHandler do
       skip_boundary_check: true
     )
     |> repo().maybe_preload(edge: [:emoji])
-    # |> debug()
-    |> Map.new(fn l -> {e(l, :edge, :object_id, nil), e(l, :edge, :emoji, nil) || true} end)
+    |> Enum.map(fn l -> e(l, :edge, nil) || l end)
+    # current_user: current_user)
+    |> repo().maybe_preload(:emoji, skip_boundary_check: true)
+    |> debug("preloaded?")
+    |> Map.new(fn l ->
+      {e(l, :object_id, nil) || e(l, :edge, :object_id, nil),
+       e(l, :emoji, nil) || e(l, :edge, :emoji, nil) || true}
+    end)
   end
 
   defp do_list_my_liked(_, _objects), do: %{}

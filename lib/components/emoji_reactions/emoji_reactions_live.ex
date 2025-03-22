@@ -29,7 +29,8 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
       Bonfire.Files.EmojiUploader.list(assigns(socket))
       |> Enum.map(fn {shortcode, emoji} ->
         %{
-          name: emoji.label,
+          id: emoji.id,
+          annotation: emoji.label,
           shortcodes: [shortcode],
           url: emoji.url
         }

@@ -18,6 +18,13 @@
         {#case @my_like}
           {#match %{summary: emoji}}
             <span class="text-amber-400 text-[15px]">{emoji}</span>
+          {#match %{media_type: "emoji"} = emoji}
+            <LazyImage
+              parent_id={["emoji", @id, id(emoji)]}
+              class="w-5 h-5"
+              media={emoji}
+              alt={e(emoji, :metadata, "label", nil) || e(emoji, :metadata, "shortcode", nil)}
+            />
           {#match yes when not is_nil(yes) and yes != false}
             <#Icon iconify="mingcute:fire-fill" class="text-amber-400 w-5 h-5" />
           {#match _}
