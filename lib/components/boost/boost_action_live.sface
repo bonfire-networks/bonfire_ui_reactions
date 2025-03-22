@@ -5,7 +5,7 @@
     {#match true}
       <button
         :if={@object_id}
-        id={@id}
+        id={@id || "boost_#{@object_id}"}
         data-id="boost_action"
         data-boosted={@my_boost}
         data-role="boost_enabled"
