@@ -41,7 +41,19 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
   end
 
   def update_many(assigns_sockets, opts \\ []) do
-    update_many_async(assigns_sockets, update_many_opts(opts))
+    {first_assigns, _socket} = List.first(assigns_sockets)
+
+    update_many_async(
+      assigns_sockets,
+      update_many_opts(
+        opts ++
+          [
+            id:
+              e(first_assigns, :feed_name, nil) || e(first_assigns, :feed_id, nil) ||
+                e(first_assigns, :thread_id, nil) || id(first_assigns)
+          ]
+      )
+    )
   end
 
   def update_many_opts(opts \\ []) do
