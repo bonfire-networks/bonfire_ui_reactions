@@ -4,11 +4,11 @@
   phx-hook="Tooltip"
   data-trigger="click"
   data-close-on-inside-click="true"
-  id={"tooltip-#{@parent_id}-#{@object_id}-#{@showing_within}"}
+  id={"tooltip-#{@parent_id}-#{@object_id}"}
 >
   <div
     data-object-id={@object_id}
-    id={"reaction-picker-#{@parent_id}-#{@object_id}-#{@showing_within}"}
+    id={"reaction-picker-#{@parent_id}-#{@object_id}"}
     :hook
     class="relative inline-flex"
   >

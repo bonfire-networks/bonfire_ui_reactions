@@ -16,7 +16,7 @@
         class="btn btn-ghost btn-circle group hover:bg-amber-400/10 like like_with_label btn-sm flex gap-1"
       >
         {#case @my_like}
-          {#match %{summary: emoji}}
+          {#match %{summary: emoji} when is_binary(emoji)}
             <span class="text-amber-400 text-[15px]">{emoji}</span>
           {#match %{media_type: "emoji"} = emoji}
             <LazyImage
@@ -66,3 +66,10 @@
       </button>
   {/case}
 </div>
+
+<StatelessComponent
+  module={maybe_component(Bonfire.UI.Reactions.EmojiReactionsLive, @__context__)}
+  object_id={@object_id}
+  myself={@myself}
+  parent_id={[@id || @object_id, "emoji_react"]}
+/>
