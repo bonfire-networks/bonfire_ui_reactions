@@ -17,7 +17,7 @@
       >
         {#case @my_like}
           {#match %{summary: emoji} when is_binary(emoji)}
-            <span class="text-amber-400 text-[15px]">{emoji}</span>
+            <span class="text-amber-400 text-[20px]">{emoji}</span>
           {#match %{media_type: "emoji"} = emoji}
             <LazyImage
               parent_id={["emoji", @id, id(emoji)]}
