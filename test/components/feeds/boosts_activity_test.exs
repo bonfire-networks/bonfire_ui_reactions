@@ -71,6 +71,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
 
     conn
     |> visit("/feed/local")
+    |> PhoenixTest.open_browser()
     |> assert_has("[data-id=boost_action]")
     |> assert_has("[data-id=boost_action]", text: "Boosted")
   end
