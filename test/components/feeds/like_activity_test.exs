@@ -18,8 +18,11 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
   end
 
   @tag :skip
-  test "As a user I want to see the activity total likes", %{conn: conn, alice: alice, account: account} do
-
+  test "As a user I want to see the activity total likes", %{
+    conn: conn,
+    alice: alice,
+    account: account
+  } do
     if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
          current_user: alice,
          current_account: account
@@ -36,7 +39,9 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
         post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
       }
 
-      assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+      assert {:ok, post} =
+               Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+
       assert {:ok, like} = Likes.like(bob, post)
 
       # Visit feed and check like count
@@ -46,7 +51,11 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     end
   end
 
-  test "As a user I want to see if I already liked an activity", %{conn: conn, alice: alice, account: account} do
+  test "As a user I want to see if I already liked an activity", %{
+    conn: conn,
+    alice: alice,
+    account: account
+  } do
     # Create bob user
     Process.put(:feed_live_update_many_preload_mode, :inline)
 
@@ -109,7 +118,11 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
   #   end
   # end
 
-  test "As a user, when I like a post, I want to see the activity liked subject", %{conn: conn, account: account, alice: alice} do
+  test "As a user, when I like a post, I want to see the activity liked subject", %{
+    conn: conn,
+    account: account,
+    alice: alice
+  } do
     account2 = fake_account!()
     bob = fake_user!(account2)
     Process.put(:feed_live_update_many_preload_mode, :inline)
@@ -126,7 +139,11 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     |> assert_has("[data-id=subject_name]", text: alice.profile.name)
   end
 
-  test "As a user, when I like an activity, the label should change from like to liked", %{conn: conn, account: account, alice: alice} do
+  test "As a user, when I like an activity, the label should change from like to liked", %{
+    conn: conn,
+    account: account,
+    alice: alice
+  } do
     Process.put(:feed_live_update_many_preload_mode, :inline)
     # Create bob user
     account2 = fake_account!()
@@ -186,7 +203,11 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
   #   end
   # end
 
-  test "As a user, when I unlike an activity, the label should change from liked to like", %{conn: conn, alice: alice, account: account} do
+  test "As a user, when I unlike an activity, the label should change from liked to like", %{
+    conn: conn,
+    alice: alice,
+    account: account
+  } do
     Process.put(:feed_live_update_many_preload_mode, :inline)
     # Create bob user
     account2 = fake_account!()

@@ -46,6 +46,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       conn
       |> visit("/post/#{post.id}")
       |> assert_has("[data-id=boost_action]")
+
       # |> assert_has("[data-id=boost_action]", text: "Boost (2)")
     end
   end
@@ -80,7 +81,6 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     alice: alice,
     bob: bob
   } do
-
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
@@ -100,7 +100,6 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     bob: bob,
     account: account
   } do
-
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
@@ -120,7 +119,6 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     alice: alice,
     bob: bob
   } do
-
     # alice follows bob
     Follows.follow(alice, bob)
 
