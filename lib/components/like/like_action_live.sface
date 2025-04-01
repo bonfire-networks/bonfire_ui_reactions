@@ -65,7 +65,7 @@
           e(@like_count, 0) > 0}>{e(@like_count, 0)}</span>
       </button>
   {/case}
-</div>
+
 
 <StatelessComponent
   module={maybe_component(Bonfire.UI.Reactions.EmojiReactionsLive, @__context__)}
@@ -73,3 +73,4 @@
   myself={@myself}
   parent_id={[@id || @object_id, "emoji_react"]}
 />
+</div>
