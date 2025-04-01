@@ -66,11 +66,10 @@
       </button>
   {/case}
 
-
-<StatelessComponent
-  module={maybe_component(Bonfire.UI.Reactions.EmojiReactionsLive, @__context__)}
-  object_id={@object_id}
-  myself={@myself}
-  parent_id={[@id || @object_id, "emoji_react"]}
-/>
+  <StatelessComponent
+    module={maybe_component(Bonfire.UI.Reactions.EmojiReactionsLive, @__context__)}
+    object_id={@object_id}
+    myself={@myself}
+    parent_id={[@id || @object_id, "emoji_react"]}
+  />
 </div>

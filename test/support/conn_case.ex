@@ -42,6 +42,8 @@ defmodule Bonfire.UI.Reactions.ConnCase do
 
       # The default endpoint for testing
       @endpoint Application.compile_env!(:bonfire, :endpoint_module)
+
+      @moduletag :ui
     end
   end
 
