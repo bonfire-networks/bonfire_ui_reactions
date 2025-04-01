@@ -18,8 +18,8 @@
         title={l("Boost this")}
       >
         <#Icon
-          iconify="system-uicons:retweet"
-          class="icon w-5 h-5 group-hover:text-success text-base-content/70"
+          iconify="lucide:refresh-cw"
+          class="icon w-5 h-5 group-hover:text-success text-base-content/50"
         />
         <span class="sr-only">
           {if @my_boost, do: l("Boosted"), else: l("Boost")}
@@ -39,7 +39,7 @@
         title={l("You can't boost this activity")}
       >
         <span class="flex gap-1 text-opacity-20">
-          <#Icon iconify="system-uicons:retweet" class="w-5 h-5  text-base-content/20" />
+          <#Icon iconify="lucide:refresh-cw" class="w-5 h-5  text-base-content/20" />
 
           <span class="sr-only feed_activity_text">
             {l("Cannot Boost")}
