@@ -132,7 +132,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     alice = fake_user!(account)
     account2 = fake_account!()
     bob = fake_user!(account2)
-    Bonfire.Common.Config.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put(:feed_live_update_many_preload_mode, :inline)
 
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
@@ -235,7 +235,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     # bob follows alice
     Follows.follow(bob, alice)
     # Alice posts a message
-    Bonfire.Common.Config.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put(:feed_live_update_many_preload_mode, :inline)
 
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
