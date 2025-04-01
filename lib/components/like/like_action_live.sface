@@ -34,12 +34,8 @@
             />
         {/case}
 
-        <span :if={!@my_like} class="sr-only">
-          {l("Like")}
-        </span>
-        <span :if={@my_like} class="sr-only">
-          {l("Liked")}
-        </span>
+        <span :if={!@my_like} class="sr-only">{l("Like")}</span>
+        <span :if={@my_like} class="sr-only">{l("Liked")}</span>
       </button>
       <span
         data-role="like_count"
