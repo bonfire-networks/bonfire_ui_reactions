@@ -37,7 +37,7 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
       end)
       |> Jason.encode!()
 
-    {:ok, assign(socket, custom_emojis: custom_emojis)}
+    {:ok, assign(socket, custom_emojis: custom_emojis || [])}
   end
 
   def handle_event("get_custom_emojis", _params, socket) do
