@@ -6,6 +6,8 @@
   <Bonfire.UI.Common.SettingsSelectLive
     keys={[Bonfire.UI.Social.FeedLive, :sort_by]}
     input="sort_by"
+    label_name={"Sort by"}
+    id="sort_items"
     options={if extension_enabled?(:bonfire_ui_reactions, @__context__),
       do: [
         {false, l("Chronological")},
