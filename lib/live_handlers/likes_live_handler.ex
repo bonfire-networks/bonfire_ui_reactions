@@ -190,7 +190,8 @@ defmodule Bonfire.Social.Likes.LiveHandler do
       preload: false,
       skip_boundary_check: true
     )
-    |> repo().maybe_preload(edge: [:emoji])
+    # TODO: optimise these preloads
+    |> repo().maybe_preload([edge: [:emoji]], skip_boundary_check: true)
     |> Enum.map(fn l -> e(l, :edge, nil) || l end)
     # current_user: current_user)
     |> repo().maybe_preload([emoji: [:extra_info]], skip_boundary_check: true)
