@@ -185,6 +185,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
 
   defp do_list_my_liked(current_user, list_of_ids)
        when is_list(list_of_ids) and length(list_of_ids) > 0 do
+    # TODO: avoid running this query if we don't have permission to like this object
     Bonfire.Social.Likes.get!(current_user, list_of_ids,
       preload: false,
       skip_boundary_check: true
