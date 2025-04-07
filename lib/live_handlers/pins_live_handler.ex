@@ -16,16 +16,18 @@ defmodule Bonfire.Social.Pins.LiveHandler do
     do_pin(id, params, socket)
   end
 
+  # pin in form
+  def handle_event("pin", %{"direction" => "up", "object_id" => id} = params, socket) do
+    do_pin(id, params, socket)
+  end
+
   # unpin in LV
   def handle_event("pin", %{"direction" => "down", "id" => id} = params, socket) do
-    with _ <-
-           Bonfire.Social.Pins.unpin(
-             current_user_required!(socket),
-             id,
-             scoped(params)
-           ) do
-      after_pin(id, false, params, socket)
-    end
+    do_unpin(id, params, socket)
+  end
+
+  def handle_event("pin", %{"direction" => "down", "object_id" => id} = params, socket) do
+    do_unpin(id, params, socket)
   end
 
   defp scoped(%{"scope" => "instance"}) do
@@ -72,6 +74,17 @@ defmodule Bonfire.Social.Pins.LiveHandler do
       other ->
         debug(other)
         other
+    end
+  end
+
+  def do_unpin(id, params, socket) do
+    with _ <-
+           Bonfire.Social.Pins.unpin(
+             current_user_required!(socket),
+             id,
+             scoped(params)
+           ) do
+      after_pin(id, false, params, socket)
     end
   end
 
