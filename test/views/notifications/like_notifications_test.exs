@@ -23,7 +23,7 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       next = "/notifications"
       # |> IO.inspect
       {view, doc} = floki_live(conn, next)
-      assert feed = Floki.find(doc, ".feed")
+      assert feed = Floki.find(doc, "[data-id=feed]")
       assert Floki.text(feed) =~ "epic html post"
       assert Floki.text(feed) =~ liker.profile.name
       assert Floki.text(feed) =~ "liked"
