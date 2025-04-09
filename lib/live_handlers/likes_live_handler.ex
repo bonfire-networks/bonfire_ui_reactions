@@ -2,6 +2,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
+  # with a Media as custom emoji
   def handle_event("add_reaction", %{"emoji_id" => emoji_id, "id" => id} = params, socket) do
     current_user = current_user(socket)
 
@@ -17,6 +18,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
     end
   end
 
+  # with a regular emoji
   def handle_event("add_reaction", %{"emoji" => emoji, "id" => id} = params, socket) do
     current_user = current_user(socket)
 

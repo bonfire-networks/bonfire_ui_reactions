@@ -23,6 +23,8 @@ defmodule Bonfire.UI.Reactions.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       # import Bonfire.UI.Social.DataCase
+
+      @moduletag :backend
     end
   end
 
