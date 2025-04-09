@@ -19,6 +19,28 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     {:ok, conn: conn, account: account, me: me, alice: alice, bob: bob, carl: carl}
   end
 
+  test "As a user when i boost a post i want to see the icon active", %{
+    me: me,
+    alice: alice,
+    account: account,
+    bob: bob,
+    carl: carl,
+    conn: conn
+  } do
+    Process.put(:feed_live_update_many_preload_mode, :inline)
+
+    attrs = %{
+      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+    }
+    assert {:ok, post} =
+              Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    assert {:ok, boost} = Boosts.boost(me, post)
+
+    conn
+    |> visit("/post/#{post.id}")
+    |> assert_has("[data-boosted]")
+  end
+
   test "As a user I want to see the activity total boosts", %{
     me: me,
     alice: alice,

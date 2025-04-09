@@ -19,7 +19,7 @@
       >
         <#Icon
           iconify="lucide:refresh-cw"
-          class="icon w-5 h-5 group-hover:text-success text-base-content/50"
+          class={"icon w-5 h-5 group-hover:text-success text-base-content/50", "!text-success": @my_boost }
         />
         <span class="sr-only">
           {if @my_boost, do: l("Boosted"), else: l("Boost")}
