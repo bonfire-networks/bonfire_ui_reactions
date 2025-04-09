@@ -32,8 +32,10 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     attrs = %{
       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
     }
+
     assert {:ok, post} =
-              Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+             Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+
     assert {:ok, boost} = Boosts.boost(me, post)
 
     conn
