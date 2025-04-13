@@ -63,6 +63,7 @@
   {/case}
 
   <StatelessComponent
+    :if={current_user_id(@__context__)}
     module={maybe_component(Bonfire.UI.Reactions.EmojiReactionsLive, @__context__)}
     object_id={@object_id}
     myself={@myself}
