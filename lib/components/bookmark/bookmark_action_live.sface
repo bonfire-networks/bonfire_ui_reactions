@@ -34,7 +34,7 @@
         title={l("You can't bookmark this")}
       >
         <span class="text-base-content/20">
-          <#Icon iconify="lucide:bookmark-filled" class="w-5 h-5" />
+          <#Icon iconify="carbon:bookmark-filled" class="w-5 h-5" />
         </span>
 
         <span class="sr-only">
