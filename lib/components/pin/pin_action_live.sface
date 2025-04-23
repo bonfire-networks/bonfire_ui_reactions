@@ -20,7 +20,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
         >
-          <#Icon iconify="mdi:message-check" class="w-4 h-4" />
+          <!-- <#Icon iconify="mdi:message-check" class="w-4 h-4" /> -->
           {l("Unmark as answer")}
         </button>
       {#else}
@@ -37,7 +37,7 @@
           phx-value-component={__MODULE__}
           class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
         >
-          <#Icon iconify="mdi:message-check" class="w-4 h-4" />
+          <!-- <#Icon iconify="mdi:message-check" class="w-4 h-4" /> -->
           {l("Mark as answer")}
         </button>
       {/if}
@@ -56,7 +56,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
         >
-          <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
           {l("Unpin this activity")}
         </button>
       {#else}
@@ -73,7 +73,7 @@
           phx-value-component={__MODULE__}
           class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
         >
-          <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
           {l("Pin to top of thread")}
         </button>
       {/if}
@@ -90,7 +90,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
         >
-          <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
           {l("Unpin from instance")}
         </button>
       {#else}
@@ -107,7 +107,7 @@
           phx-value-component={__MODULE__}
           class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
         >
-          <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
           {l("Pin to instance")}
         </button>
       {/if}
