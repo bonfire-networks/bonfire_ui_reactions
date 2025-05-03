@@ -36,6 +36,8 @@ defmodule Bonfire.UI.Reactions.ConnCase do
       import Bonfire.Common.Simulation
       import Bonfire.Me.Fake.Helpers
 
+      use Bonfire.Common.Config
+      use Bonfire.Common.Settings
       import Untangle
       use Arrows
       # alias Bonfire.UI.Reactions.Web.Router.Helpers, as: Routes

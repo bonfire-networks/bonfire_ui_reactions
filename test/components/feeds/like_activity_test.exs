@@ -76,7 +76,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     # Visit feed and check like status
     conn(user: bob, account: account2)
     |> visit("/feed")
-    |> PhoenixTest.open_browser()
+    # |> PhoenixTest.open_browser()
     |> assert_has(".activity [data-id='like_action']", text: "Liked")
   end
 
