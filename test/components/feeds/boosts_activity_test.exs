@@ -156,7 +156,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     # Visit alice's feed to see the boost
     conn(user: alice, account: account)
     |> visit("/feed")
-    |> assert_has("[data-id=subject]", text: bob.profile.name)
+    |> assert_has("[data-role=subject]", text: bob.profile.name)
   end
 
   # test "As a user, when I boost an activity, the counter should increment", %{
@@ -409,7 +409,7 @@ end
 
 #     assert doc
 #            |> Floki.parse_fragment()
-#            ~> Floki.find("[data-id=subject]")
+#            ~> Floki.find("[data-role=subject]")
 #            |> List.first()
 #            |> Floki.text() =~ bob.profile.name
 #   end
