@@ -1,6 +1,10 @@
 <form data-scope="set_show_reaction_counts" phx-change="Bonfire.Common.Settings:set">
   <Bonfire.UI.Common.SettingsToggleLive
-    show_label={Settings.get([:ui, :show_activity_counts], false, @__context__) == true}
+    show_label={Settings.get([:ui, :show_activity_counts], false,
+      context: @__context__,
+      name: l("Show Activity Counts"),
+      description: l("Display the number of activities (likes, boosts) in the UI.")
+    ) == true}
     label="Vanity Metric"
     keys={[:ui, :show_activity_counts]}
     scope={@scope}
