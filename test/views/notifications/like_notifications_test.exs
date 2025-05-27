@@ -3,9 +3,10 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
   alias Bonfire.Social.Fake
   alias Bonfire.Social.Likes
   alias Bonfire.Posts
+  import Bonfire.Files.Simulation
 
   describe "show" do
-    @tag :skip_ci
+    # @tag :skip_ci
     test "likes on my posts (even from people I'm not following) in my notifications" do
       some_account = fake_account!()
       someone = fake_user!(some_account)
@@ -20,16 +21,14 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       Likes.like(liker, post)
 
       conn = conn(user: someone, account: some_account)
-      next = "/notifications"
-      # |> IO.inspect
-      {view, doc} = floki_live(conn, next)
-      assert feed = Floki.find(doc, "[data-id=feed]")
-      assert Floki.text(feed) =~ "epic html post"
-      assert Floki.text(feed) =~ liker.profile.name
-      assert Floki.text(feed) =~ "liked"
+
+      conn
+      |> visit("/notifications")
+      |> assert_has_or_open_browser("[data-id=feed] article", text: "epic html post")
+      |> assert_has_or_open_browser("[data-id=feed] article", text: liker.profile.name)
+      |> assert_has_or_open_browser("[data-id=feed] article", text: "liked")
     end
 
-    @tag :skip_ci
     test "emoji reactions on my posts from other users show in my notifications" do
       # Create the post author
       author_account = fake_account!()
@@ -49,21 +48,63 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       emoji_label = "celebrate"
 
       assert {:ok, reaction} =
-        Likes.like(reactor, post, reaction_emoji: {emoji, %{label: emoji_label}})
+               Likes.like(reactor, post, reaction_emoji: {emoji, %{label: emoji_label}})
 
       # Load the author's notifications page
 
       conn = conn(user: author, account: author_account)
+
       conn
       |> visit("/notifications")
-      |> PhoenixTest.open_browser()
-      |> assert_has("article", text: "post to react to")
-      |> assert_has("article", text: reactor.profile.name)
-      |> assert_has("span", text: "🎉")
-
+      |> assert_has_or_open_browser("article", text: "post to react to")
+      |> assert_has_or_open_browser("article", text: reactor.profile.name)
+      |> assert_has_or_open_browser("article [data-role='liked_by']", text: "🎉")
+      |> assert_has_or_open_browser("article [data-role='liked_by']",
+        text: "reacted to your activity"
+      )
     end
 
-    @tag :skip_ci
+    test "custom emoji reactions on my posts from other users show in my notifications" do
+      # Create the post author
+      author_account = fake_account!()
+      author = fake_user!(author_account)
+
+      # Create a post
+      attrs = %{post_content: %{html_body: "<p>here is a post to react to</p>"}}
+
+      assert {:ok, post} =
+               Posts.publish(current_user: author, post_attrs: attrs, boundary: "public")
+
+      # Create another user who will react
+      reactor = fake_user!()
+
+      # Add an emoji reaction (using a standard emoji)
+      label = "test custom emoji"
+      shortcode = ":test:"
+
+      {:ok, settings} =
+        Bonfire.Files.EmojiUploader.add_emoji(reactor, icon_file(), label, shortcode)
+
+      assert %{id: media_id, url: url} =
+               Bonfire.Common.Settings.get([:custom_emoji, shortcode], nil, settings)
+
+      assert {:ok, reaction} =
+               Likes.like(reactor, post, reaction_media: media_id)
+
+      # Load the author's notifications page
+
+      conn = conn(user: author, account: author_account)
+
+      conn
+      |> visit("/notifications")
+      |> assert_has_or_open_browser("article", text: "post to react to")
+      |> assert_has("article", text: reactor.profile.name)
+      |> assert_has_or_open_browser("article [data-role='liked_by'] img[alt*=':test:']")
+      |> assert_has_or_open_browser("article [data-role='liked_by']",
+        text: "reacted to your activity"
+      )
+    end
+
     test "multiple emoji reactions from different users show correctly in notifications" do
       # Create the post author
       author_account = fake_account!()
@@ -76,34 +117,42 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
                Posts.publish(current_user: author, post_attrs: attrs, boundary: "public")
 
       # Create multiple users who will react
-      reactor1 = fake_user!()
-      reactor2 = fake_user!()
-      reactor3 = fake_user!()
+      reactor1 = fake_user!(author_account)
+      reactor2 = fake_user!(author_account)
+
+      label = "test custom emoji"
+      shortcode = ":test:"
+
+      {:ok, settings} =
+        Bonfire.Files.EmojiUploader.add_emoji(reactor2, icon_file(), label, shortcode)
+
+      assert %{id: media_id, url: url} =
+               Bonfire.Common.Settings.get([:custom_emoji, shortcode], nil, settings)
 
       # Add different emoji reactions
       assert {:ok, _} = Likes.like(reactor1, post, reaction_emoji: {"👍", %{label: "thumbs up"}})
-      assert {:ok, _} = Likes.like(reactor2, post, reaction_emoji: {"❤️", %{label: "heart"}})
-      assert {:ok, _} = Likes.like(reactor3, post, reaction_emoji: {"😂", %{label: "laugh"}})
+      assert {:ok, _} = Likes.like(reactor2, post, reaction_media: media_id)
 
       # Load the author's notifications page
       conn = conn(user: author, account: author_account)
-      next = "/notifications"
 
-      {view, doc} = floki_live(conn, next)
-
-      # Check that all reactions appear
-      assert feed = Floki.find(doc, "[data-id=feed]")
-      feed_html = Floki.raw_html(feed)
-
-      # All three reactions should be visible
-      assert feed_html =~ "👍" || feed_html =~ "thumbs up"
-      assert feed_html =~ "❤️" || feed_html =~ "heart"
-      assert feed_html =~ "😂" || feed_html =~ "laugh"
-
-      # All reactor names should appear
-      assert Floki.text(feed) =~ reactor1.profile.name
-      assert Floki.text(feed) =~ reactor2.profile.name
-      assert Floki.text(feed) =~ reactor3.profile.name
+      conn
+      |> visit("/notifications")
+      # Check reactor1's name
+      |> assert_has_or_open_browser("[data-id=feed] article", text: reactor1.profile.name)
+      # Check reactor2's name
+      |> assert_has("[data-id=feed] article", text: reactor2.profile.name)
+      # Check custom emoji
+      |> assert_has_or_open_browser(
+        "[data-id=feed] article  [data-role='liked_by'] img[alt*=':test:']"
+      )
+      # Check thumbs up emoji
+      |> assert_has_or_open_browser("[data-id=feed] article [data-role='liked_by']", text: "👍")
+      # Check reaction verb text
+      |> assert_has_or_open_browser("[data-id=feed] article [data-role='liked_by']",
+        text: "reacted to your activity",
+        count: 2
+      )
     end
   end
 end
