@@ -25,6 +25,7 @@ defmodule Bonfire.Social.Notifications.Boosts.Test do
 
       # Someone else boosts the post
       booster = fake_user!()
+      # TODO: should use the UI to boost instead of the context function
       Boosts.boost(booster, post)
 
       # Visit notifications and check that the boost appears

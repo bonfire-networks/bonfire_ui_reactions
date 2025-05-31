@@ -36,6 +36,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     assert {:ok, post} =
              Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
 
+    # TODO: should use the UI to boost instead of the context function
     assert {:ok, boost} = Boosts.boost(me, post)
 
     conn
@@ -62,6 +63,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       assert {:ok, post} =
                Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
 
+      # TODO: should use the UI to boost instead of the context function
       assert {:ok, boost} = Boosts.boost(bob, post)
       assert {:ok, boost} = Boosts.boost(carl, post)
       assert {:ok, boost} = Boosts.boost(me, post)
@@ -89,6 +91,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
 
     Process.put(:feed_live_update_many_preload_mode, :inline)
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    # TODO: should use the UI to boost instead of the context function
     assert {:ok, boost} = Boosts.boost(bob, post)
     assert {:ok, boost} = Boosts.boost(carl, post)
     assert {:ok, boost} = Boosts.boost(me, post)
@@ -110,6 +113,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    # TODO: should use the UI to boost instead of the context function
     assert {:ok, boost} = Boosts.boost(bob, post)
 
     # Visit alice's feed to see the boost
@@ -129,6 +133,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    # TODO: should use the UI to boost instead of the context function
     assert {:ok, boost} = Boosts.boost(bob, post)
 
     # Visit bob's feed to see the boosted post
@@ -151,6 +156,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    # TODO: should use the UI to boost instead of the context function
     assert {:ok, boost} = Boosts.boost(bob, post)
 
     # Visit alice's feed to see the boost
@@ -214,6 +220,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       assert {:ok, post} =
                Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
 
+      # TODO: should use the UI to boost instead of the context function
       assert {:ok, boost} = Boosts.boost(alice, post)
       assert {:ok, boost} = Boosts.boost(me, post)
 
@@ -237,6 +244,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
 
     Process.put(:feed_live_update_many_preload_mode, :inline)
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    # TODO: should use the UI to boost instead of the context function
     assert {:ok, boost} = Boosts.boost(me, post)
 
     # Visit feed and unboost the post

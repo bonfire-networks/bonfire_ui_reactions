@@ -56,7 +56,9 @@ defmodule Bonfire.Social.Pins.LiveHandler do
 
     with {:ok, current_user} <- current_user_or_remote_interaction(socket, l("pin"), object),
          {:ok, _pin} <-
-           Bonfire.Social.Pins.pin(current_user, object, scope) do
+           Bonfire.Social.Pins.pin(current_user, object, scope,
+             object_creator: e(socket, :assigns, :creator, nil)
+           ) do
       after_pin(object, true, params, socket)
     else
       {:error,

@@ -2,6 +2,7 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   prop object_id, :any
+  prop creator, :any, default: nil
   # prop showing_within, :atom, default: nil
   prop parent_id, :any, default: nil
   # prop object_type, :any

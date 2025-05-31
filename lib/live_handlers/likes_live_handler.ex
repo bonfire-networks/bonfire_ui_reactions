@@ -7,7 +7,10 @@ defmodule Bonfire.Social.Likes.LiveHandler do
     current_user = current_user(socket)
 
     with {:ok, like} <-
-           Bonfire.Social.Likes.like(current_user, id, reaction_emoji: emoji_id),
+           Bonfire.Social.Likes.like(current_user, id,
+             reaction_emoji: emoji_id,
+             object_creator: e(socket, :assigns, :creator, nil)
+           ),
          %{} = like <-
            e(like, :edge, nil)
            |> repo().maybe_preload([:emoji], skip_boundary_check: true) do
@@ -24,7 +27,8 @@ defmodule Bonfire.Social.Likes.LiveHandler do
 
     with %{} = like <-
            Bonfire.Social.Likes.like(current_user, id,
-             reaction_emoji: {emoji, %{label: params["label"] || emoji}}
+             reaction_emoji: {emoji, %{label: params["label"] || emoji}},
+             object_creator: e(socket, :assigns, :creator, nil)
            )
            |> e(:edge, nil)
            |> repo().maybe_preload([emoji: [:extra_info]], skip_boundary_check: true) do
@@ -72,7 +76,10 @@ defmodule Bonfire.Social.Likes.LiveHandler do
 
   def do_like(object, params, socket) do
     with {:ok, current_user} <- current_user_or_remote_interaction(socket, l("like"), object),
-         {:ok, _like} <- Bonfire.Social.Likes.like(current_user, object) do
+         {:ok, _like} <-
+           Bonfire.Social.Likes.like(current_user, object,
+             object_creator: e(socket, :assigns, :creator, nil)
+           ) do
       like_action(object, true, params, socket)
       |> debug("liked")
     else
