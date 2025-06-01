@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Reactions.ProfilePinsLive do
   # prop page_info, :any
   # prop permalink, :string, default: nil
   # prop showing_within, :atom, default: nil
-  # prop follows_me, :boolean, default: false
+  # prop follows_me, :atom, default: false
   # prop loading, :boolean, default: false
   prop hide_filters, :boolean, default: false
   prop feed_component_id, :any, default: nil
