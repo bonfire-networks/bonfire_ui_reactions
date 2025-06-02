@@ -44,9 +44,9 @@ defmodule Bonfire.Social.Likes.LiveHandler do
       Bonfire.Files.EmojiUploader.list(assigns(socket))
       |> Enum.map(fn {shortcode, emoji} ->
         %{
-          name: emoji.label,
+          name: e(emoji, :label, nil),
           shortcodes: [shortcode],
-          url: emoji.url
+          url: e(emoji, :url, nil)
         }
       end)
 

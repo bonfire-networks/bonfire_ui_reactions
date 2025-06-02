@@ -11,29 +11,15 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
   # prop label, :string, default: nil
   # prop my_like, :any, default: nil
 
-  # def mount(socket) do
-  #   custom_emojis =
-  #     Bonfire.Files.EmojiUploader.list(socket)
-  #     |> Enum.map(fn {shortcode, emoji} ->
-  #       %{
-  #         name: emoji.label,
-  #         shortcodes: [shortcode],
-  #         url: emoji.url
-  #       }
-  #     end)
-  #     |> Jason.encode!()
-  #   {:ok, assign(socket, custom_emojis: custom_emojis)}
-  # end
-
   def update(assigns, socket) do
     custom_emojis =
       Bonfire.Files.EmojiUploader.list(assigns(socket))
       |> Enum.map(fn {shortcode, emoji} ->
         %{
           id: emoji.id,
-          annotation: emoji.label,
+          annotation: e(emoji, :label, nil),
           shortcodes: [shortcode],
-          url: emoji.url
+          url: e(emoji, :url, nil)
         }
       end)
       |> Jason.encode!()
@@ -46,9 +32,9 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
       Bonfire.Files.EmojiUploader.list(assigns(socket))
       |> Enum.map(fn {shortcode, emoji} ->
         %{
-          name: emoji.label,
+          name: e(emoji, :label, nil),
           shortcodes: [shortcode],
-          url: emoji.url
+          url: e(emoji, :url, nil)
         }
       end)
 
