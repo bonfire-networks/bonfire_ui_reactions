@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
           id: emoji.id,
           annotation: e(emoji, :label, nil),
           shortcodes: [shortcode],
-          url: e(emoji, :url, nil)
+          url: e(emoji, :url, nil) || Media.emoji_url(emoji)
         }
       end)
       |> Jason.encode!()
@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
         %{
           name: e(emoji, :label, nil),
           shortcodes: [shortcode],
-          url: e(emoji, :url, nil)
+          url: e(emoji, :url, nil) || Media.emoji_url(emoji)
         }
       end)
 

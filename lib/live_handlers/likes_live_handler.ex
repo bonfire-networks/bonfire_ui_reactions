@@ -46,7 +46,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
         %{
           name: e(emoji, :label, nil),
           shortcodes: [shortcode],
-          url: e(emoji, :url, nil)
+          url: e(emoji, :url, nil) || Media.emoji_url(emoji)
         }
       end)
 
