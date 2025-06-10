@@ -6,6 +6,7 @@
         :if={@object_id}
         id={@id}
         data-id="like_action"
+        data-tip={l("Like")}
         data-role="like_enabled"
         phx-click="Bonfire.Social.Likes:like"
         phx-value-direction={if @my_like, do: "down", else: "up"}
@@ -13,7 +14,7 @@
         phx-target={@myself}
         phx-value-component={__MODULE__}
         phx-value-current_count={e(@like_count, 0)}
-        class="btn btn-ghost btn-circle group hover:bg-amber-400/10 like like_with_label btn-sm flex gap-1"
+        class="btn btn-ghost tooltip tooltip-bottom btn-circle group hover:bg-amber-400/10 like like_with_label btn-sm flex gap-1"
       >
         {#case @my_like}
           {#match %{summary: emoji} when is_binary(emoji)}

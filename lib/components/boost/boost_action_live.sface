@@ -7,6 +7,7 @@
         :if={@object_id}
         id={@id || "boost_#{@object_id}"}
         data-id="boost_action"
+        data-tip={l("Boost")}
         data-boosted={@my_boost}
         data-role="boost_enabled"
         disabled={if @object_type == Bonfire.Data.Social.Message, do: "disabled"}
@@ -14,7 +15,7 @@
         phx-target={@myself}
         phx-value-id={@object_id}
         phx-value-component={__MODULE__}
-        class="btn btn-ghost btn-circle boost btn-sm group hover:bg-success/10 font-medium text-base-content/70 flex gap-1"
+        class="btn tooltip tooltip-bottom btn-ghost btn-circle boost btn-sm group hover:bg-success/10 font-medium text-base-content/70 flex gap-1"
         title={l("Boost this")}
       >
         <#Icon

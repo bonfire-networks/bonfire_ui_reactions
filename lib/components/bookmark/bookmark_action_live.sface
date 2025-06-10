@@ -5,13 +5,14 @@
         :if={@object_id}
         id={@id}
         data-id="bookmark_action"
+        data-tip={l("Bookmark")}
         data-role="bookmark_enabled"
         phx-click="Bonfire.Social.Bookmarks:bookmark"
         phx-value-direction={if @my_bookmark, do: "down", else: "up"}
         phx-value-id={@object_id}
         phx-target={@myself}
         phx-value-component={__MODULE__}
-        class="btn btn-ghost btn-circle bookmark bookmark_with_label btn-sm flex gap-1"
+        class="btn btn-ghost tooltip tooltip-bottom btn-circle bookmark bookmark_with_label btn-sm flex gap-1"
       >
         {#if @my_bookmark}
           <#Icon iconify="lucide:bookmark" class="text-info w-5 h-5" />
