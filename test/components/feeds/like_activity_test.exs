@@ -36,7 +36,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
 
       # Alice posts a message
       attrs = %{
-        post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+        post_content: %{summary: "summary", html_body: "first post"}
       }
 
       assert {:ok, post} =
@@ -67,7 +67,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
 
     # Alice posts a message
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -92,7 +92,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
 
   #   # Alice posts a message
   #   attrs = %{
-  #     post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+  #     post_content: %{summary: "summary",  html_body: "first post"}
   #   }
 
   #   assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -128,7 +128,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     Process.put(:feed_live_update_many_preload_mode, :inline)
 
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -154,7 +154,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
 
     # Alice posts a message
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -186,7 +186,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
 
   #     # Alice posts a message
   #     attrs = %{
-  #       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+  #       post_content: %{summary: "summary",  html_body: "first post"}
   #     }
 
   #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -219,7 +219,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
 
     # Alice posts a message
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -262,7 +262,7 @@ end
 #       Follows.follow(bob, alice)
 
 #       attrs = %{
-#         post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#         post_content: %{summary: "summary",  html_body: "first post"}
 #       }
 
 #       assert {:ok, post} =
@@ -298,7 +298,7 @@ end
 #     Follows.follow(bob, alice)
 
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary",  html_body: "first post"}
 #     }
 
 #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -332,7 +332,7 @@ end
 #     Follows.follow(bob, alice)
 #     # Alice posts a message
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary",  html_body: "first post"}
 #     }
 
 #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -372,7 +372,7 @@ end
 #     Process.put(:feed_live_update_many_preload_mode, :inline)
 
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary",  html_body: "first post"}
 #     }
 
 #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -397,7 +397,7 @@ end
 #     Follows.follow(bob, alice)
 #     # Alice posts a message
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary",  html_body: "first post"}
 #     }
 
 #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -436,7 +436,7 @@ end
 #       Follows.follow(bob, alice)
 #       # Alice posts a message
 #       attrs = %{
-#         post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#         post_content: %{summary: "summary",  html_body: "first post"}
 #       }
 
 #       assert {:ok, post} =
@@ -475,7 +475,7 @@ end
 #     Process.put(:feed_live_update_many_preload_mode, :inline)
 
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary",  html_body: "first post"}
 #     }
 
 #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")

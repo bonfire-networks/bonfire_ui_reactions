@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     Process.put(:feed_live_update_many_preload_mode, :inline)
 
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     assert {:ok, post} =
@@ -57,7 +57,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
          current_account: account
        ) do
       attrs = %{
-        post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+        post_content: %{summary: "summary", html_body: "first post"}
       }
 
       assert {:ok, post} =
@@ -86,7 +86,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     conn: conn
   } do
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     Process.put(:feed_live_update_many_preload_mode, :inline)
@@ -109,7 +109,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     bob: bob
   } do
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -129,7 +129,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     account: account
   } do
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -152,7 +152,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     Follows.follow(alice, bob)
 
     attrs = %{
-      post_content: %{summary: "summary", name: "test post by alice", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -184,7 +184,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
   #     Follows.follow(bob, alice)
 
   #     attrs = %{
-  #       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+  #       post_content: %{summary: "summary", html_body: "first post"}
   #     }
 
   #     assert {:ok, post} =
@@ -214,7 +214,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
          current_account: account
        ) do
       attrs = %{
-        post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+        post_content: %{summary: "summary", html_body: "first post"}
       }
 
       assert {:ok, post} =
@@ -239,7 +239,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     conn: conn
   } do
     attrs = %{
-      post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+      post_content: %{summary: "summary", html_body: "first post"}
     }
 
     Process.put(:feed_live_update_many_preload_mode, :inline)
@@ -290,7 +290,7 @@ end
 #          current_account: account
 #        ) do
 #       attrs = %{
-#         post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#         post_content: %{summary: "summary", html_body: "first post"}
 #       }
 
 #       assert {:ok, post} =
@@ -318,7 +318,7 @@ end
 #     conn: conn
 #   } do
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary", html_body: "first post"}
 #     }
 
 #     Process.put(:feed_live_update_many_preload_mode, :inline)
@@ -341,7 +341,7 @@ end
 #     bob = fake_user!(account2)
 
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary", html_body: "first post"}
 #     }
 
 #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -370,7 +370,7 @@ end
 #     bob = fake_user!()
 
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary",  html_body: "first post"}
 #     }
 
 #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -398,7 +398,7 @@ end
 #     Follows.follow(alice, bob)
 
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post by alice", html_body: "first post"}
+#       post_content: %{summary: "summary", html_body: "first post"}
 #     }
 
 #     assert {:ok, post} = Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -439,7 +439,7 @@ end
 #       Follows.follow(bob, alice)
 
 #       attrs = %{
-#         post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#         post_content: %{summary: "summary", html_body: "first post"}
 #       }
 
 #       assert {:ok, post} =
@@ -477,7 +477,7 @@ end
 #          current_account: account
 #        ) do
 #       attrs = %{
-#         post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#         post_content: %{summary: "summary", html_body: "first post"}
 #       }
 
 #       assert {:ok, post} =
@@ -501,7 +501,7 @@ end
 #     conn: conn
 #   } do
 #     attrs = %{
-#       post_content: %{summary: "summary", name: "test post name", html_body: "first post"}
+#       post_content: %{summary: "summary",  html_body: "first post"}
 #     }
 
 #     Process.put(:feed_live_update_many_preload_mode, :inline)
