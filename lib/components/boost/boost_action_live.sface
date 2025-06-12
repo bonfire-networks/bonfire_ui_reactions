@@ -15,7 +15,7 @@
         phx-target={@myself}
         phx-value-id={@object_id}
         phx-value-component={__MODULE__}
-        class="btn lg:tooltip lg:tooltip-bottom btn-ghost btn-circle boost btn-sm group hover:bg-success/10 font-medium text-base-content/70 flex gap-1"
+        class="btn lg:tooltip lg:tooltip-bottom btn-ghost btn-circle boost btn-sm group hover:bg-success/10 font-medium text-base-content/70 flex gap-1 !flex"
         title={l("Boost this")}
       >
         <#Icon
