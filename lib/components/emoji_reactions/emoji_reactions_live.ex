@@ -11,33 +11,33 @@ defmodule Bonfire.UI.Reactions.EmojiReactionsLive do
   # prop label, :string, default: nil
   # prop my_like, :any, default: nil
 
-  def update(assigns, socket) do
-    custom_emojis =
-      Bonfire.Files.EmojiUploader.list(assigns(socket))
-      |> Enum.map(fn {shortcode, emoji} ->
-        %{
-          id: emoji.id,
-          annotation: e(emoji, :label, nil),
-          shortcodes: [shortcode],
-          url: e(emoji, :url, nil) || Media.emoji_url(emoji)
-        }
-      end)
-      |> Jason.encode!()
+  # def update(assigns, socket) do
+  #   custom_emojis =
+  #     Bonfire.Files.EmojiUploader.list(assigns(socket))
+  #     |> Enum.map(fn {shortcode, emoji} ->
+  #       %{
+  #         id: emoji.id,
+  #         name: e(emoji, :label, nil),
+  #         shortcodes: [shortcode],
+  #         url: e(emoji, :url, nil) || Media.emoji_url(emoji)
+  #       }
+  #     end)
+  #     |> Jason.encode!()
 
-    {:ok, assign(socket, custom_emojis: custom_emojis || [])}
-  end
+  #   {:ok, assign(socket, custom_emojis: custom_emojis || [])}
+  # end
 
-  def handle_event("get_custom_emojis", _params, socket) do
-    custom_emojis =
-      Bonfire.Files.EmojiUploader.list(assigns(socket))
-      |> Enum.map(fn {shortcode, emoji} ->
-        %{
-          name: e(emoji, :label, nil),
-          shortcodes: [shortcode],
-          url: e(emoji, :url, nil) || Media.emoji_url(emoji)
-        }
-      end)
+  # def handle_event("get_custom_emojis", _params, socket) do
+  #   custom_emojis =
+  #     Bonfire.Files.EmojiUploader.list(assigns(socket))
+  #     |> Enum.map(fn {shortcode, emoji} ->
+  #       %{
+  #         name: e(emoji, :label, nil),
+  #         shortcodes: [shortcode],
+  #         url: e(emoji, :url, nil) || Media.emoji_url(emoji)
+  #       }
+  #     end)
 
-    {:reply, %{custom_emojis: custom_emojis}, socket}
-  end
+  #   {:reply, %{custom_emojis: custom_emojis}, socket}
+  # end
 end

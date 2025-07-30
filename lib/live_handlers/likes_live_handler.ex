@@ -39,19 +39,19 @@ defmodule Bonfire.Social.Likes.LiveHandler do
     end
   end
 
-  def handle_event("get_custom_emojis", _params, socket) do
-    custom_emojis =
-      Bonfire.Files.EmojiUploader.list(assigns(socket))
-      |> Enum.map(fn {shortcode, emoji} ->
-        %{
-          name: e(emoji, :label, nil),
-          shortcodes: [shortcode],
-          url: e(emoji, :url, nil) || Media.emoji_url(emoji)
-        }
-      end)
+  # def handle_event("get_custom_emojis", _params, socket) do
+  #   custom_emojis =
+  #     Bonfire.Files.EmojiUploader.list(assigns(socket))
+  #     |> Enum.map(fn {shortcode, emoji} ->
+  #       %{
+  #         name: e(emoji, :label, nil),
+  #         shortcodes: [shortcode],
+  #         url: e(emoji, :url, nil) || Media.emoji_url(emoji)
+  #       }
+  #     end)
 
-    {:reply, %{custom_emoji: custom_emojis}, socket}
-  end
+  #   {:reply, %{custom_emoji: custom_emojis}, socket}
+  # end
 
   # like in LV stateful
   def handle_event(
