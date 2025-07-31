@@ -15,13 +15,20 @@
         phx-target={@myself}
         phx-value-id={@object_id}
         phx-value-component={__MODULE__}
-        class="btn lg:tooltip lg:tooltip-bottom btn-ghost btn-circle boost btn-sm group hover:bg-success/10 font-medium text-base-content/70 flex gap-1 !flex"
+        class="btn lg:tooltip lg:tooltip-bottom btn-ghost btn-circle boost btn-sm group hover:bg-success/10 font-medium text-base-content/70 flex gap-1 !flex transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
         title={l("Boost this")}
       >
-        <#Icon
-          iconify="lucide:refresh-cw"
-          class={"icon w-5 h-5 group-hover:text-success text-base-content/50", "!text-success": @my_boost}
-        />
+        {#if @my_boost}
+          <#Icon
+            iconify="ph:rocket-launch-fill"
+            class="icon w-5 h-5 group-hover:text-success text-success"
+          />
+        {#else}
+          <#Icon
+            iconify="ph:rocket-launch-duotone"
+            class="icon w-5 h-5 group-hover:text-success text-base-content/50"
+          />
+        {/if}
         <span class="sr-only">
           {if @my_boost, do: l("Boosted"), else: l("Boost")}
         </span>
@@ -40,7 +47,7 @@
         title={l("You can't boost this activity")}
       >
         <span class="flex gap-1 text-opacity-20">
-          <#Icon iconify="lucide:refresh-cw" class="w-5 h-5  text-base-content/20" />
+          <#Icon iconify="ph:rocket-launch-duotone" class="w-5 h-5  text-base-content/20" />
 
           <span class="sr-only feed_activity_text">
             {l("Cannot Boost")}

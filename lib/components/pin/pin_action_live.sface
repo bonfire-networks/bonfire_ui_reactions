@@ -125,7 +125,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
         >
-          <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
           {l("Unpin this activity")}
         </button>
       {#else}
@@ -142,7 +142,7 @@
           phx-value-component={__MODULE__}
           class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
         >
-          <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
           {l("Pin to your profile")}
         </button>
       {/if}
@@ -153,7 +153,7 @@
         {#match :thread_answer}
           <#Icon iconify="mdi:message-check" class="w-4 h-4" />
         {#match _}
-          <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" />
+          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
       {/case}
 
       {#if @pinned?}
