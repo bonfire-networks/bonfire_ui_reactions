@@ -82,11 +82,13 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       label = "test custom emoji"
       shortcode = ":test:"
 
-      {:ok, settings} =
+      {:ok, context} =
         Bonfire.Files.EmojiUploader.add_emoji(reactor, icon_file(), label, shortcode)
 
+      reactor = current_user(context)
+
       assert %{id: media_id, url: url} =
-               Bonfire.Common.Settings.get([:custom_emoji, shortcode], nil, settings)
+               Bonfire.Common.Settings.get([:custom_emoji, shortcode], nil, reactor)
 
       assert {:ok, reaction} =
                Likes.like(reactor, post, reaction_media: media_id)
@@ -123,11 +125,13 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       label = "test custom emoji"
       shortcode = ":test:"
 
-      {:ok, settings} =
+      {:ok, context} =
         Bonfire.Files.EmojiUploader.add_emoji(reactor2, icon_file(), label, shortcode)
 
+      reactor2 = current_user(context)
+
       assert %{id: media_id, url: url} =
-               Bonfire.Common.Settings.get([:custom_emoji, shortcode], nil, settings)
+               Bonfire.Common.Settings.get([:custom_emoji, shortcode], nil, reactor2)
 
       # Add different emoji reactions
       assert {:ok, _} = Likes.like(reactor1, post, reaction_emoji: {"👍", %{label: "thumbs up"}})
