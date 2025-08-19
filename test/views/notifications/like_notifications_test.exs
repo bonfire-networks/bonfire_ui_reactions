@@ -1,5 +1,6 @@
 defmodule Bonfire.Social.Notifications.Likes.Test do
   use Bonfire.UI.Reactions.ConnCase, async: true
+  alias Bonfire.Common.Utils
   alias Bonfire.Social.Fake
   alias Bonfire.Social.Likes
   alias Bonfire.Posts
@@ -85,7 +86,7 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       {:ok, context} =
         Bonfire.Files.EmojiUploader.add_emoji(reactor, icon_file(), label, shortcode)
 
-      reactor = current_user(context)
+      reactor = Utils.current_user(context)
 
       assert %{id: media_id, url: url} =
                Bonfire.Common.Settings.get([:custom_emoji, shortcode], nil, reactor)
@@ -128,7 +129,7 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       {:ok, context} =
         Bonfire.Files.EmojiUploader.add_emoji(reactor2, icon_file(), label, shortcode)
 
-      reactor2 = current_user(context)
+      reactor2 = Utils.current_user(context)
 
       assert %{id: media_id, url: url} =
                Bonfire.Common.Settings.get([:custom_emoji, shortcode], nil, reactor2)
