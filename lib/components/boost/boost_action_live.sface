@@ -16,7 +16,6 @@
         phx-value-id={@object_id}
         phx-value-component={__MODULE__}
         class="btn lg:tooltip lg:tooltip-bottom btn-ghost btn-circle boost btn-sm group hover:bg-success/10 font-medium text-base-content/70 flex gap-1 !flex transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
-        title={l("Boost this")}
       >
         {#if @my_boost}
           <#Icon
