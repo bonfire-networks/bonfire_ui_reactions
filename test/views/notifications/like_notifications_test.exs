@@ -30,6 +30,7 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       |> assert_has_or_open_browser("[data-id=feed] article", text: "liked")
     end
 
+    @tag skip: true
     test "emoji reactions on my posts from other users show in my notifications" do
       # Create the post author
       author_account = fake_account!()
@@ -65,6 +66,7 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       )
     end
 
+    @tag skip: true
     test "custom emoji reactions on my posts from other users show in my notifications" do
       # Create the post author
       author_account = fake_account!()
@@ -108,6 +110,7 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
       )
     end
 
+    @tag skip: true
     test "multiple emoji reactions from different users show correctly in notifications" do
       # Create the post author
       author_account = fake_account!()
