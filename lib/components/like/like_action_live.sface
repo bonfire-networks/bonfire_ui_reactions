@@ -21,7 +21,7 @@
             <span class="text-amber-400 text-[20px]">{emoji}</span>
           {#match %{media_type: "emoji"} = emoji}
             <LazyImage
-              parent_id={["emoji", @id, id(emoji)]}
+              parent_id={deterministic_dom_id(__MODULE__, id(emoji), "emoji", @id)}
               class="w-5 h-5"
               media={emoji}
               alt={e(emoji, :metadata, "label", nil) || e(emoji, :metadata, "shortcode", nil)}
@@ -68,6 +68,6 @@
     module={maybe_component(Bonfire.UI.Reactions.EmojiReactionsLive, @__context__)}
     object_id={@object_id}
     myself={@myself}
-    parent_id={[@id || @object_id, "emoji_react"]}
+    parent_id={deterministic_dom_id(__MODULE__, @object_id, "emoji_react", @id)}
   />
 </div>
