@@ -3,11 +3,11 @@
   phx-update="ignore"
   phx-hook="Tooltip"
   data-trigger="click"
-  id={"tooltip-#{@parent_id}-#{@object_id}"}
+  id={deterministic_dom_id(__MODULE__, @object_id, "tooltip", @parent_id)}
 >
   <div
     data-object-id={@object_id}
-    id={"reaction-picker-#{@parent_id}-#{@object_id}"}
+    id={deterministic_dom_id(__MODULE__, @object_id, "reaction-picker", @parent_id)}
     :hook
     class="relative z-[999999999] inline-flex"
   >
