@@ -1,13 +1,11 @@
 <form
-  data-scope="reactions_sort"
+  data-scope={@scope}
   phx-change={@event_name || "Bonfire.Common.Settings:set"}
   phx-target={@event_target}
 >
   <Bonfire.UI.Common.SettingsSelectLive
     keys={[Bonfire.UI.Social.FeedLive, :sort_by]}
-    input="sort_by"
     label_name={l("Sort by")}
-    id="sort_items"
     options={if extension_enabled?(:bonfire_ui_reactions, @__context__),
       do: [
         {false, l("Chronological")},
