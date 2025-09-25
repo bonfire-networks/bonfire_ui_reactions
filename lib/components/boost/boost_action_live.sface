@@ -1,25 +1,29 @@
 {#if @object_type != Bonfire.Data.Social.Message}
-<div 
-  phx-hook="Tooltip"
-  id={deterministic_dom_id(__MODULE__, id(@object_id), "share_menu", @parent_id)}
-  data-position="bottom"
-  class="relative z-[999999999]">
-  <button
-    class="tooltip-button btn btn-ghost group hover:bg-primary/10 btn-circle btn-sm transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
-    aria-haspopup="true"
+  <div
+    phx-hook="Tooltip"
+    id={deterministic_dom_id(__MODULE__, id(@object_id), "share_menu", @parent_id)}
+    data-position="bottom"
+    class="relative z-[999999999]"
   >
-    <#Icon
-      iconify="ph:rocket-launch-duotone"
-      class="group-hover:text-primary w-5 h-5 text-base-content/50"
-    />
-  </button>
-  <ul tabindex="0"
-        class="tooltip z-[999999999999] menu shadow bg-base-100 shadow border border-base-content/10 rounded-lg p-1 w-64 absolute top-0 left-0 hidden"
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="more-menu">
-        <li>
-        {#case (current_user(@__context__) == nil or !@object_boundary or Bonfire.Boundaries.can?(@__context__, :boost, @object_boundary))}
+    <button
+      class="tooltip-button btn btn-ghost group hover:bg-primary/10 btn-circle btn-sm transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
+      aria-haspopup="true"
+    >
+      <#Icon
+        iconify="ph:rocket-launch-duotone"
+        class="group-hover:text-primary w-5 h-5 text-base-content/50"
+      />
+    </button>
+    <ul
+      tabindex="0"
+      class="tooltip z-[999999999999] menu shadow bg-base-100 shadow border border-base-content/10 rounded-lg p-1 w-64 absolute top-0 left-0 hidden"
+      role="menu"
+      aria-orientation="vertical"
+      aria-labelledby="more-menu"
+    >
+      <li>
+        {#case current_user(@__context__) == nil or !@object_boundary or
+            Bonfire.Boundaries.can?(@__context__, :boost, @object_boundary)}
           {#match true}
             <button
               class="flex py-2 px-3 gap-2 font-semibold"
@@ -34,77 +38,81 @@
               phx-value-id={@object_id}
               phx-value-component={__MODULE__}
             >
-            {#if @my_boost}
-              <#Icon iconify="ph:arrows-counter-clockwise-duotone" class="w-5 h-5 group-hover:text-success text-success" />
-              <span class="text-success text-sm">{l("Boosted")}</span>
-            {#else}
-              <#Icon iconify="ph:arrows-counter-clockwise-duotone" class="w-5 h-5 group-hover:text-success" />
-              <span class="text-sm">{l("Boost")}</span>
-            {/if}
-            
+              {#if @my_boost}
+                <#Icon
+                  iconify="ph:arrows-counter-clockwise-duotone"
+                  class="w-5 h-5 group-hover:text-success text-success"
+                />
+                <span class="text-success text-sm">{l("Boosted")}</span>
+              {#else}
+                <#Icon iconify="ph:arrows-counter-clockwise-duotone" class="w-5 h-5 group-hover:text-success" />
+                <span class="text-sm">{l("Boost")}</span>
+              {/if}
+
               <span :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
                 e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
             </button>
           {#match _}
-              <button
-                type="button"
-                data-role="boost_disabled"
-                class="cursor-not-allowed boost btn btn-circle btn-ghost btn-sm text-base-content font-medium"
-                title={l("You can't boost this activity")}
-              >
-                <span class="flex gap-1 text-opacity-20">
-                  <#Icon iconify="ph:arrows-counter-clockwise-duotone" class="w-5 h-5  text-base-content/20" />
+            <button
+              type="button"
+              data-role="boost_disabled"
+              class="cursor-not-allowed boost btn btn-circle btn-ghost btn-sm text-base-content font-medium"
+              title={l("You can't boost this activity")}
+            >
+              <span class="flex gap-1 text-opacity-20">
+                <#Icon iconify="ph:arrows-counter-clockwise-duotone" class="w-5 h-5  text-base-content/20" />
 
-                  <span class="feed_activity_text">
-                    {l("Cannot Boost")}
-                  </span>
-                  <span :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-                    e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
+                <span class="feed_activity_text">
+                  {l("Cannot Boost")}
                 </span>
-              </button>
-          {/case}
+                <span :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
+                  e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
+              </span>
+            </button>
+        {/case}
       </li>
       <li>
         {#case Bonfire.Social.Quotes.check_quote_permission(current_user(@__context__), @object)}
-        {#match {:auto_approve, _}}
-          <button
-            class="flex py-2 px-3 gap-2 font-semibold"
-            phx-click="Bonfire.Social.Boosts:quote"
-            phx-target={@myself}
-            phx-value-id={@object_id}
-            data-role="quote_enabled">
-            <#Icon iconify="ph:quotes-duotone" class="w-5 h-5" />
-            <span class="text-sm">{l("Quote")}</span>
-          </button>
-        {#match {:request_needed, _}}
-          <button
-            class="flex py-2 px-3 gap-2 font-semibold"
-            phx-click="Bonfire.Social.Boosts:quote"
-            phx-target={@myself}
-            phx-value-id={@object_id}
-            data-role="quote_enabled">
-            <#Icon iconify="ph:quotes-duotone" class="w-5 h-5" />
-            <span class="text-sm">{l("Quote (pending approval)")}</span>
-          </button>
-        {#match _}
-          <button
-            type="button"
-            disabled="disabled"
-            data-role="quote_disabled"
-            class="flex py-2 px-3 gap-2 font-semibold cursor-not-allowed opacity-70 quote "
-            title={l("You can't quote this activity")}
-          > 
+          {#match {:auto_approve, _}}
+            <button
+              class="flex py-2 px-3 gap-2 font-semibold"
+              phx-click="Bonfire.Social.Boosts:quote"
+              phx-target={@myself}
+              phx-value-id={@object_id}
+              data-role="quote_enabled"
+            >
+              <#Icon iconify="ph:quotes-duotone" class="w-5 h-5" />
+              <span class="text-sm">{l("Quote")}</span>
+            </button>
+          {#match {:request_needed, _}}
+            <button
+              class="flex py-2 px-3 gap-2 font-semibold"
+              phx-click="Bonfire.Social.Boosts:quote"
+              phx-target={@myself}
+              phx-value-id={@object_id}
+              data-role="quote_enabled"
+            >
+              <#Icon iconify="ph:quotes-duotone" class="w-5 h-5" />
+              <span class="text-sm">{l("Quote (pending approval)")}</span>
+            </button>
+          {#match _}
+            <button
+              type="button"
+              disabled="disabled"
+              data-role="quote_disabled"
+              class="flex py-2 px-3 gap-2 font-semibold cursor-not-allowed opacity-70 quote"
+              title={l("You can't quote this activity")}
+            >
               <#Icon iconify="ph:quotes-duotone" class="w-5 h-5" />
 
               <span class="test-sm">
                 {l("Cannot quote")}
               </span>
-          </button>
+            </button>
         {/case}
       </li>
-  </ul>
-</div>
-
+    </ul>
+  </div>
 {/if}
 <!-- <div class="relative z-20 flex items-center">
   {#case @object_type != Bonfire.Data.Social.Message}

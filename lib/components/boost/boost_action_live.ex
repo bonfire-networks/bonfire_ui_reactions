@@ -13,5 +13,4 @@ defmodule Bonfire.UI.Reactions.BoostActionLive do
 
   def update_many(assigns_sockets),
     do: Bonfire.Social.Boosts.LiveHandler.update_many(assigns_sockets, caller_module: __MODULE__)
-
 end

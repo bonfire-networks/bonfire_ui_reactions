@@ -2,7 +2,6 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
-
   # quote in LV stateful component
   def handle_event("quote", %{"id" => object_id}, socket) do
     debug(object_id, "quote action")
