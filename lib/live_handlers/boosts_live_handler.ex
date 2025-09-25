@@ -2,6 +2,37 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
+
+  # quote in LV stateful component
+  def handle_event("quote", %{"id" => object_id}, socket) do
+    debug(object_id, "quote action")
+
+    current_user = current_user_required!(socket)
+
+    with {:ok, object} <- Bonfire.Common.Needles.get(object_id, skip_boundary_check: true) do
+      # Generate the canonical URL for the post
+      post_url = Bonfire.Common.URIs.canonical_url(object)
+
+      debug(post_url, "generated post URL for quote")
+
+      if post_url do
+        # Open the smart input
+        Bonfire.UI.Common.SmartInput.LiveHandler.open_with_text_suggestion(
+          "",
+          [],
+          socket
+        )
+
+        {:noreply, socket |> maybe_push_event("mention_suggestions", %{text: " #{post_url} "})}
+      else
+        {:noreply, socket |> assign_error(l("Could not generate URL for this post"))}
+      end
+    else
+      {:error, _} ->
+        {:noreply, socket |> assign_error(l("Could not quote this post"))}
+    end
+  end
+
   # boost in LV stateful component
   def handle_event("boost", params, %{assigns: %{object: object}} = socket) do
     do_boost(object, params, socket)
