@@ -16,9 +16,9 @@
       >
         {#if @my_bookmark}
           <#Icon iconify="ph:bookmark-fill" class="text-primary w-5 h-5" />
-        <span class="sr-only">
-          {l("Bookmarked")}
-        </span>
+          <span class="sr-only">
+            {l("Bookmarked")}
+          </span>
         {#else}
           <#Icon
             iconify="ph:bookmark-duotone"
@@ -28,7 +28,6 @@
             {l("Bookmark")}
           </span>
         {/if}
-
       </button>
     {#match _}
       <button
