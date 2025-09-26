@@ -1,3 +1,4 @@
+<div>
 {#if @object_type != Bonfire.Data.Social.Message}
   <div
     phx-hook="Tooltip"
@@ -114,90 +115,4 @@
     </ul>
   </div>
 {/if}
-<!-- <div class="relative z-20 flex items-center">
-  {#case @object_type != Bonfire.Data.Social.Message}
-    {#match true}
-      <button
-        phx-hook="Tooltip"
-        data-position="bottom-end"
-        id={deterministic_dom_id(__MODULE__, id(@activity), "share_menu", @parent_id)}
-        class="btn lg:tooltip lg:tooltip-bottom btn-ghost btn-circle boost btn-sm group hover:bg-success/10 font-medium text-base-content/70 flex gap-1 !flex transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
-        aria-haspopup="true"
-      >
-        <#Icon
-          iconify="ph:rocket-launch-fill"
-          class="icon w-5 h-5 group-hover:text-success text-success"
-        />
-      </button>
-      <ul
-        tabindex="0"
-        class="tooltip z-[999999999999] menu shadow bg-base-100 shadow border border-base-content/10 rounded-lg p-1 w-64 absolute top-0 left-0 hidden"
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="more-menu"
-      >
-        <li>
-          {#case (current_user(@__context__) == nil or !@object_boundary or Bonfire.Boundaries.can?(@__context__, :boost, @object_boundary))}
-            {#match true}
-              <button
-                class="hover:bg-success/10 font-medium  flex gap-1 !flex transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
-                phx-click="Bonfire.Social.Boosts:boost"
-                phx-value-id={@object_id}
-                phx-target={@myself}
-                phx-value-component={__MODULE__}
-                phx-value-current_count={e(@boost_count, 0)}
-              >
-                <#Icon iconify="ph:rocket-launch-duotone" class="w-5 h-5" />
-                <span>{l("Boost")}</span>
-                <span :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-                  e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
-              </button>
-            {#match _}
-              <button
-                type="button"
-                data-role="boost_disabled"
-                class="cursor-not-allowed boost btn btn-circle btn-ghost btn-sm text-base-content font-medium"
-                title={l("You can't boost this activity")}
-              >
-                <span class="flex gap-1 text-opacity-20">
-                  <#Icon iconify="ph:rocket-launch-duotone" class="w-5 h-5  text-base-content/20" />
-
-                  <span class="feed_activity_text">
-                    {l("Cannot Boost")}
-                  </span>
-                  <span :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-                    e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
-                </span>
-              </button>
-          {/case}
-        </li>
-        <li>
-          {#case Bonfire.Boundaries.can?(@__context__, :quote, @object_boundary)}
-            {#match true}
-              <button class="hover:bg-success/10 font-medium  flex gap-1 !flex transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5">
-                <#Icon iconify="ph:quotes-duotone" class="w-5 h-5" />
-                <span>{l("Quote")}</span>
-              </button>
-            {#match _}
-              <button
-                type="button"
-                data-role="quote_disabled"
-                class="cursor-not-allowed quote btn btn-ghost btn-sm text-base-content font-medium"
-                title={l("You can't quote this activity")}
-              >
-                <span class="flex gap-1 text-opacity-20">
-                  <#Icon iconify="ph:rocket-launch-duotone" class="w-5 h-5  text-base-content/20" />
-
-                  <span class="feed_activity_text">
-                    {l("Cannot quote")}
-                  </span>
-                </span>
-              </button>
-          {/case}
-        </li>
-      </ul>
-    {#match _}
-      <div></div>
-      {!-- When boost/share actions are available, render boost functionality here --}
-  {/case}
-</div> -->
+</div>
