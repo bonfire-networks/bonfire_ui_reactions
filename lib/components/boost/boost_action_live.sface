@@ -4,7 +4,7 @@
       phx-hook="Tooltip"
       id={deterministic_dom_id(__MODULE__, id(@object_id), "share_menu", @parent_id)}
       data-position="bottom"
-      class="relative z-[999999999]"
+      class="relative"
     >
       <button
         class="tooltip-button btn btn-ghost group hover:bg-primary/10 btn-circle btn-sm transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
