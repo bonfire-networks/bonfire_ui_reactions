@@ -105,7 +105,8 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
       object: object || e(assigns, :object_id, nil),
       object_id: e(assigns, :object_id, nil) || uid(object),
       previous_my_boost: e(assigns, :my_boost, nil),
-      previous_boost_count: e(assigns, :boost_count, nil)
+      previous_boost_count: e(assigns, :boost_count, nil),
+      previous_quote_permission: e(assigns, :quote_permission, nil)
     }
   end
 
@@ -121,6 +122,17 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
         else: %{}
 
     debug(my_states, "my_boosts")
+
+    # Batch load quote permissions
+    quote_permissions =
+      if current_user do
+        list_of_components
+        |> Enum.map(& &1.object)
+        |> filter_empty([])
+        |> Bonfire.Social.Quotes.check_quote_permissions_many(current_user, ...)
+      else
+        %{}
+      end
 
     objects_counts =
       if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
@@ -143,7 +155,9 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
          my_boost:
            Map.get(my_states, component.object_id) || component.previous_my_boost || false,
          boost_count:
-           e(objects_counts, component.object_id, nil) || component.previous_boost_count
+           e(objects_counts, component.object_id, nil) || component.previous_boost_count,
+         quote_permission:
+           Map.get(quote_permissions, component.object_id) || component.previous_quote_permission
        }}
     end)
   end
