@@ -73,7 +73,10 @@
           {/case}
         </li>
         <li>
-          {#case quote_permission_or_check(@quote_permission, current_user(@__context__), @object)}
+          {#case Bonfire.Social.Quotes.check_quote_permission(
+              current_user(@__context__),
+              @object_boundary || @object
+            )}
             {#match {:auto_approve, _}}
               <button
                 class="flex py-2 px-3 gap-2 font-semibold"
@@ -96,7 +99,7 @@
                 <#Icon iconify="ph:quotes-duotone" class="w-5 h-5" />
                 <div class="flex flex-col">
                   <span class="text-sm">{l("Quote")}</span>
-                  <span class="font-normal text-base-content/70 text-xs">{l "pending approval"}</span>
+                  <span class="font-normal text-base-content/70 text-xs">{l("pending approval")}</span>
                 </div>
               </button>
             {#match _}
@@ -111,7 +114,7 @@
 
                 <div class="flex flex-col">
                   <span class="text-sm">{l("Quote")}</span>
-                  <span class="font-normal text-base-content/70 text-xs">{l "You cannot quote this post"}</span>
+                  <span class="font-normal text-base-content/70 text-xs">{l("You cannot quote this post")}</span>
                 </div>
               </button>
           {/case}
