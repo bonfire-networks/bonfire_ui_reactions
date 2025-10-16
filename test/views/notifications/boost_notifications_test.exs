@@ -1,5 +1,5 @@
 defmodule Bonfire.Social.Notifications.Boosts.Test do
-  use Bonfire.UI.Reactions.ConnCase, async: true
+  use Bonfire.UI.Reactions.ConnCase, async: System.get_env("TEST_UI_ASYNC") != "no"
 
   alias Bonfire.Social.Fake
   alias Bonfire.Social.Boosts
@@ -39,7 +39,7 @@ defmodule Bonfire.Social.Notifications.Boosts.Test do
 end
 
 # defmodule Bonfire.Social.Notifications.Boosts.Test do
-#   use Bonfire.UI.Reactions.ConnCase, async: true
+#   use Bonfire.UI.Reactions.ConnCase, async: System.get_env("TEST_UI_ASYNC") != "no"
 #   alias Bonfire.Social.Fake
 #   alias Bonfire.Social.Boosts
 #   alias Bonfire.Posts

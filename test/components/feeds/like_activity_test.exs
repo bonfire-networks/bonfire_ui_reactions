@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
-  use Bonfire.UI.Reactions.ConnCase, async: true
+  use Bonfire.UI.Reactions.ConnCase, async: System.get_env("TEST_UI_ASYNC") != "no"
 
   alias Bonfire.Social.Fake
   alias Bonfire.Me.Users
@@ -236,7 +236,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
 end
 
 # defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
-#   use Bonfire.UI.Reactions.ConnCase, async: true
+#   use Bonfire.UI.Reactions.ConnCase, async: System.get_env("TEST_UI_ASYNC") != "no"
 
 #   alias Bonfire.Social.Fake
 #   alias Bonfire.Me.Users

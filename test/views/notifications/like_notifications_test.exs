@@ -1,5 +1,5 @@
 defmodule Bonfire.Social.Notifications.Likes.Test do
-  use Bonfire.UI.Reactions.ConnCase, async: true
+  use Bonfire.UI.Reactions.ConnCase, async: System.get_env("TEST_UI_ASYNC") != "no"
   alias Bonfire.Common.Utils
   alias Bonfire.Social.Fake
   alias Bonfire.Social.Likes
