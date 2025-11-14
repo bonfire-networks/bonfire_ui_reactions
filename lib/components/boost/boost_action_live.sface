@@ -12,12 +12,12 @@
       >
         <#Icon
           iconify="ph:rocket-launch-duotone"
-          class="group-hover:text-primary w-5 h-5 text-base-content/50"
+          class={"group-hover:text-primary w-5 h-5 text-base-content/50", "text-success": @my_boost}
         />
       </button>
       <ul
         tabindex="0"
-        class="tooltip z-[999999999999] menu shadow bg-base-100 shadow border border-base-content/10 rounded-lg p-1 w-64 absolute top-0 left-0 hidden"
+        class="tooltip z-[999999999999] menu shadow bg-base-300 rounded-box w-64 absolute top-0 left-0 hidden"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="more-menu"
