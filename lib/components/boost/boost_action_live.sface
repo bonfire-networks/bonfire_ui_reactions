@@ -6,19 +6,17 @@
       data-position="bottom"
       class="relative"
     >
-      <button
-        class="tooltip-button btn btn-ghost group hover:bg-primary/10 btn-circle btn-sm transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
+      <Bonfire.UI.Common.DesignSystem.icon_button
+        icon="ph:rocket-launch-duotone"
+        aria_label={l("Boost or quote")}
+        variant="ghost"
+        pressed={not is_nil(@my_boost)}
+        class={"tooltip-button", if(@my_boost, do: "text-success", else: "text-base-content/50 hover:text-primary")}
         aria-haspopup="true"
-        aria-label={l("Boost or quote")}
-      >
-        <#Icon
-          iconify="ph:rocket-launch-duotone"
-          class={"group-hover:text-primary w-5 h-5 text-base-content/50", "text-success": @my_boost}
-        />
-      </button>
+      />
       <ul
         tabindex="0"
-        class="tooltip z-[999999999999] menu shadow bg-base-300 rounded-box w-64 absolute top-0 left-0 hidden"
+        class="tooltip z-tooltip menu shadow bg-base-300 rounded-box w-64 absolute top-0 left-0 hidden"
         role="menu"
         id={"boost_action_#{@parent_id}_content"}
         phx-update="ignore"
@@ -30,7 +28,7 @@
               Bonfire.Boundaries.can?(@__context__, :boost, @object_boundary)}
             {#match true}
               <button
-                class="flex py-2 px-3 gap-2 font-semibold"
+                class="flex py-2 px-3 gap-2 font-semibold transition-interactive focus-ring phx-click-loading:opacity-60 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait"
                 id={@id || "boost_#{@object_id}"}
                 data-id="boost_action"
                 data-tip={l("Boost")}
@@ -53,7 +51,7 @@
                   <span class="text-sm">{l("Boost")}</span>
                 {/if}
 
-                <span :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
+                <span class="tabular-nums" :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
                   e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
               </button>
             {#match _}
@@ -69,7 +67,7 @@
                   <span class="feed_activity_text">
                     {l("Cannot Boost")}
                   </span>
-                  <span :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
+                  <span class="tabular-nums" :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
                     e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
                 </span>
               </button>
@@ -82,7 +80,7 @@
             )}
             {#match {:auto_approve, _}}
               <button
-                class="flex py-2 px-3 gap-2 font-semibold"
+                class="flex py-2 px-3 gap-2 font-semibold transition-interactive focus-ring phx-click-loading:opacity-60 phx-click-loading:pointer-events-none"
                 phx-click="Bonfire.Social.Boosts:quote"
                 phx-target={@myself}
                 phx-value-id={@object_id}
@@ -93,7 +91,7 @@
               </button>
             {#match {:request_needed, _}}
               <button
-                class="flex py-2 items-start px-3 gap-2 font-semibold"
+                class="flex py-2 items-start px-3 gap-2 font-semibold transition-interactive focus-ring phx-click-loading:opacity-60 phx-click-loading:pointer-events-none"
                 phx-click="Bonfire.Social.Boosts:quote"
                 phx-target={@myself}
                 phx-value-id={@object_id}

@@ -1,48 +1,30 @@
-<div class="relative z-20">
+<div class="relative z-dropdown">
   {#case not is_nil(current_user_id(@__context__))}
     {#match true}
-      <button
+      <Bonfire.UI.Common.DesignSystem.icon_button
         :if={@object_id}
         id={@id}
+        icon={if @my_bookmark, do: "ph:bookmark-fill", else: "ph:bookmark-duotone"}
+        aria_label={if @my_bookmark, do: l("Remove bookmark"), else: l("Bookmark")}
+        variant="ghost"
+        pressed={not is_nil(@my_bookmark)}
+        tooltip={l("Bookmark")}
+        tooltip_position="bottom"
+        phx_click="Bonfire.Social.Bookmarks:bookmark"
+        phx_target={@myself}
+        phx_values={%{direction: (if @my_bookmark, do: "down", else: "up"), id: @object_id, component: __MODULE__}}
+        class={if @my_bookmark, do: "text-primary", else: "text-base-content/50 hover:text-primary"}
         data-id="bookmark_action"
-        data-tip={l("Bookmark")}
         data-role="bookmark_enabled"
-        phx-click="Bonfire.Social.Bookmarks:bookmark"
-        phx-value-direction={if @my_bookmark, do: "down", else: "up"}
-        phx-value-id={@object_id}
-        phx-target={@myself}
-        phx-value-component={__MODULE__}
-        class="btn lg:tooltip lg:tooltip-bottom btn-ghost btn-circle boost btn-sm group hover:bg-primary/10 font-medium text-base-content/70 flex gap-1 !flex transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
-      >
-        {#if @my_bookmark}
-          <#Icon iconify="ph:bookmark-fill" class="text-primary w-5 h-5" />
-          <span class="sr-only">
-            {l("Bookmarked")}
-          </span>
-        {#else}
-          <#Icon
-            iconify="ph:bookmark-duotone"
-            class="text-base-content/50 group-hover:text-primary w-5 h-5"
-          />
-          <span class="sr-only">
-            {l("Bookmark")}
-          </span>
-        {/if}
-      </button>
+      />
     {#match _}
-      <button
-        type="button"
+      <Bonfire.UI.Common.DesignSystem.icon_button
+        icon="carbon:bookmark-filled"
+        aria_label={l("Cannot bookmark")}
+        variant="ghost"
+        disabled={true}
+        class="text-base-content/20"
         data-role="bookmark_disabled"
-        class="cursor-not-allowed btn btn-ghost btn-circle bookmark bookmark_with_label btn-sm flex gap-1"
-        title={l("You can't bookmark this")}
-      >
-        <span class="text-base-content/20">
-          <#Icon iconify="carbon:bookmark-filled" class="w-5 h-5" />
-        </span>
-
-        <span class="sr-only">
-          {l("Cannot bookmark")}
-        </span>
-      </button>
+      />
   {/case}
 </div>

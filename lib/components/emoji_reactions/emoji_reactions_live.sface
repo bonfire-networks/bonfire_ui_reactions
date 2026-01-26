@@ -9,7 +9,7 @@
     data-object-id={@object_id}
     id={deterministic_dom_id(__MODULE__, @object_id, "reaction-picker", @parent_id)}
     :hook
-    class="relative z-[999999999] inline-flex"
+    class="relative z-tooltip inline-flex"
   >
     <button
       tabindex="0"
@@ -24,7 +24,7 @@
     >
       <#Icon iconify="ph:smiley-wink-duotone" class="w-5 h-5 opacity-50 group-hover:text-primary" />
     </button>
-    <div class="hidden tooltip absolute bottom-full right-0 z-[99999999999999] mb-2 shadow-lg">
+    <div class="hidden tooltip absolute bottom-full right-0 z-tooltip mb-2 shadow-lg">
       <emoji-picker />
     </div>
     {!-- data-emojis={e(@custom_emojis, [])} --}
