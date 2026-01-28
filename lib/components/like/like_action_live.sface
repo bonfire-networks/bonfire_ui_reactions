@@ -59,7 +59,7 @@
             id={@id}
             icon="ph:fire-fill"
             aria_label={l("Unlike")}
-            pressed={true}
+            pressed
             phx_click="Bonfire.Social.Likes:like"
             phx_target={@myself}
             phx_values={%{

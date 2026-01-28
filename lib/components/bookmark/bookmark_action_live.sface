@@ -12,7 +12,7 @@
         tooltip_position="bottom"
         phx_click="Bonfire.Social.Bookmarks:bookmark"
         phx_target={@myself}
-        phx_values={%{direction: (if @my_bookmark, do: "down", else: "up"), id: @object_id, component: __MODULE__}}
+        phx_values={%{direction: if(@my_bookmark, do: "down", else: "up"), id: @object_id, component: __MODULE__}}
         class={if @my_bookmark, do: "text-primary", else: "text-base-content/50 hover:text-primary"}
         data-id="bookmark_action"
         data-role="bookmark_enabled"
@@ -22,7 +22,7 @@
         icon="carbon:bookmark-filled"
         aria_label={l("Cannot bookmark")}
         variant="ghost"
-        disabled={true}
+        disabled
         class="text-base-content/20"
         data-role="bookmark_disabled"
       />
