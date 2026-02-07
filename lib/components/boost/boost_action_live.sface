@@ -11,7 +11,10 @@
         aria_label={l("Boost or quote")}
         variant="ghost"
         pressed={not is_nil(@my_boost)}
-        class={"tooltip-button", if(@my_boost, do: "text-success", else: "text-base-content/50 hover:text-primary")}
+        class={
+          "tooltip-button",
+          if(@my_boost, do: "text-success", else: "text-base-content/50 hover:text-primary")
+        }
         aria-haspopup="true"
       />
       <ul
@@ -51,8 +54,11 @@
                   <span class="text-sm">{l("Boost")}</span>
                 {/if}
 
-                <span class="tabular-nums" :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-                  e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
+                <span
+                  class="tabular-nums"
+                  :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
+                    e(@boost_count, 0) > 0}
+                >{e(@boost_count, 0)}</span>
               </button>
             {#match _}
               <button
@@ -67,8 +73,11 @@
                   <span class="feed_activity_text">
                     {l("Cannot Boost")}
                   </span>
-                  <span class="tabular-nums" :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-                    e(@boost_count, 0) > 0}>{e(@boost_count, 0)}</span>
+                  <span
+                    class="tabular-nums"
+                    :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
+                      e(@boost_count, 0) > 0}
+                  >{e(@boost_count, 0)}</span>
                 </span>
               </button>
           {/case}
