@@ -111,7 +111,6 @@
         aria_label={l("Cannot like this")}
         disabled
         variant="ghost"
-        size="sm"
         class="like like_with_label text-base-content/20"
         data-role="like_disabled"
         title={l("You can't like this")}

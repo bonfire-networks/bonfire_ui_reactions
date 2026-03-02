@@ -131,5 +131,15 @@
         </li>
       </ul>
     </div>
+  {#else}
+    <Bonfire.UI.Common.DesignSystem.icon_button
+        icon="ph:arrows-counter-clockwise-duotone"
+        aria_label={l("Cannot boost this")}
+        disabled
+        variant="ghost"
+        class="boost boost_with_label text-base-content/20"
+        data-role="boost_disabled"
+        title={l("You can't boost this")}
+      />
   {/if}
 </div>
