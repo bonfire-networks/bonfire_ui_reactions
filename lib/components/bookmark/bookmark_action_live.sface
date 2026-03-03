@@ -7,7 +7,7 @@
         icon={if @my_bookmark, do: "ph:bookmark-fill", else: "ph:bookmark-duotone"}
         aria_label={if @my_bookmark, do: l("Remove bookmark"), else: l("Bookmark")}
         variant="ghost"
-        pressed={not is_nil(@my_bookmark)}
+        pressed={@my_bookmark}
         tooltip={l("Bookmark")}
         tooltip_position="bottom"
         phx_click="Bonfire.Social.Bookmarks:bookmark"

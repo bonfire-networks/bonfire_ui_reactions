@@ -9,7 +9,7 @@
             :if={@object_id}
             type="button"
             id={@id}
-            aria-label={l("Unlike")}
+            aria-label={l("Like")}
             aria-pressed="true"
             phx-click="Bonfire.Social.Likes:like"
             phx-target={@myself}
@@ -22,7 +22,7 @@
             data-role="like_enabled"
             data-tip={l("Like")}
           >
-            <span class="sr-only">{l("Unlike")}</span>
+            <span class="sr-only">{l("Like")}</span>
             <span class="text-amber-400 text-[20px]">{emoji}</span>
           </button>
         {#match %{media_type: "emoji"} = emoji}
@@ -31,7 +31,7 @@
             :if={@object_id}
             type="button"
             id={@id}
-            aria-label={l("Unlike")}
+            aria-label={l("Like")}
             aria-pressed="true"
             phx-click="Bonfire.Social.Likes:like"
             phx-target={@myself}
@@ -44,7 +44,7 @@
             data-role="like_enabled"
             data-tip={l("Like")}
           >
-            <span class="sr-only">{l("Unlike")}</span>
+            <span class="sr-only">{l("Like")}</span>
             <LazyImage
               parent_id={deterministic_dom_id(__MODULE__, id(emoji), "emoji", @id)}
               class="w-5 h-5"
@@ -58,7 +58,7 @@
             :if={@object_id}
             id={@id}
             icon="ph:fire-fill"
-            aria_label={l("Unlike")}
+            aria_label={l("Like")}
             pressed
             phx_click="Bonfire.Social.Likes:like"
             phx_target={@myself}
