@@ -18,9 +18,9 @@
           phx-value-scope={@scope_object || @scope}
           phx-value-component={__MODULE__}
           type="button"
-          class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
+          class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <!-- <#Icon iconify="mdi:message-check" class="w-4 h-4" /> -->
+          <#Icon iconify="mdi:message-check" class="w-4 h-4" />
           {l("Unmark as answer")}
         </button>
       {#else}
@@ -35,9 +35,9 @@
           phx-value-id={id(@object)}
           phx-value-scope={@scope_object || @scope}
           phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
+          class="btn mt-4 w-full btn-primary rounded-full normal-case"
         >
-          <!-- <#Icon iconify="mdi:message-check" class="w-4 h-4" /> -->
+          <#Icon iconify="mdi:message-check" class="w-4 h-4" />
           {l("Mark as answer")}
         </button>
       {/if}
@@ -45,8 +45,8 @@
       {#if @pinned? ||
           (current_user_id(@__context__) &&
              Bonfire.Social.Pins.pinned?(@scope_object || @scope, @object))}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("You have already pinned this")}</h3>
-        <p class="mt-2 prose-sm prose">{l("You can unpin it to remove it from the top of the thread")}</p>
+        <h3 class="font-bold text-base flex-1 modal-title">{l("This is pinned to the thread")}</h3>
+        <p class="mt-2 prose-sm prose">{l("Unpin to remove it from the top of the thread.")}</p>
         <button
           phx-click="Bonfire.Social.Pins:pin"
           phx-value-direction="down"
@@ -54,10 +54,11 @@
           phx-value-scope={@scope_object || @scope}
           phx-value-component={__MODULE__}
           type="button"
-          class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
+          class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
-          {l("Unpin this activity")}
+          <#Icon iconify="ph:push-pin-simple-slash-duotone
+" class="w-4 h-4" />
+          {l("Unpin from thread")}
         </button>
       {#else}
         <h3 class="font-bold text-base flex-1 modal-title">{l("Pin to thread")}</h3>
@@ -71,16 +72,16 @@
           phx-value-id={id(@object)}
           phx-value-scope={@scope_object || @scope}
           phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
+          class="btn mt-4 w-full btn-primary rounded-full normal-case"
         >
-          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
+          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
           {l("Pin to top of thread")}
         </button>
       {/if}
     {#match :instance}
       {#if @pinned? || Bonfire.Social.Pins.pinned?(:instance, @object)}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("You have already pinned this activity")}</h3>
-        <p class="mt-2 prose-sm prose">{l("You can unpin this activity to remove it from the instance highlights tab")}</p>
+        <h3 class="font-bold text-base flex-1 modal-title">{l("This is pinned to the instance")}</h3>
+        <p class="mt-2 prose-sm prose">{l("Unpin to remove it from the dashboard widget.")}</p>
         <button
           phx-click="Bonfire.Social.Pins:pin"
           phx-value-direction="down"
@@ -88,14 +89,15 @@
           phx-value-scope={@scope_object || @scope}
           phx-value-component={__MODULE__}
           type="button"
-          class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
+          class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
+          <#Icon iconify="ph:push-pin-simple-slash-duotone
+" class="w-4 h-4" />
           {l("Unpin from instance")}
         </button>
       {#else}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("Pin this activity")}</h3>
-        <p class="mt-2 prose-sm prose">{l("Pins will be added to the instance highlights tab.")}</p>
+        <h3 class="font-bold text-base flex-1 modal-title">{l("Pin to instance")}</h3>
+        <p class="mt-2 prose-sm prose">{l("This will appear in the pinned widget on the dashboard for all users.")}</p>
 
         <button
           :if={@object}
@@ -105,17 +107,17 @@
           phx-value-id={id(@object)}
           phx-value-scope={@scope_object || @scope}
           phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
+          class="btn mt-4 w-full btn-primary rounded-full normal-case"
         >
-          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
+          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
           {l("Pin to instance")}
         </button>
       {/if}
     {#match _profile}
       {#if @pinned? ||
           (current_user(@__context__) && Bonfire.Social.Pins.pinned?(current_user(@__context__), @object))}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("You have already pinned this activity")}</h3>
-        <p class="mt-2 prose-sm prose">{l("You can unpin this activity to remove it from your profile highlights tab")}</p>
+        <h3 class="font-bold text-base flex-1 modal-title">{l("This is pinned to your profile")}</h3>
+        <p class="mt-2 prose-sm prose">{l("Unpin to remove it from your profile highlights.")}</p>
         <button
           phx-click="Bonfire.Social.Pins:pin"
           phx-value-direction="down"
@@ -123,14 +125,15 @@
           phx-value-scope={@scope_object || @scope}
           phx-value-component={__MODULE__}
           type="button"
-          class="btn mt-4 w-full btn-warning rounded-full btn-sm normal-case"
+          class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
-          {l("Unpin this activity")}
+          <#Icon iconify="ph:push-pin-simple-slash-duotone
+" class="w-4 h-4" />
+          {l("Unpin from profile")}
         </button>
       {#else}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("Pin this activity")}</h3>
-        <p class="mt-2 prose-sm prose">{l("Pins will be added in your highlights profile tab.")}</p>
+        <h3 class="font-bold text-base flex-1 modal-title">{l("Pin to your profile")}</h3>
+        <p class="mt-2 prose-sm prose">{l("It will appear in your profile highlights tab.")}</p>
 
         <button
           :if={@object}
@@ -140,37 +143,38 @@
           phx-value-id={id(@object)}
           phx-value-scope={@scope_object || @scope}
           phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full btn-sm normal-case"
+          class="btn mt-4 w-full btn-primary rounded-full normal-case"
         >
-          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
+          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
           {l("Pin to your profile")}
         </button>
       {/if}
   {/case}
   <:open_btn>
-    <div class="flex items-center w-full gap-2 text-sm">
+    <div class="flex items-center justify-between w-full gap-2 text-sm">
+      <span>
+        {#if @pinned?}
+          {case @scope do
+            :thread -> l("Unpin from top of thread")
+            :thread_answer -> l("Unmark as answer")
+            :instance -> l("Unpin from instance")
+            _profile -> l("Unpin from your profile")
+          end}
+        {#else}
+          {case @scope do
+            :thread -> l("Pin to top of thread")
+            :thread_answer -> l("Mark as answer")
+            :instance -> l("Pin to instance")
+            _profile -> l("Pin to your profile")
+          end}
+        {/if}
+      </span>
       {#case @scope}
         {#match :thread_answer}
           <#Icon iconify="mdi:message-check" class="w-4 h-4" />
         {#match _}
-          <!-- <#Icon iconify="bi:pin-angle-fill" class="w-4 h-4" /> -->
+          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
       {/case}
-
-      {#if @pinned?}
-        {case @scope do
-          :thread -> l("Unpin from top of thread")
-          :thread_answer -> l("Unmark as answer")
-          :instance -> l("Unpin from instance")
-          _profile -> l("Unpin from your profile")
-        end}
-      {#else}
-        {case @scope do
-          :thread -> l("Pin to top of thread")
-          :thread_answer -> l("Mark as answer")
-          :instance -> l("Pin to instance")
-          _profile -> l("Pin to your profile")
-        end}
-      {/if}
     </div>
   </:open_btn>
 </Bonfire.UI.Common.OpenModalLive>

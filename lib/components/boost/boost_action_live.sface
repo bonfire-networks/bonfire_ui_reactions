@@ -19,7 +19,7 @@
       />
       <ul
         tabindex="0"
-        class="tooltip z-tooltip menu shadow bg-base-300 rounded-box w-64 absolute top-0 left-0 hidden"
+        class="tooltip z-tooltip menu shadow bg-base-100 rounded-box w-64 absolute top-0 left-0 hidden"
         role="menu"
         id={deterministic_dom_id(__MODULE__, id(@object_id), "content", @parent_id)}
         phx-update="ignore"

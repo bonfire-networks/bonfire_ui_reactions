@@ -97,6 +97,8 @@ defmodule Bonfire.Social.Pins.LiveHandler do
       my_pin: pinned?
     )
 
+    Bonfire.UI.Common.OpenModalLive.close()
+
     {:noreply,
      socket
      |> assign_flash(:info, if(pinned?, do: l("Pinned!"), else: l("Unpinned")))}
