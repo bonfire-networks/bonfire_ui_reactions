@@ -57,6 +57,13 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
              object_creator: e(socket, :assigns, :creator, nil)
            ) do
       boost_action(object, true, params, socket)
+    else
+      {:error, e} ->
+        error(e)
+        {:noreply, assign_error(socket, e)}
+
+      other ->
+        other
     end
   end
 

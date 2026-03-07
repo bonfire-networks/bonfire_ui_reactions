@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Reactions.LikeActionLive do
   prop object_id, :any
   prop creator, :any, default: nil
   prop object_type, :any
-  prop object_boundary, :any, default: nil
+  prop object_boundary, :any, default: :skip_boundary_preload
   prop like_count, :any, default: 0
   # prop label, :string, default: nil
   # prop showing_within, :atom, default: nil

@@ -1,5 +1,6 @@
 <div class="relative gap-4 flex items-center">
-  {#case is_nil(current_user_id(@__context__)) or !debug(@object_boundary, "lobb") or
+  {#case is_nil(current_user_id(@__context__)) or @object_boundary == :skip_boundary_preload or
+      !debug(@object_boundary, "lobb") or
       Bonfire.Boundaries.can?(@__context__, :like, @object_boundary)}
     {#match true}
       {#case @my_like}

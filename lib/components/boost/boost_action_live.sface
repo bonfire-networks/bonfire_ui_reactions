@@ -27,7 +27,8 @@
         aria-labelledby="more-menu"
       >
         <li>
-          {#case current_user(@__context__) == nil or !@object_boundary or
+          {#case current_user(@__context__) == nil or @object_boundary == :skip_boundary_preload or
+              !@object_boundary or
               Bonfire.Boundaries.can?(@__context__, :boost, @object_boundary)}
             {#match true}
               <button
@@ -85,7 +86,7 @@
         <li>
           {#case Bonfire.Social.Quotes.check_quote_permission(
               current_user(@__context__),
-              @object_boundary || @object
+              if(@object_boundary != :skip_boundary_preload, do: @object_boundary || @object, else: @object)
             )}
             {#match {:auto_approve, _}}
               <button

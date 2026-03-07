@@ -58,9 +58,11 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
     |> refute_has("[data-id='bookmark_action'][aria-pressed]")
   end
 
-  test "like button is disabled when user lacks :like permission on a post", %{me: me} do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+  # With optimistic UI, reaction buttons render as enabled by default (boundaries
+  # are checked server-side on click). These tests verify that clicking a reaction
+  # on a restricted post shows an error instead of succeeding.
 
+  test "liking a post fails when user lacks :like permission", %{me: me} do
     account2 = fake_account!()
     bob = fake_user!(account2)
 
@@ -80,12 +82,12 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
 
     conn(user: bob, account: account2)
     |> visit("/post/#{post.id}")
-    |> assert_has("[data-role='like_disabled']")
+    |> assert_has("[data-role='like_enabled']")
+    |> click_button("[data-role='like_enabled']", "Like")
+    |> assert_has("[role=alert]")
   end
 
-  test "boost button is disabled when user lacks :boost permission on a post", %{me: me} do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
-
+  test "boosting a post fails when user lacks :boost permission", %{me: me} do
     account2 = fake_account!()
     bob = fake_user!(account2)
 
@@ -105,12 +107,12 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
 
     conn(user: bob, account: account2)
     |> visit("/post/#{post.id}")
-    |> assert_has("[data-role='boost_disabled']")
+    |> assert_has("[data-role='boost_enabled']")
+    |> click_button("[data-role='boost_enabled']", "Boost")
+    |> assert_has("[role=alert]")
   end
 
   test "reaction buttons are enabled when user has full interaction permissions", %{me: me} do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
-
     account2 = fake_account!()
     bob = fake_user!(account2)
 
@@ -134,9 +136,7 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
     |> assert_has("[data-role='boost_enabled']")
   end
 
-  test "like and boost are disabled but post is readable with manual ACL setup", %{me: me} do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
-
+  test "liking and boosting fail with manual read-only ACL setup", %{me: me} do
     account2 = fake_account!()
     bob = fake_user!(account2)
 
@@ -158,9 +158,11 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
     Grants.grant(bob.id, acl.id, :see, true, current_user: me)
     Controlleds.add_acls(post, acl)
 
+    # Buttons render as enabled (optimistic UI), but clicking them should fail
     conn(user: bob, account: account2)
     |> visit("/post/#{post.id}")
-    |> assert_has("[data-role='like_disabled']")
-    |> assert_has("[data-role='boost_disabled']")
+    |> assert_has("[data-role='like_enabled']")
+    |> click_button("[data-role='like_enabled']", "Like")
+    |> assert_has("[role=alert]")
   end
 end

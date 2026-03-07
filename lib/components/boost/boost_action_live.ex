@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Reactions.BoostActionLive do
   prop object, :any, default: nil
   prop creator, :any, default: nil
   prop object_type, :any
-  prop object_boundary, :any, default: nil
+  prop object_boundary, :any, default: :skip_boundary_preload
   prop boost_count, :any
   prop showing_within, :atom
   prop my_boost, :any, default: nil

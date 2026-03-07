@@ -94,6 +94,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
 
       {:error, e} ->
         error(e)
+        {:noreply, assign_error(socket, e)}
 
       other ->
         other
