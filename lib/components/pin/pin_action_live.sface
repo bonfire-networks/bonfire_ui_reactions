@@ -56,8 +56,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-simple-slash-duotone
-" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
           {l("Unpin from thread")}
         </button>
       {#else}
@@ -91,8 +90,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-simple-slash-duotone
-" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
           {l("Unpin from instance")}
         </button>
       {#else}
@@ -127,8 +125,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-simple-slash-duotone
-" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
           {l("Unpin from profile")}
         </button>
       {#else}
