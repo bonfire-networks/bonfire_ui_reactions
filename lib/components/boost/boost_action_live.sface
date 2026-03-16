@@ -10,6 +10,8 @@
         icon="ph:rocket-launch-duotone"
         aria_label={l("Boost or quote")}
         variant="ghost"
+        tooltip={l("Boost or quote")}
+        tooltip_position="bottom"
         pressed={not is_nil(@my_boost)}
         class={
           "tooltip-button",
