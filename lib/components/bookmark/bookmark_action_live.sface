@@ -1,7 +1,7 @@
 <div class="relative z-dropdown">
   {#case not is_nil(current_user_id(@__context__))}
     {#match true}
-      <Bonfire.UI.Common.DesignSystem.icon_button
+      <.icon_button
         :if={@object_id}
         id={@id}
         icon={if @my_bookmark, do: "ph:bookmark-fill", else: "ph:bookmark-duotone"}
@@ -18,7 +18,7 @@
         data-role="bookmark_enabled"
       />
     {#match _}
-      <Bonfire.UI.Common.DesignSystem.icon_button
+      <.icon_button
         icon="carbon:bookmark-filled"
         aria_label={l("Cannot bookmark")}
         variant="ghost"

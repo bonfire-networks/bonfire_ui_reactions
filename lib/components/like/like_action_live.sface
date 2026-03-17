@@ -55,7 +55,7 @@
           </button>
         {#match yes when not is_nil(yes) and yes != false}
           {!-- Liked with fire icon --}
-          <Bonfire.UI.Common.DesignSystem.icon_button
+          <.icon_button
             :if={@object_id}
             id={@id}
             icon="ph:fire-fill"
@@ -78,7 +78,7 @@
           />
         {#match _}
           {!-- Not liked --}
-          <Bonfire.UI.Common.DesignSystem.icon_button
+          <.icon_button
             :if={@object_id}
             id={@id}
             icon="ph:fire-duotone"
@@ -107,7 +107,7 @@
           e(@like_count, 0) > 0}
       >{e(@like_count, 0)}</span>
     {#match _}
-      <Bonfire.UI.Common.DesignSystem.icon_button
+      <.icon_button
         icon="ph:fire-duotone"
         aria_label={l("Cannot like this")}
         disabled

@@ -6,7 +6,7 @@
       data-position="bottom"
       class="relative"
     >
-      <Bonfire.UI.Common.DesignSystem.icon_button
+      <.icon_button
         icon="ph:rocket-launch-duotone"
         aria_label={l("Boost or quote")}
         variant="ghost"
@@ -134,7 +134,7 @@
       </ul>
     </div>
   {#else}
-    <Bonfire.UI.Common.DesignSystem.icon_button
+    <.icon_button
       icon="ph:arrows-counter-clockwise-duotone"
       aria_label={l("Cannot boost this")}
       disabled
