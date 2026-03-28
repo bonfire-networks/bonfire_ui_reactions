@@ -13,7 +13,7 @@
         phx_click="Bonfire.Social.Bookmarks:bookmark"
         phx_target={@myself}
         phx_values={%{direction: if(@my_bookmark, do: "down", else: "up"), id: @object_id, component: __MODULE__}}
-        class={if @my_bookmark, do: "text-primary", else: "text-base-content/50 hover:text-primary"}
+        class={if @my_bookmark, do: "text-primary", else: "text-base-content/60 hover:text-primary"}
         data-id="bookmark_action"
         data-role="bookmark_enabled"
       />
