@@ -148,8 +148,8 @@
       {/if}
   {/case}
   <:open_btn>
-    <div class="flex items-center justify-between w-full gap-2 text-sm">
-      <span>
+    <div class="text-left flex items-center justify-between w-full gap-2 text-sm">
+      <span class="flex-1 text-sm font-medium">
         {#if @pinned?}
           {case @scope do
             :thread -> l("Unpin from top of thread")

@@ -1,4 +1,4 @@
-<div class="relative gap-4 flex items-center">
+<div class="relative z-dropdown gap-4 flex items-center">
   {#case is_nil(current_user_id(@__context__)) or @object_boundary == :skip_boundary_preload or
       !debug(@object_boundary, "lobb") or
       Bonfire.Boundaries.can?(@__context__, :like, @object_boundary)}

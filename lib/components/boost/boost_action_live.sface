@@ -4,7 +4,7 @@
       phx-hook="Tooltip"
       id={deterministic_dom_id(__MODULE__, id(@object_id), "share_menu", @parent_id)}
       data-position="bottom"
-      class="relative"
+      class="relative z-dropdown"
     >
       <.icon_button
         icon="ph:rocket-launch-duotone"
