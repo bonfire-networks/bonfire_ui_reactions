@@ -102,16 +102,21 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   end
 
   defp like_action(object, liked?, params, socket) do
+    current_count = liker_count(params)
+    new_count = max(0, current_count + if(liked?, do: 1, else: -1))
+
     # TODO: send this to ActionsLive if using feed_live_update_many_preload_mode :async_actions
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.LikeActionLive),
       uid(object),
-      my_like: liked?
+      my_like: liked?,
+      like_count: new_count
     )
 
     {:noreply,
      socket
-     |> assign(:my_like, liked?)}
+     |> assign(:my_like, liked?)
+     |> assign(:like_count, new_count)}
   end
 
   def liker_count(%{"current_count" => a}), do: a |> String.to_integer()
@@ -154,7 +159,8 @@ defmodule Bonfire.Social.Likes.LiveHandler do
       object: object || e(assigns, :object_id, nil),
       object_id: e(assigns, :object_id, nil) || uid(object),
       previous_my_like: e(assigns, :my_like, nil),
-      previous_like_count: e(assigns, :like_count, nil)
+      previous_like_count: e(assigns, :like_count, nil),
+      showing_within: e(assigns, :showing_within, nil)
     }
   end
 
@@ -163,20 +169,21 @@ defmodule Bonfire.Social.Likes.LiveHandler do
 
     # debug(my_states, "my_likes")
 
+    force_counts? = Enum.any?(list_of_components, &(&1.showing_within == :thread_embed))
+
     objects_counts =
-      if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-           current_user: current_user
-         ) do
+      if force_counts? ||
+           Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
+             current_user: current_user
+           ) do
         list_of_components
         |> Enum.map(fn %{object: object} ->
           object
         end)
         |> filter_empty([])
-        |> debug("list_of_objects")
         |> repo().maybe_preload(:like_count, follow_pointers: false)
         |> Map.new(fn o -> {e(o, :id, nil), e(o, :like_count, :object_count, nil)} end)
-
-        # |> debug("like_counts")
+        |> debug("like_counts")
       end
 
     list_of_components

@@ -1,4 +1,4 @@
-<div class="relative z-dropdown gap-4 flex items-center">
+<div class="relative z-dropdown gap-0 flex items-center">
   {#case is_nil(current_user_id(@__context__)) or @object_boundary == :skip_boundary_preload or
       !debug(@object_boundary, "lobb") or
       Bonfire.Boundaries.can?(@__context__, :like, @object_boundary)}
@@ -58,7 +58,7 @@
           <.icon_button
             :if={@object_id}
             id={@id}
-            icon="ph:fire-fill"
+            icon={@icon_pressed}
             aria_label={l("Like")}
             pressed
             phx_click="Bonfire.Social.Likes:like"
@@ -72,7 +72,8 @@
             variant="ghost"
             tooltip={l("Like")}
             tooltip_position="bottom"
-            class="like like_with_label text-amber-400"
+            class={"like like_with_label text-amber-400",
+              "!w-8 !h-8": @showing_within == :thread_embed}
             data-id="like_action"
             data-role="like_enabled"
           />
@@ -81,7 +82,7 @@
           <.icon_button
             :if={@object_id}
             id={@id}
-            icon="ph:fire-duotone"
+            icon={@icon}
             aria_label={l("Like")}
             pressed={false}
             phx_click="Bonfire.Social.Likes:like"
@@ -95,7 +96,8 @@
             variant="ghost"
             tooltip={l("Like")}
             tooltip_position="bottom"
-            class="like like_with_label text-base-content/60 hover:text-amber-400"
+            class={"like like_with_label text-base-content/60 hover:text-amber-400",
+              "!w-8 !h-8": @showing_within == :thread_embed}
             data-id="like_action"
             data-role="like_enabled"
           />
@@ -103,23 +105,26 @@
       <span
         data-role="like_count"
         class="ml-1 text-[13px] text-base-content/70 tabular-nums"
-        :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-          e(@like_count, 0) > 0}
+        :if={e(@like_count, 0) > 0 &&
+          (@showing_within == :thread_embed ||
+             Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__))}
       >{e(@like_count, 0)}</span>
     {#match _}
       <.icon_button
-        icon="ph:fire-duotone"
+        icon={@icon}
         aria_label={l("Cannot like this")}
         disabled
         variant="ghost"
-        class="like like_with_label text-base-content/20"
+        class={"like like_with_label text-base-content/20",
+          "!w-8 !h-8": @showing_within == :thread_embed}
         data-role="like_disabled"
         title={l("You can't like this")}
       />
       <span
         class="tabular-nums text-[13px] text-base-content/70"
-        :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-          e(@like_count, 0) > 0}
+        :if={e(@like_count, 0) > 0 &&
+          (@showing_within == :thread_embed ||
+             Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__))}
       >{e(@like_count, 0)}</span>
   {/case}
 
