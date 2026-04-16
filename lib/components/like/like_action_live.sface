@@ -72,8 +72,7 @@
             variant="ghost"
             tooltip={l("Like")}
             tooltip_position="bottom"
-            class={"like like_with_label text-amber-400",
-              "!w-8 !h-8": @showing_within == :thread_embed}
+            class={"like like_with_label text-amber-400", "!w-8 !h-8": @showing_within == :thread_embed}
             data-id="like_action"
             data-role="like_enabled"
           />
@@ -96,8 +95,10 @@
             variant="ghost"
             tooltip={l("Like")}
             tooltip_position="bottom"
-            class={"like like_with_label text-base-content/60 hover:text-amber-400",
-              "!w-8 !h-8": @showing_within == :thread_embed}
+            class={
+              "like like_with_label text-base-content/60 hover:text-amber-400",
+              "!w-8 !h-8": @showing_within == :thread_embed
+            }
             data-id="like_action"
             data-role="like_enabled"
           />
@@ -115,8 +116,7 @@
         aria_label={l("Cannot like this")}
         disabled
         variant="ghost"
-        class={"like like_with_label text-base-content/20",
-          "!w-8 !h-8": @showing_within == :thread_embed}
+        class={"like like_with_label text-base-content/20", "!w-8 !h-8": @showing_within == :thread_embed}
         data-role="like_disabled"
         title={l("You can't like this")}
       />
