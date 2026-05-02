@@ -3,7 +3,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   import Untangle
 
   # with a Media as custom emoji
-  def handle_event("add_reaction", %{"emoji_id" => emoji_id, "id" => id} = params, socket) do
+  def handle_event("add_reaction", %{"emoji_id" => emoji_id, "id" => id} = _params, socket) do
     current_user = current_user(socket)
 
     with {:ok, like} <-
@@ -200,8 +200,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   #   Cache.cached_preloads_for_objects("my_like:#{uid(current_user)}:", objects, fn list_of_ids -> do_list_my_liked(current_user, list_of_ids) end)
   # end
 
-  defp do_list_my_liked(current_user, list_of_ids)
-       when is_list(list_of_ids) and length(list_of_ids) > 0 do
+  defp do_list_my_liked(current_user, [_ | _] = list_of_ids) do
     # TODO: avoid running this query if we don't have permission to like this object
     Bonfire.Social.Likes.get!(current_user, list_of_ids,
       preload: false,

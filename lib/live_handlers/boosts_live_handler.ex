@@ -6,7 +6,7 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
   def handle_event("quote", %{"id" => object_id}, socket) do
     debug(object_id, "quote action")
 
-    current_user = current_user_required!(socket)
+    _current_user = current_user_required!(socket)
 
     with {:ok, object} <- Bonfire.Common.Needles.get(object_id, skip_boundary_check: true) do
       # Generate the canonical URL for the post

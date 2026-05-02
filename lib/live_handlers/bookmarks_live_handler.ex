@@ -139,8 +139,7 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
   #   Cache.cached_preloads_for_objects("my_bookmark:#{uid(current_user)}:", objects, fn list_of_ids -> do_list_my_bookmarked(current_user, list_of_ids) end)
   # end
 
-  defp do_list_my_bookmarked(current_user, list_of_ids)
-       when is_list(list_of_ids) and length(list_of_ids) > 0 do
+  defp do_list_my_bookmarked(current_user, [_ | _] = list_of_ids) do
     Bonfire.Social.Bookmarks.get!(current_user, list_of_ids,
       preload: false,
       skip_boundary_check: true
