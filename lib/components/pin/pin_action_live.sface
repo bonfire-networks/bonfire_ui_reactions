@@ -2,14 +2,12 @@
   :if={@object}
   id={deterministic_dom_id("pin_modal", id(@object), @scope, @parent_id)}
   no_actions
+  title_text={modal_title(assigns)}
   open_btn_wrapper_class="flex items-center gap-2 text-sm w-full flex-1"
 >
   {#case @scope}
     {#match :thread_answer}
-      {#if @pinned? ||
-          (current_user_id(@__context__) &&
-             Bonfire.Social.Pins.pinned?(@scope_object || @scope, @object))}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("You have already marked this as an answer")}</h3>
+      {#if pinned?(assigns)}
         <p class="mt-2 prose-sm prose">{l("You can remove it if you like")}</p>
         <button
           phx-click="Bonfire.Social.Pins:pin"
@@ -24,7 +22,6 @@
           {l("Unmark as answer")}
         </button>
       {#else}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("Mark as answer")}</h3>
         <p class="mt-2 prose-sm prose">{l("It will then be highlighted in the thread.")}</p>
 
         <button
@@ -42,10 +39,7 @@
         </button>
       {/if}
     {#match :thread}
-      {#if @pinned? ||
-          (current_user_id(@__context__) &&
-             Bonfire.Social.Pins.pinned?(@scope_object || @scope, @object))}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("This is pinned to the thread")}</h3>
+      {#if pinned?(assigns)}
         <p class="mt-2 prose-sm prose">{l("Unpin to remove it from the top of the thread.")}</p>
         <button
           phx-click="Bonfire.Social.Pins:pin"
@@ -60,7 +54,6 @@
           {l("Unpin from thread")}
         </button>
       {#else}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("Pin to thread")}</h3>
         <p class="mt-2 prose-sm prose">{l("Pins will be shown at the top of the thread.")}</p>
 
         <button
@@ -78,8 +71,7 @@
         </button>
       {/if}
     {#match :instance}
-      {#if @pinned? || Bonfire.Social.Pins.pinned?(:instance, @object)}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("This is pinned to the instance")}</h3>
+      {#if pinned?(assigns)}
         <p class="mt-2 prose-sm prose">{l("Unpin to remove it from the dashboard widget.")}</p>
         <button
           phx-click="Bonfire.Social.Pins:pin"
@@ -94,7 +86,6 @@
           {l("Unpin from instance")}
         </button>
       {#else}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("Pin to instance")}</h3>
         <p class="mt-2 prose-sm prose">{l("This will appear in the pinned widget on the dashboard for all users.")}</p>
 
         <button
@@ -112,9 +103,7 @@
         </button>
       {/if}
     {#match _profile}
-      {#if @pinned? ||
-          (current_user(@__context__) && Bonfire.Social.Pins.pinned?(current_user(@__context__), @object))}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("This is pinned to your profile")}</h3>
+      {#if pinned?(assigns)}
         <p class="mt-2 prose-sm prose">{l("Unpin to remove it from your profile highlights.")}</p>
         <button
           phx-click="Bonfire.Social.Pins:pin"
@@ -129,7 +118,6 @@
           {l("Unpin from profile")}
         </button>
       {#else}
-        <h3 class="font-bold text-base flex-1 modal-title">{l("Pin to your profile")}</h3>
         <p class="mt-2 prose-sm prose">{l("It will appear in your profile highlights tab.")}</p>
 
         <button
