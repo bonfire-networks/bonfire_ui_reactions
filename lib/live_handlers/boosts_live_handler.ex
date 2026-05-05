@@ -2,27 +2,29 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
-  # quote in LV stateful component
+  # The URL is appended to the body server-side (via `prepare_post_attrs`'s
+  # `:append_url` option) so the existing AP-quote pipeline still detects it.
   def handle_event("quote", %{"id" => object_id}, socket) do
-    debug(object_id, "quote action")
-
     _current_user = current_user_required!(socket)
 
-    with {:ok, object} <- Bonfire.Common.Needles.get(object_id, skip_boundary_check: true) do
-      # Generate the canonical URL for the post
+    # `:with_creator` + `:with_content` are needed so the `ActivityLive` card
+    # below the composer can render the author + body without a flash; the
+    # widget receives a stale snapshot, no reload happens client-side.
+    with {:ok, object} <-
+           Bonfire.Common.Needles.get(object_id,
+             skip_boundary_check: true,
+             preload: [:with_creator, :with_content]
+           ) do
       post_url = Bonfire.Common.URIs.canonical_url(object)
 
-      debug(post_url, "generated post URL for quote")
-
       if post_url do
-        # Open the smart input
         Bonfire.UI.Common.SmartInput.LiveHandler.open_with_text_suggestion(
           "",
-          [],
+          [quoted_object: object, quoted_url: post_url],
           socket
         )
 
-        {:noreply, socket |> maybe_push_event("mention_suggestions", %{text: " #{post_url} "})}
+        {:noreply, socket}
       else
         {:noreply, socket |> assign_error(l("Could not generate URL for this post"))}
       end
