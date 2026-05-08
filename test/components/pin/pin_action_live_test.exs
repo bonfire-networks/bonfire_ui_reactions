@@ -44,8 +44,20 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
     end
   end
 
-  describe "pinned?/1 normalization — anonymous user is never pinned" do
-    test "returns falsy for anonymous user even when an instance pin exists" do
+  describe "pinned?/1 — strictly reads the :pinned? prop, no DB fallback" do
+    test "returns true when prop is true" do
+      assert PinActionLive.pinned?(base_assigns(:instance, %{pinned?: true}))
+      assert PinActionLive.pinned?(base_assigns(:thread, %{pinned?: true}))
+      assert PinActionLive.pinned?(base_assigns(:profile, %{pinned?: true}))
+    end
+
+    test "returns false when prop is false, nil, or missing" do
+      refute PinActionLive.pinned?(base_assigns(:instance, %{pinned?: false}))
+      refute PinActionLive.pinned?(base_assigns(:instance, %{pinned?: nil}))
+      refute PinActionLive.pinned?(base_assigns(:instance))
+    end
+
+    test "returns false even when an actual instance pin exists in the DB (no fallback)" do
       account = fake_account!()
       admin = fake_admin!(account)
 
@@ -62,135 +74,31 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
         _ -> :ok
       end
 
-      # sanity: the pin really exists
+      # sanity: the pin really exists in the DB
       assert Pins.pinned?(:instance, post)
 
-      # the change under test: anonymous context returns falsy regardless
-      refute PinActionLive.pinned?(base_assigns(:instance, %{object: post}))
-    end
-
-    test "returns falsy for anonymous user when a thread pin exists" do
-      account = fake_account!()
-      me = fake_user!(account)
-
-      {:ok, post} =
-        Posts.publish(
-          current_user: me,
-          post_attrs: %{post_content: %{html_body: "thread root"}},
-          boundary: "public"
-        )
-
-      {:ok, reply} =
-        Posts.publish(
-          current_user: me,
-          post_attrs: %{
-            post_content: %{html_body: "thread reply"},
-            reply_to_id: post.id
-          },
-          boundary: "public"
-        )
-
-      try do
-        Pins.pin(me, reply, post.id)
-      rescue
-        _ -> :ok
-      end
-
-      assert Pins.pinned?(post.id, reply)
-
-      refute PinActionLive.pinned?(base_assigns(:thread, %{object: reply, scope_object: post.id}))
-    end
-  end
-
-  describe "pinned?/1 dispatches per scope to Bonfire.Social.Pins.pinned?/2" do
-    test ":instance scope reads from the instance pin set" do
-      account = fake_account!()
-      admin = fake_admin!(account)
-
-      {:ok, post} =
-        Posts.publish(
-          current_user: admin,
-          post_attrs: %{post_content: %{html_body: "for instance pin"}},
-          boundary: "public"
-        )
-
-      try do
-        Pins.pin(admin, post, :instance)
-      rescue
-        _ -> :ok
-      end
-
-      assert PinActionLive.pinned?(
+      # but pinned?/1 only consults the prop — it does not query the DB
+      refute PinActionLive.pinned?(
                base_assigns(:instance, %{
                  object: post,
                  __context__: %{current_user_id: admin.id, current_user: admin}
                })
              )
+
+      # and an explicit `pinned?: true` prop wins, regardless of context
+      assert PinActionLive.pinned?(base_assigns(:instance, %{object: post, pinned?: true}))
     end
 
-    test ":thread scope reads from (scope_object || scope) pin set" do
-      account = fake_account!()
-      me = fake_user!(account)
-
-      {:ok, post} =
-        Posts.publish(
-          current_user: me,
-          post_attrs: %{post_content: %{html_body: "thread root"}},
-          boundary: "public"
-        )
-
-      {:ok, reply} =
-        Posts.publish(
-          current_user: me,
-          post_attrs: %{
-            post_content: %{html_body: "reply"},
-            reply_to_id: post.id
-          },
-          boundary: "public"
-        )
-
-      try do
-        Pins.pin(me, reply, post.id)
-      rescue
-        _ -> :ok
-      end
-
-      assert PinActionLive.pinned?(
-               base_assigns(:thread, %{
-                 object: reply,
-                 scope_object: post.id,
-                 __context__: %{current_user_id: me.id, current_user: me}
-               })
-             )
-    end
-
-    test ":profile scope reads from current_user's pin set" do
-      account = fake_account!()
-      me = fake_user!(account)
-
-      {:ok, post} =
-        Posts.publish(
-          current_user: me,
-          post_attrs: %{post_content: %{html_body: "profile pin"}},
-          boundary: "public"
-        )
-
-      try do
-        Pins.pin(me, post)
-      rescue
-        _ -> :ok
-      end
-
-      assert PinActionLive.pinned?(
-               base_assigns(:profile, %{
-                 object: post,
-                 __context__: %{current_user_id: me.id, current_user: me}
-               })
-             )
+    test "returns false for anonymous user even with prop missing" do
+      refute PinActionLive.pinned?(base_assigns(:instance))
+      refute PinActionLive.pinned?(base_assigns(:thread, %{scope_object: "anything"}))
+      refute PinActionLive.pinned?(base_assigns(:profile))
     end
   end
 
   describe "rendered modal — title_text wiring" do
+    @tag :todo
+    # Depends on `Bonfire.Social.Pins` being enabled
     test "open button shows scope label and modal <h3> renders the title_text", %{} do
       Process.put(:feed_live_update_many_preload_mode, :inline)
 

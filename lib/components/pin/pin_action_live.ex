@@ -8,20 +8,7 @@ defmodule Bonfire.UI.Reactions.PinActionLive do
   prop scope_object, :string, default: nil
   # prop showing_within, :atom, default: nil
 
-  def pinned?(assigns) do
-    assigns[:pinned?] ||
-      (current_user_id(assigns[:__context__]) && check_pinned?(assigns))
-  end
-
-  defp check_pinned?(%{scope: :instance, object: object}),
-    do: Bonfire.Social.Pins.pinned?(:instance, object)
-
-  defp check_pinned?(%{scope: scope, scope_object: scope_object, object: object})
-       when scope in [:thread, :thread_answer],
-       do: Bonfire.Social.Pins.pinned?(scope_object || scope, object)
-
-  defp check_pinned?(%{object: object} = assigns),
-    do: Bonfire.Social.Pins.pinned?(current_user(assigns[:__context__]), object)
+  def pinned?(assigns), do: assigns[:pinned?] == true
 
   def modal_title(assigns) do
     case assigns[:scope] do
