@@ -64,7 +64,13 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
         error(e)
         {:noreply, assign_error(socket, e)}
 
+      msg when is_binary(msg) ->
+        # logged-in but not permitted (boundary) — not an error, so show a calm notice
+        {:noreply,
+         assign_flash(socket, :warning, l("The author has limited who can boost this post."))}
+
       other ->
+        # for remote interaction redirect
         other
     end
   end

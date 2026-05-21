@@ -18,6 +18,13 @@ defmodule Bonfire.Social.Likes.LiveHandler do
        socket
        |> assign(:my_like, e(like, :emoji, nil) || true)
        |> assign_flash(:info, l("Reaction sent to author"))}
+    else
+      msg when is_binary(msg) ->
+        {:noreply,
+         assign_flash(socket, :warning, l("The author has limited who can react to this post."))}
+
+      _ ->
+        {:noreply, socket}
     end
   end
 
@@ -36,6 +43,13 @@ defmodule Bonfire.Social.Likes.LiveHandler do
        socket
        |> assign(:my_like, e(like, :emoji, :extra_info, nil) || e(like, :emoji, nil) || true)
        |> assign_flash(:info, l("Reaction sent to author"))}
+    else
+      msg when is_binary(msg) ->
+        {:noreply,
+         assign_flash(socket, :warning, l("The author has limited who can react to this post."))}
+
+      _ ->
+        {:noreply, socket}
     end
   end
 
@@ -96,7 +110,13 @@ defmodule Bonfire.Social.Likes.LiveHandler do
         error(e)
         {:noreply, assign_error(socket, e)}
 
+      msg when is_binary(msg) ->
+        # logged-in but not permitted (boundary) — not an error, so show a calm notice
+        {:noreply,
+         assign_flash(socket, :warning, l("The author has limited who can react to this post."))}
+
       other ->
+        # for remote interaction redirect
         other
     end
   end
