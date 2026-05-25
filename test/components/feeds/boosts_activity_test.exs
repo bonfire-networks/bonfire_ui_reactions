@@ -196,11 +196,13 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
 
     assert {:ok, _boost} = Boosts.boost(me, post)
 
+    boost_action = "#activity_#{post.id}_actions_boost"
+
     conn
     |> visit("/feed/local")
-    |> assert_has("[data-id=boost_action]", text: "Boosted")
-    |> click_button("Boosted")
-    |> assert_has("[data-id=boost_action]", text: "Boost")
+    |> assert_has(boost_action, text: "Boosted")
+    |> click_button(boost_action, "Boosted")
+    |> assert_has(boost_action, text: "Boost")
   end
 
   test "boost label shows Boost on an unboosted post page", %{
