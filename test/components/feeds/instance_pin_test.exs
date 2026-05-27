@@ -89,6 +89,14 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       |> assert_has("[data-id=instance_pinned_widget]",
         text: "a pinned post visible on dashboard"
       )
+
+      conn(user: admin, account: account)
+      |> visit("/instance/pins")
+      |> assert_has("[data-id=instance_pinned_widget]")
+      |> assert_has("[data-id=instance_pinned_widget]",
+        text: "a pinned post visible on dashboard"
+      )
+      |> refute_has("#pinned-carousel")
     end
 
     test "dashboard does not show pinned widget when no pins exist", %{} do

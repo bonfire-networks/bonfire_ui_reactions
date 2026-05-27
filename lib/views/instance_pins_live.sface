@@ -1,0 +1,7 @@
+<div class="w-full max-w-[720px] mx-auto px-2 sm:px-0">
+  <Bonfire.UI.Reactions.WidgetInstancePinnedLive
+    widget_title={l("Instance Pins")}
+    with_action={false}
+    hide_when_empty={false}
+  />
+</div>

@@ -6,6 +6,8 @@ defmodule Bonfire.UI.Reactions.Routes do
       # pages anyone can view
       scope "/", Bonfire.UI.Reactions do
         pipe_through(:browser)
+
+        live("/instance/pins", InstancePinsLive, as: :instance_pins)
       end
 
       # pages you need to view as a user
