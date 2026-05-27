@@ -163,6 +163,21 @@
             {/case}
           {/if}
         </li>
+        {#if Bonfire.Me.Accounts.is_admin?(current_user(@__context__)) ||
+            Bonfire.Boundaries.can?(current_user(@__context__), :moderate, :instance)}
+          <li>
+            <button
+              class="flex py-2 px-3 gap-2 font-medium transition-interactive focus-ring phx-click-loading:opacity-60 phx-click-loading:pointer-events-none"
+              phx-click="Bonfire.Notify:broadcast_open"
+              phx-target={@myself}
+              phx-value-id={@object_id}
+              data-role="broadcast_enabled"
+            >
+              <#Icon iconify="ph:megaphone-duotone" class="w-5 h-5" />
+              <span class="text-sm">{l("Broadcast and notify users")}</span>
+            </button>
+          </li>
+        {/if}
       </ul>
     </div>
   {#else}
