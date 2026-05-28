@@ -71,37 +71,17 @@
         </button>
       {/if}
     {#match :instance}
-      {#if pinned?(assigns)}
-        <p class="mt-2 prose-sm prose">{l("Unpin to remove it from the dashboard widget.")}</p>
-        <button
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="down"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          type="button"
-          class="btn mt-4 w-full btn-warning rounded-full normal-case"
-        >
-          <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
-          {l("Unpin from instance")}
-        </button>
-      {#else}
-        <p class="mt-2 prose-sm prose">{l("This will appear in the pinned widget on the dashboard for all users.")}</p>
-
-        <button
-          :if={@object}
-          data-id="pin_action"
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="up"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full normal-case"
-        >
-          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
-          {l("Pin to instance")}
-        </button>
-      {/if}
+      <StatefulComponent
+        id={deterministic_dom_id("pin_modal_content", id(@object), @scope, @parent_id)}
+        module={maybe_component(Bonfire.UI.Reactions.PinModalLive, @__context__)}
+        object={@object}
+        scope={@scope}
+        scope_object={@scope_object}
+        pinned?={@pinned?}
+        my_pin={@my_pin}
+        parent_component={__MODULE__}
+        __context__={@__context__}
+      />
     {#match _profile}
       {#if pinned?(assigns)}
         <p class="mt-2 prose-sm prose">{l("Unpin to remove it from your profile highlights.")}</p>
@@ -138,7 +118,7 @@
   <:open_btn>
     <div class="text-left flex items-center justify-between w-full gap-2 text-sm">
       <span class="flex-1 text-sm font-medium">
-        {#if @pinned?}
+        {#if @pinned? || @my_pin}
           {case @scope do
             :thread -> l("Unpin from top of thread")
             :thread_answer -> l("Unmark as answer")

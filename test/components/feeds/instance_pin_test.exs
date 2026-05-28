@@ -43,6 +43,31 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       |> assert_has("article", text: "admin pinnable post")
       |> assert_has("[data-id=pin_action]", text: "Pin to instance")
     end
+
+    test "admin sees 'Unpin from instance' in the modal when the post is already pinned to the instance",
+         %{} do
+      Process.put(:feed_live_update_many_preload_mode, :inline)
+
+      account = fake_account!()
+      admin = fake_admin!(account)
+
+      attrs = %{
+        post_content: %{html_body: "already instance pinned post"}
+      }
+
+      assert {:ok, post} =
+               Posts.publish(current_user: admin, post_attrs: attrs, boundary: "public")
+
+      Pins.pin(admin, post, :instance)
+      assert Pins.pinned?(:instance, post)
+
+      conn(user: admin, account: account)
+      |> visit("/post/#{post.id}")
+      |> assert_has("article", text: "already instance pinned post")
+      |> assert_has("[data-id=pin_action]", text: "Pin to instance")
+      |> click_button("[data-role=open_modal]", "Pin to instance")
+      |> assert_has("[data-id=modal-contents]", text: "Unpin from instance")
+    end
   end
 
   describe "dashboard pinned widget" do

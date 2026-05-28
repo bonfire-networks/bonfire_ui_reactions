@@ -1,0 +1,31 @@
+{#if @pinned?}
+  <p class="mt-2 prose-sm prose">{l("Unpin to remove it from the dashboard widget.")}</p>
+  <button
+    phx-click="Bonfire.Social.Pins:pin"
+    phx-value-direction="down"
+    phx-value-id={id(@object)}
+    phx-value-scope={@scope_object || @scope}
+    phx-value-component={@parent_component}
+    type="button"
+    class="btn mt-4 w-full btn-warning rounded-full normal-case"
+  >
+    <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
+    {l("Unpin from instance")}
+  </button>
+{#else}
+  <p class="mt-2 prose-sm prose">{l("This will appear in the pinned widget on the dashboard for all users.")}</p>
+
+  <button
+    :if={@object}
+    data-id="pin_action"
+    phx-click="Bonfire.Social.Pins:pin"
+    phx-value-direction="up"
+    phx-value-id={id(@object)}
+    phx-value-scope={@scope_object || @scope}
+    phx-value-component={@parent_component}
+    class="btn mt-4 w-full btn-primary rounded-full normal-case"
+  >
+    <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
+    {l("Pin to instance")}
+  </button>
+{/if}

@@ -94,6 +94,7 @@ defmodule Bonfire.Social.Pins.LiveHandler do
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.PinActionLive),
       uid(object),
+      pinned?: pinned?,
       my_pin: pinned?
     )
 

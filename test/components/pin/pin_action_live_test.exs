@@ -44,20 +44,28 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
     end
   end
 
-  describe "pinned?/1 — strictly reads the :pinned? prop, no DB fallback" do
+  describe "pinned?/1" do
     test "returns true when prop is true" do
       assert PinActionLive.pinned?(base_assigns(:instance, %{pinned?: true}))
       assert PinActionLive.pinned?(base_assigns(:thread, %{pinned?: true}))
       assert PinActionLive.pinned?(base_assigns(:profile, %{pinned?: true}))
     end
 
-    test "returns false when prop is false, nil, or missing" do
+    test "returns false when prop is explicitly false" do
       refute PinActionLive.pinned?(base_assigns(:instance, %{pinned?: false}))
+    end
+
+    test "returns false when prop is nil or missing and there is no fallback match" do
       refute PinActionLive.pinned?(base_assigns(:instance, %{pinned?: nil}))
       refute PinActionLive.pinned?(base_assigns(:instance))
     end
 
-    test "returns false even when an actual instance pin exists in the DB (no fallback)" do
+    test "uses live-updated my_pin when present" do
+      assert PinActionLive.pinned?(base_assigns(:instance, %{my_pin: true}))
+      refute PinActionLive.pinned?(base_assigns(:instance, %{my_pin: false}))
+    end
+
+    test "does not check instance pin state when no explicit prop is present" do
       account = fake_account!()
       admin = fake_admin!(account)
 
@@ -77,7 +85,6 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
       # sanity: the pin really exists in the DB
       assert Pins.pinned?(:instance, post)
 
-      # but pinned?/1 only consults the prop — it does not query the DB
       refute PinActionLive.pinned?(
                base_assigns(:instance, %{
                  object: post,
@@ -85,8 +92,9 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
                })
              )
 
-      # and an explicit `pinned?: true` prop wins, regardless of context
+      # but explicit props still win, regardless of context
       assert PinActionLive.pinned?(base_assigns(:instance, %{object: post, pinned?: true}))
+      refute PinActionLive.pinned?(base_assigns(:instance, %{object: post, pinned?: false}))
     end
 
     test "returns false for anonymous user even with prop missing" do
