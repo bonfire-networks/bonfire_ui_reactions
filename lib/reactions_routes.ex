@@ -10,6 +10,16 @@ defmodule Bonfire.UI.Reactions.Routes do
         live("/instance/pins", InstancePinsLive, as: :instance_pins)
       end
 
+      pipeline :cacheable_pins_public do
+        plug(Bonfire.UI.Common.CacheControlPlug, purgeable: true)
+      end
+
+      scope "/", Bonfire.UI.Reactions do
+        pipe_through([:browser_or_cacheable, :cacheable_pins_public, :iframe_embeddable])
+
+        get("/instance/pins/embed", EmbedInstancePinsController, :index)
+      end
+
       # pages you need to view as a user
       scope "/" do
         pipe_through(:browser)
