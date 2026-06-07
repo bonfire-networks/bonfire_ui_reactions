@@ -25,8 +25,9 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
         {:thread_answer, false, "Mark as answer"},
         {:thread, true, "This is pinned to the thread"},
         {:thread, false, "Pin to thread"},
-        {:instance, true, "This is pinned to the instance"},
-        {:instance, false, "Pin to instance"},
+        # instance pin-state isn't preloaded here, so the title is neutral
+        {:instance, true, "Pin or unpin from instance"},
+        {:instance, false, "Pin or unpin from instance"},
         {:profile, true, "This is pinned to your profile"},
         {:profile, false, "Pin to your profile"},
         # unknown scope falls through to profile titles

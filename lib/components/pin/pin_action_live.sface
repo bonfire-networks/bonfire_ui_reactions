@@ -118,20 +118,23 @@
   <:open_btn>
     <div class="text-left flex items-center justify-between w-full gap-2 text-sm">
       <span class="flex-1 text-sm font-medium">
-        {#if @pinned? || @my_pin}
-          {case @scope do
-            :thread -> l("Unpin from top of thread")
-            :thread_answer -> l("Unmark as answer")
-            :instance -> l("Unpin from instance")
-            _profile -> l("Unpin from your profile")
-          end}
+        {!-- neutral: instance pin-state isn't preloaded, it's resolved in the modal --}
+        {#if @scope == :instance}
+          {l("Pin or unpin from instance")}
         {#else}
-          {case @scope do
-            :thread -> l("Pin to top of thread")
-            :thread_answer -> l("Mark as answer")
-            :instance -> l("Pin to instance")
-            _profile -> l("Pin to your profile")
-          end}
+          {#if @pinned? || @my_pin}
+            {case @scope do
+              :thread -> l("Unpin from top of thread")
+              :thread_answer -> l("Unmark as answer")
+              _profile -> l("Unpin from your profile")
+            end}
+          {#else}
+            {case @scope do
+              :thread -> l("Pin to top of thread")
+              :thread_answer -> l("Mark as answer")
+              _profile -> l("Pin to your profile")
+            end}
+          {/if}
         {/if}
       </span>
       {#case @scope}

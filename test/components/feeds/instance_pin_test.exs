@@ -70,6 +70,59 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     end
   end
 
+  describe "instance pin button action (persistence)" do
+    test "admin clicking 'Pin to instance' in the modal actually pins the post", %{} do
+      Process.put(:feed_live_update_many_preload_mode, :inline)
+
+      account = fake_account!()
+      admin = fake_admin!(account)
+
+      attrs = %{post_content: %{html_body: "pin me via the UI"}}
+
+      assert {:ok, post} =
+               Posts.publish(current_user: admin, post_attrs: attrs, boundary: "public")
+
+      refute Pins.pinned?(:instance, post)
+
+      session =
+        conn(user: admin, account: account)
+        |> visit("/post/#{post.id}")
+        |> click_button("[data-role=open_modal]", "Pin to instance")
+
+      within(session, "[data-id=modal-contents]", fn session ->
+        click_button(session, "[data-id=pin_action]", "Pin to instance")
+      end)
+
+      assert Pins.pinned?(:instance, post)
+    end
+
+    test "admin clicking 'Unpin from instance' in the modal actually unpins the post", %{} do
+      Process.put(:feed_live_update_many_preload_mode, :inline)
+
+      account = fake_account!()
+      admin = fake_admin!(account)
+
+      attrs = %{post_content: %{html_body: "unpin me via the UI"}}
+
+      assert {:ok, post} =
+               Posts.publish(current_user: admin, post_attrs: attrs, boundary: "public")
+
+      Pins.pin(admin, post, :instance)
+      assert Pins.pinned?(:instance, post)
+
+      session =
+        conn(user: admin, account: account)
+        |> visit("/post/#{post.id}")
+        |> click_button("[data-role=open_modal]", "Pin to instance")
+
+      within(session, "[data-id=modal-contents]", fn session ->
+        click_button(session, "[data-id=pin_action]", "Unpin from instance")
+      end)
+
+      refute Pins.pinned?(:instance, post)
+    end
+  end
+
   describe "dashboard pinned widget" do
     test "pinned activity renders in the widget on dashboard", %{} do
       Process.put(:feed_live_update_many_preload_mode, :inline)

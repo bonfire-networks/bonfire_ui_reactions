@@ -27,9 +27,8 @@ defmodule Bonfire.UI.Reactions.PinActionLive do
           else: l("Pin to thread")
 
       :instance ->
-        if pinned?(assigns),
-          do: l("This is pinned to the instance"),
-          else: l("Pin to instance")
+        # neutral: instance pin-state isn't preloaded, it's resolved in the modal
+        l("Pin or unpin from instance")
 
       _ ->
         if pinned?(assigns),
