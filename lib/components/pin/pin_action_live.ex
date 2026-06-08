@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Reactions.PinActionLive do
 
       :instance ->
         # neutral: instance pin-state isn't preloaded, it's resolved in the modal
-        l("Pin or unpin from instance")
+        l("Pin or unpin from spotlight")
 
       _ ->
         if pinned?(assigns),

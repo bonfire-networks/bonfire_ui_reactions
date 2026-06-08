@@ -12,7 +12,7 @@
       class="btn mt-4 w-full btn-warning rounded-full normal-case"
     >
       <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
-      {l("Unpin from instance")}
+      {l("Unpin from spotlight")}
     </button>
   {#else}
     <p class="mt-2 prose-sm prose">{l("This will appear in the pinned widget on the dashboard for all users.")}</p>
@@ -28,7 +28,7 @@
       class="btn mt-4 w-full btn-primary rounded-full normal-case"
     >
       <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
-      {l("Pin to instance")}
+      {l("Pin to spotlight")}
     </button>
   {/if}
 </div>

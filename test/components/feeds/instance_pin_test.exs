@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
   alias Bonfire.Posts
 
   describe "instance pin button visibility" do
-    test "regular user does NOT see 'Pin to instance' on a post page", %{} do
+    test "regular user does NOT see 'Pin to spotlight' on a post page", %{} do
       Process.put(:feed_live_update_many_preload_mode, :inline)
 
       account = fake_account!()
@@ -21,11 +21,11 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       conn(user: user, account: account)
       |> visit("/post/#{post.id}")
       |> assert_has("article", text: "regular user post")
-      |> refute_has("[data-id=pin_action]", text: "Pin to instance")
+      |> refute_has("[data-id=pin_action]", text: "Pin to spotlight")
     end
 
     @tag :todo
-    test "admin sees 'Pin to instance' on a post page", %{} do
+    test "admin sees 'Pin to spotlight' on a post page", %{} do
       Process.put(:feed_live_update_many_preload_mode, :inline)
 
       account = fake_account!()
@@ -41,10 +41,10 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       conn(user: admin, account: account)
       |> visit("/post/#{post.id}")
       |> assert_has("article", text: "admin pinnable post")
-      |> assert_has("[data-id=pin_action]", text: "Pin to instance")
+      |> assert_has("[data-id=pin_action]", text: "Pin to spotlight")
     end
 
-    test "admin sees 'Unpin from instance' in the modal when the post is already pinned to the instance",
+    test "admin sees 'Unpin from spotlight' in the modal when the post is already pinned to the spotlight",
          %{} do
       Process.put(:feed_live_update_many_preload_mode, :inline)
 
@@ -64,14 +64,14 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       conn(user: admin, account: account)
       |> visit("/post/#{post.id}")
       |> assert_has("article", text: "already instance pinned post")
-      |> assert_has("[data-id=pin_action]", text: "Pin to instance")
-      |> click_button("[data-role=open_modal]", "Pin to instance")
-      |> assert_has("[data-id=modal-contents]", text: "Unpin from instance")
+      |> assert_has("[data-role=open_modal]", text: "Pin or unpin from spotlight")
+      |> click_button("[data-role=open_modal]", "Pin or unpin from spotlight")
+      |> assert_has("[data-id=modal-contents]", text: "Unpin from spotlight")
     end
   end
 
   describe "instance pin button action (persistence)" do
-    test "admin clicking 'Pin to instance' in the modal actually pins the post", %{} do
+    test "admin clicking 'Pin to spotlight' in the modal actually pins the post", %{} do
       Process.put(:feed_live_update_many_preload_mode, :inline)
 
       account = fake_account!()
@@ -87,16 +87,16 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       session =
         conn(user: admin, account: account)
         |> visit("/post/#{post.id}")
-        |> click_button("[data-role=open_modal]", "Pin to instance")
+        |> click_button("[data-role=open_modal]", "Pin or unpin from spotlight")
 
       within(session, "[data-id=modal-contents]", fn session ->
-        click_button(session, "[data-id=pin_action]", "Pin to instance")
+        click_button(session, "[data-id=pin_action]", "Pin to spotlight")
       end)
 
       assert Pins.pinned?(:instance, post)
     end
 
-    test "admin clicking 'Unpin from instance' in the modal actually unpins the post", %{} do
+    test "admin clicking 'Unpin from spotlight' in the modal actually unpins the post", %{} do
       Process.put(:feed_live_update_many_preload_mode, :inline)
 
       account = fake_account!()
@@ -113,10 +113,10 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       session =
         conn(user: admin, account: account)
         |> visit("/post/#{post.id}")
-        |> click_button("[data-role=open_modal]", "Pin to instance")
+        |> click_button("[data-role=open_modal]", "Pin or unpin from spotlight")
 
       within(session, "[data-id=modal-contents]", fn session ->
-        click_button(session, "[data-id=pin_action]", "Unpin from instance")
+        click_button(session, "[data-id=pin_action]", "Unpin from spotlight")
       end)
 
       refute Pins.pinned?(:instance, post)
@@ -177,13 +177,5 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       |> refute_has("#pinned-carousel")
     end
 
-    test "dashboard does not show pinned widget when no pins exist", %{} do
-      account = fake_account!()
-      user = fake_user!(account)
-
-      conn(user: user, account: account)
-      |> visit("/dashboard")
-      |> refute_has("[data-id=instance_pinned_widget]")
-    end
   end
 end

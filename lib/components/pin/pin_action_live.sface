@@ -120,7 +120,7 @@
       <span class="flex-1 text-sm font-medium">
         {!-- neutral: instance pin-state isn't preloaded, it's resolved in the modal --}
         {#if @scope == :instance}
-          {l("Pin or unpin from instance")}
+          {l("Pin or unpin from spotlight")}
         {#else}
           {#if @pinned? || @my_pin}
             {case @scope do
