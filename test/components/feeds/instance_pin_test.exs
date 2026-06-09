@@ -176,6 +176,5 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       )
       |> refute_has("#pinned-carousel")
     end
-
   end
 end
