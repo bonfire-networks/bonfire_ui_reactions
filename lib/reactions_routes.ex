@@ -7,11 +7,20 @@ defmodule Bonfire.UI.Reactions.Routes do
       scope "/", Bonfire.UI.Reactions do
         pipe_through(:browser)
 
-        live("/instance/pins", InstancePinsLive, as: :instance_pins)
+        live("/instance/pins", InstancePinsLive, :list, as: :instance_pins)
       end
 
       pipeline :cacheable_pins_public do
         plug(Bonfire.UI.Common.CacheControlPlug, purgeable: true)
+      end
+
+      # horizontal carousel variant of the spotlight, on its own URL
+      scope "/", Bonfire.UI.Reactions do
+        pipe_through(:browser)
+
+        live("/instance/pins/carousel", InstancePinsLive, :carousel,
+          as: :instance_pins_carousel
+        )
       end
 
       scope "/", Bonfire.UI.Reactions do

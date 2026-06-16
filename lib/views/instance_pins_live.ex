@@ -12,9 +12,10 @@ defmodule Bonfire.UI.Reactions.InstancePinsLive do
 
     {:ok,
      socket
-     |> assign_new(:no_header, fn -> false end)
-     |> assign_new(:without_sidebar, fn -> nil end)
-     |> assign_new(:without_secondary_widgets, fn -> false end)
+     |> assign_new(:live_action, fn -> :list end)
+     |> assign_new(:no_header, fn -> true end)
+     |> assign_new(:without_sidebar, fn -> true end)
+     |> assign_new(:without_secondary_widgets, fn -> true end)
      |> assign_new(:sidebar_widgets, fn -> [] end)
      |> assign_new(:force_static, fn -> false end)
      |> assign(
