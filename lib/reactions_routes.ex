@@ -11,22 +11,21 @@ defmodule Bonfire.UI.Reactions.Routes do
       end
 
       pipeline :cacheable_pins_public do
-        plug(Bonfire.UI.Common.CacheControlPlug, purgeable: true)
+        plug(Bonfire.UI.Common.CacheControlPlug, purgeable: true, cache_query_string: true)
       end
 
       # horizontal carousel variant of the spotlight, on its own URL
       scope "/", Bonfire.UI.Reactions do
         pipe_through(:browser)
 
-        live("/instance/pins/carousel", InstancePinsLive, :carousel,
-          as: :instance_pins_carousel
-        )
+        live("/instance/pins/carousel", InstancePinsLive, :carousel, as: :instance_pins_carousel)
       end
 
       scope "/", Bonfire.UI.Reactions do
         pipe_through([:browser_or_cacheable, :cacheable_pins_public, :iframe_embeddable])
 
         get("/instance/pins/embed", EmbedInstancePinsController, :index)
+        get("/instance/pins/carousel/embed", EmbedInstancePinsController, :carousel)
       end
 
       # pages you need to view as a user

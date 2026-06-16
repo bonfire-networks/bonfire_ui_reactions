@@ -1,5 +1,8 @@
-<div class="w-full max-w-[720px] mx-auto px-2 sm:px-0">
-  {#if @live_action == :carousel}
+<div
+  class="w-full max-w-[720px] mx-auto px-2 sm:px-0"
+  data-theme={@embed_theme || Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
+>
+  {#if (@embed_variant || @live_action) == :carousel}
     <Bonfire.UI.Common.InstancePinnedLive id="instance_pins_carousel" />
   {#else}
     <Bonfire.UI.Reactions.WidgetInstancePinnedLive

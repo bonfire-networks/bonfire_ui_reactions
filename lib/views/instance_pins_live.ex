@@ -3,21 +3,20 @@ defmodule Bonfire.UI.Reactions.InstancePinsLive do
   Page view for activities pinned to the instance.
   """
 
-  use Bonfire.UI.Common.Web, :surface_live_view_child
+  use Bonfire.UI.Common.Web,
+      {:surface_live_view_child, layout: {Bonfire.UI.Common.LayoutView, :iframe}}
 
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
-  def mount(_params, _session, socket) do
+  def mount(raw_params, _session, socket) do
     widget_title = e(socket.assigns, :widget_title, l("Instance Pins"))
+    params = socket.assigns[:current_params] || (is_map(raw_params) && raw_params) || %{}
 
     {:ok,
      socket
-     |> assign_new(:live_action, fn -> :list end)
-     |> assign_new(:no_header, fn -> true end)
-     |> assign_new(:without_sidebar, fn -> true end)
-     |> assign_new(:without_secondary_widgets, fn -> true end)
-     |> assign_new(:sidebar_widgets, fn -> [] end)
-     |> assign_new(:force_static, fn -> false end)
+     |> Bonfire.UI.Common.ThemeHelper.setup_embed(e(params, "theme", nil), true)
+     |> assign_new(:live_action, fn -> nil end)
+     |> assign_new(:embed_variant, fn -> :list end)
      |> assign(
        page: "instance_pins",
        selected_tab: :instance_pins,
