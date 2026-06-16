@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
-  use Bonfire.UI.Reactions.ConnCase, async: System.get_env("TEST_UI_ASYNC") != "no"
+  use Bonfire.UI.Reactions.ConnCase, async: false
 
   alias Bonfire.Social.Pins
   alias Bonfire.Posts

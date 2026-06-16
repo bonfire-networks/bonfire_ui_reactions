@@ -196,7 +196,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
 
     assert {:ok, _boost} = Boosts.boost(me, post)
 
-    boost_action = "#activity_#{post.id}_actions_boost"
+    boost_action = "[data-id=boost_action]"
 
     conn
     |> visit("/feed/local")
