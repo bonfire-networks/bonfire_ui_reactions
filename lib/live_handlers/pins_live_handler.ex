@@ -34,7 +34,7 @@ defmodule Bonfire.Social.Pins.LiveHandler do
     :instance
   end
 
-  defp scoped(%{"scope" => "profile"}) do
+  defp scoped(%{"scope" => scope}) when scope in ["profile", "sidebar"] do
     nil
   end
 
@@ -91,12 +91,22 @@ defmodule Bonfire.Social.Pins.LiveHandler do
   end
 
   defp after_pin(object, pinned?, params, socket) do
+    # same-process surfaces (hero menu, settings) flip their button state
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.PinActionLive),
       uid(object),
       pinned?: pinned?,
       my_pin: pinned?
     )
+
+    if e(params, "scope", nil) in ["sidebar", "instance"] do
+      if user_id = current_user_id(socket) do
+        Bonfire.UI.Common.PersistentLive.maybe_send(
+          socket,
+          {:sidebar_groups, %{user_id: user_id}}
+        )
+      end
+    end
 
     Bonfire.UI.Common.OpenModalLive.close()
 

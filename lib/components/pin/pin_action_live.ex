@@ -7,6 +7,8 @@ defmodule Bonfire.UI.Reactions.PinActionLive do
   prop class, :css_class, default: "btn btn-ghost btn-circle btn-sm"
   prop scope, :atom, default: :profile
   prop scope_object, :string, default: nil
+  # used only to build a unique modal DOM id; optional (callers that omit it get a nil suffix)
+  prop parent_id, :any, default: nil
   # prop showing_within, :atom, default: nil
 
   def pinned?(%{pinned?: pinned?}) when is_boolean(pinned?), do: pinned?
@@ -29,6 +31,11 @@ defmodule Bonfire.UI.Reactions.PinActionLive do
       :instance ->
         # neutral: instance pin-state isn't preloaded, it's resolved in the modal
         l("Pin or unpin from spotlight")
+
+      :sidebar ->
+        if pinned?(assigns),
+          do: l("This group is pinned to your sidebar"),
+          else: l("Pin this group to your sidebar")
 
       _ ->
         if pinned?(assigns),

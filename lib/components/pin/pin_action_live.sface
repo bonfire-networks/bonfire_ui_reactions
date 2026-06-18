@@ -82,6 +82,38 @@
         parent_component={__MODULE__}
         __context__={@__context__}
       />
+    {#match :sidebar}
+      {#if pinned?(assigns)}
+        <p class="mt-2 prose-sm prose">{l("Unpin to remove this group from your sidebar (you'll stay a member).")}</p>
+        <button
+          phx-click="Bonfire.Social.Pins:pin"
+          phx-value-direction="down"
+          phx-value-id={id(@object)}
+          phx-value-scope={@scope_object || @scope}
+          phx-value-component={__MODULE__}
+          type="button"
+          class="btn mt-4 w-full btn-warning rounded-full normal-case"
+        >
+          <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
+          {l("Unpin from sidebar")}
+        </button>
+      {#else}
+        <p class="mt-2 prose-sm prose">{l("It will appear in your groups sidebar for quick access.")}</p>
+
+        <button
+          :if={@object}
+          data-id="pin_action"
+          phx-click="Bonfire.Social.Pins:pin"
+          phx-value-direction="up"
+          phx-value-id={id(@object)}
+          phx-value-scope={@scope_object || @scope}
+          phx-value-component={__MODULE__}
+          class="btn mt-4 w-full btn-primary rounded-full normal-case"
+        >
+          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
+          {l("Pin to sidebar")}
+        </button>
+      {/if}
     {#match _profile}
       {#if pinned?(assigns)}
         <p class="mt-2 prose-sm prose">{l("Unpin to remove it from your profile highlights.")}</p>
@@ -126,12 +158,14 @@
             {case @scope do
               :thread -> l("Unpin from top of thread")
               :thread_answer -> l("Unmark as answer")
+              :sidebar -> l("Unpin from sidebar")
               _profile -> l("Unpin from your profile")
             end}
           {#else}
             {case @scope do
               :thread -> l("Pin to top of thread")
               :thread_answer -> l("Mark as answer")
+              :sidebar -> l("Pin to sidebar")
               _profile -> l("Pin to your profile")
             end}
           {/if}
