@@ -4,6 +4,6 @@
     "",
     "max-w-[680px] mx-auto": !current_user_id(@__context__)
   }>
-    <Bonfire.UI.Common.PinnedLive user={@user} selected_tab={@selected_tab} id="pins" />
+    <Bonfire.UI.Reactions.PinnedLive user={@user} selected_tab={@selected_tab} id="pins" />
   </div>
 </div>

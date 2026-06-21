@@ -3,7 +3,7 @@
   data-theme={@embed_theme || Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
 >
   {#if (@embed_variant || @live_action) == :carousel}
-    <Bonfire.UI.Common.InstancePinnedLive id="instance_pins_carousel" />
+    <Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive id="instance_pins_carousel" />
   {#else}
     <Bonfire.UI.Reactions.WidgetInstancePinnedLive
       widget_title={@widget_title}
