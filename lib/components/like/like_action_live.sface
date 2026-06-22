@@ -16,10 +16,13 @@
             phx-value-id={@object_id}
             phx-value-component={__MODULE__}
             phx-value-current_count={e(@like_count, 0)}
-            class="btn btn-ghost btn-circle w-10 h-10 lg:tooltip lg:tooltip-bottom like like_with_label"
+            class={
+              "btn btn-ghost btn-circle w-10 h-10 like like_with_label",
+              "lg:tooltip lg:tooltip-bottom": !@no_data_tip
+            }
             data-id="like_action"
             data-role="like_enabled"
-            data-tip={l("Like")}
+            data-tip={if !@no_data_tip, do: l("Like")}
           >
             <span class="sr-only">{l("Like")}</span>
             <span class="text-amber-400 text-[20px]">{emoji}</span>
@@ -38,10 +41,13 @@
             phx-value-id={@object_id}
             phx-value-component={__MODULE__}
             phx-value-current_count={e(@like_count, 0)}
-            class="btn btn-ghost btn-circle w-10 h-10 lg:tooltip lg:tooltip-bottom like like_with_label"
+            class={
+              "btn btn-ghost btn-circle w-10 h-10 like like_with_label",
+              "lg:tooltip lg:tooltip-bottom": !@no_data_tip
+            }
             data-id="like_action"
             data-role="like_enabled"
-            data-tip={l("Like")}
+            data-tip={if !@no_data_tip, do: l("Like")}
           >
             <span class="sr-only">{l("Like")}</span>
             <LazyImage
@@ -68,7 +74,7 @@
               current_count: e(@like_count, 0)
             }}
             variant="ghost"
-            tooltip={l("Like")}
+            tooltip={if !@no_data_tip, do: l("Like")}
             tooltip_position="bottom"
             class={"like like_with_label text-amber-400", "!w-8 !h-8": @showing_within == :thread_embed}
             data-id="like_action"
@@ -91,7 +97,7 @@
               current_count: e(@like_count, 0)
             }}
             variant="ghost"
-            tooltip={l("Like")}
+            tooltip={if !@no_data_tip, do: l("Like")}
             tooltip_position="bottom"
             class={
               "like like_with_label text-base-content/60 hover:text-amber-400",

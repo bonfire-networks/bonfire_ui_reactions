@@ -12,6 +12,7 @@ defmodule Bonfire.UI.Reactions.LikeActionLive do
   prop my_like, :any, default: nil
   prop icon, :string, default: "ph:fire-duotone"
   prop icon_pressed, :string, default: "ph:fire-fill"
+  prop no_data_tip, :boolean, default: false
 
   def update_many(assigns_sockets),
     do: Bonfire.Social.Likes.LiveHandler.update_many(assigns_sockets, caller_module: __MODULE__)
