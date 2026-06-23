@@ -145,6 +145,10 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
       assert Pins.pinned?(:instance, post)
 
+      # the Spotlight widget caches its list (6h); bust it so this freshly-pinned post shows
+      # (matches what the widget's manual refresh button does)
+      Bonfire.UI.Reactions.InstancePins.list_activities(cache: :reset)
+
       # Verify backend returns activities
       assert %{edges: [_ | _] = edges} = Pins.list_instance_pins_activities(current_user: admin)
 

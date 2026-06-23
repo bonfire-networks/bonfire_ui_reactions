@@ -5,6 +5,8 @@
         class="w-full pt-4 flex-auto mx-auto bonfire-wrapper overflow-hidden"
         title_class="pb-2 text-xs px-4 font-medium uppercase tracking-wide text-base-content/60"
         widget_title={@widget_title || l("Spotlight")}
+        reset_cache_event={if is_nil(@entries),
+          do: "Bonfire.UI.Reactions.WidgetInstancePinnedLive:reset_instance_pinned"}
         empty={entries == []}
         empty_icon="ph:push-pin-duotone"
         empty_message={l("No instance pins yet.")}
