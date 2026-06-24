@@ -15,4 +15,16 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedLive do
   """
   def entries(nil), do: Bonfire.UI.Reactions.InstancePins.list_activities()
   def entries(entries), do: entries
+
+  @doc "Busts the cached instance-pins list (Spotlight; recomputed lazily on next read)."
+  def handle_event("reset_instance_pinned", _params, socket) do
+    Bonfire.UI.Reactions.InstancePins.list_activities(cache: :reset)
+
+    {:noreply,
+     assign_flash(
+       socket,
+       :info,
+       l("Spotlight has been reset.") <> l(" You need to reload to see updates, if any.")
+     )}
+  end
 end

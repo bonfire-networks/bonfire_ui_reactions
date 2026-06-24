@@ -6,6 +6,8 @@
     empty={@entries == []}
     empty_icon="ph:push-pin-duotone"
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
+    reset_cache_event="reset_instance_pinned"
+    reset_cache_target={@myself}
   >
     {!-- Carousel navigation arrows, shown in the header to the right of the title --}
     <:action :if={length(@entries) > 1}>

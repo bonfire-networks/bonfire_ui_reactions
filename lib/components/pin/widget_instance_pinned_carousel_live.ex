@@ -1,6 +1,8 @@
 defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
+  alias Bonfire.UI.Reactions.InstancePins
+
   # TODO: dedup with Bonfire.UI.Reactions.PinnedCarouselLive
 
   prop title, :string, default: nil
@@ -9,17 +11,13 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)
-    entries = pinned_activities()
-    {:ok, assign(socket, entries: entries)}
+
+    # shared cached loader (see InstancePins.list_activities/1), same as the vertical pinned widget
+    {:ok, assign(socket, entries: InstancePins.list_activities())}
   end
 
-  defp pinned_activities do
-    case Bonfire.Social.Pins.list_instance_pins_activities(
-           paginate?: false,
-           preload: [:feed_by_subject, :feed_postload]
-         ) do
-      %{edges: [_ | _] = edges} -> edges
-      _ -> []
-    end
+  @doc "Busts + recomputes the cache and reloads in place — stateful, so the fresh list shows without a page reload."
+  def handle_event("reset_instance_pinned", _params, socket) do
+    {:noreply, assign(socket, entries: InstancePins.list_activities(cache: :refresh))}
   end
 end

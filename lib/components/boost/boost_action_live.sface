@@ -25,7 +25,7 @@
         role="menu"
         id={deterministic_dom_id(__MODULE__, id(@object_id), "content", @parent_id)}
         aria-orientation="vertical"
-        aria-labelledby="more-menu"
+        aria-label={l("Boost options")}
       >
         <li>
           {#case Bonfire.Boundaries.can_or_unloaded?(@__context__, :boost, @object_boundary)}
@@ -85,10 +85,11 @@
         <li>
           {!-- Skip the per-activity quote permission DB query when boundary isn't preloaded
                (or for guests) — the actual quote action will validate server-side. --}
-          {#if !Bonfire.Boundaries.can_or_unloaded?(
+          {#if !Bonfire.Boundaries.can_interact_or_unloaded?(
               @__context__,
               Bonfire.Social.Quotes.quote_verb(),
-              @object_boundary
+              @object_boundary,
+              target_user: @creator
             )}
             <button
               type="button"
