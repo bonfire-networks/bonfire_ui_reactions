@@ -1,6 +1,6 @@
 <Bonfire.UI.Common.OpenModalLive
   :if={@object}
-  id={deterministic_dom_id("pin_modal", id(@object), @scope, @parent_id)}
+  id={deterministic_dom_id("pin_modal", id(@object), to_string(@scope), @parent_id)}
   no_actions
   title_text={modal_title(assigns)}
   open_btn_wrapper_class="flex items-center gap-2 text-sm w-full flex-1"
@@ -50,7 +50,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-simple-slash-fill" class="w-4 h-4" />
           {l("Unpin from thread")}
         </button>
       {#else}
@@ -66,13 +66,13 @@
           phx-value-component={__MODULE__}
           class="btn mt-4 w-full btn-primary rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-fill" class="w-4 h-4" />
           {l("Pin to top of thread")}
         </button>
       {/if}
     {#match :instance}
       <StatefulComponent
-        id={deterministic_dom_id("pin_modal_content", id(@object), @scope, @parent_id)}
+        id={deterministic_dom_id("pin_modal_content", id(@object), to_string(@scope), @parent_id)}
         module={maybe_component(Bonfire.UI.Reactions.PinModalLive, @__context__)}
         object={@object}
         scope={@scope}
@@ -94,7 +94,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-simple-slash-fill" class="w-4 h-4" />
           {l("Unpin from sidebar")}
         </button>
       {#else}
@@ -110,7 +110,7 @@
           phx-value-component={__MODULE__}
           class="btn mt-4 w-full btn-primary rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-fill" class="w-4 h-4" />
           {l("Pin to sidebar")}
         </button>
       {/if}
@@ -126,7 +126,7 @@
           type="button"
           class="btn mt-4 w-full btn-warning rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-simple-slash-fill" class="w-4 h-4" />
           {l("Unpin from profile")}
         </button>
       {#else}
@@ -142,14 +142,14 @@
           phx-value-component={__MODULE__}
           class="btn mt-4 w-full btn-primary rounded-full normal-case"
         >
-          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-fill" class="w-4 h-4" />
           {l("Pin to your profile")}
         </button>
       {/if}
   {/case}
   <:open_btn>
     <div class="text-left flex items-center justify-between w-full gap-2 text-sm">
-      <span class="flex-1 text-sm font-medium">
+      <span class="flex-1 text-sm">
         {!-- neutral: instance pin-state isn't preloaded, it's resolved in the modal --}
         {#if @scope == :instance}
           {l("Pin or unpin from spotlight")}
@@ -175,7 +175,7 @@
         {#match :thread_answer}
           <#Icon iconify="mdi:message-check" class="w-4 h-4" />
         {#match _}
-          <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
+          <#Icon iconify="ph:push-pin-duotone" class="w-5 h-5" />
       {/case}
     </div>
   </:open_btn>

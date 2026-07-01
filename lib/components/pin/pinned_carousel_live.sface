@@ -30,7 +30,7 @@
               <div
                 :if={e(pin, :post_content, :name, nil) ||
                   (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
-                class="mt-2 text-sm text-base-content/70 line-clamp-3"
+                class="mt-2 text-sm text-muted line-clamp-3"
               >{rich(e(pin, :post_content, :html_body, nil))}</div>
             </div>
           </div>
@@ -47,7 +47,7 @@
                   class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
                 />
               </div>
-              <div class="text-xs font-medium text-base-content/70">0 of 3</div>
+              <div class="text-xs font-medium text-muted">0 of 3</div>
             </div>
           </div>
       {/case}
@@ -82,7 +82,7 @@
         },
     }">
   <section x-ref="splide" class="splide" aria-label="pinned items">
-    <div class="flex justify-between w-full pb-1 mb-6 text-sm font-medium tracking-wide border-b border-base-content/10 text-base-content/70">
+    <div class="flex justify-between w-full pb-1 mb-6 text-sm font-medium tracking-wide border-b border-base-content/10 text-muted">
       <div :if={@title} class="">{@title}</div>
       <div class="flex gap-3 splide__arrows">
         <button class="splide__arrow splide__arrow--prev !static !bg-base-content/5">
@@ -135,7 +135,7 @@
                       class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
                     />
                   </div>
-                  <div class="text-xs font-medium text-base-content/70">0 of 3</div>
+                  <div class="text-xs font-medium text-muted">0 of 3</div>
                 </div>
               </li>
           {/case}

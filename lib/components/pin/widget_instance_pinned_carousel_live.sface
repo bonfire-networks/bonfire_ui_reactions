@@ -1,10 +1,9 @@
 <div data-id="instance_pinned_widget">
   <Bonfire.UI.Common.WidgetBlockLive
     widget_title={l("Spotlight")}
-    title_class="pb-3 px-1 text-sm font-bold uppercase tracking-widest text-secondary"
-    class="w-full p-3 lg:p-4 relative overflow-hidden lg:rounded-box bg-gradient-to-br from-secondary/25 via-secondary/10 to-transparent"
+    class="w-full p-base relative overflow-hidden bg-base-300 border-y-hair border-secondary"
     empty={@entries == []}
-    empty_icon="ph:push-pin-duotone"
+    empty_icon="ph:push-pin-fill"
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
     reset_cache_event="reset_instance_pinned"
     reset_cache_target={@myself}
@@ -15,7 +14,7 @@
         <button
           type="button"
           aria-label={l("Scroll left")}
-          class="btn btn-circle btn-sm bg-secondary/15 hover:bg-secondary/30 border-none text-secondary"
+          class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity"
           phx-click={JS.dispatch("scroll-left", to: "#pinned-carousel")}
         >
           <#Icon iconify="ph:caret-left" class="w-4 h-4" />
@@ -23,7 +22,7 @@
         <button
           type="button"
           aria-label={l("Scroll right")}
-          class="btn btn-circle btn-sm bg-secondary/15 hover:bg-secondary/30 border-none text-secondary"
+          class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity"
           phx-click={JS.dispatch("scroll-right", to: "#pinned-carousel")}
         >
           <#Icon iconify="ph:caret-right" class="w-4 h-4" />
@@ -43,7 +42,7 @@
             {#match nil}
             {#match activity}
               <div
-                class="spotlight_clamp flex-shrink-0 snap-start rounded-xl bg-base-100 overflow-hidden shadow"
+                class="spotlight_clamp flex-shrink-0 snap-start rounded-box border-hair bg-base-100 border-secondary p-card"
                 style="width: 70%;"
               >
                 <StatefulComponent

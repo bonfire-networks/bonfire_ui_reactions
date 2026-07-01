@@ -20,14 +20,14 @@
             phx-value-current_count={e(@like_count, 0)}
             class={
               "btn btn-ghost btn-circle w-10 h-10 like like_with_label",
-              "lg:tooltip lg:tooltip-bottom": !@no_data_tip
+              "lg:tooltip lg:tooltip-top": !@no_data_tip
             }
             data-id="like_action"
             data-role="like_enabled"
             data-tip={if !@no_data_tip, do: l("Like")}
           >
             <span class="sr-only">{l("Like")}</span>
-            <span class="text-amber-400 text-[20px]">{emoji}</span>
+            <span class="text-warning text-[20px]">{emoji}</span>
           </button>
         {#match %{media_type: "emoji"} = emoji}
           {!-- Custom emoji image reaction --}
@@ -45,7 +45,7 @@
             phx-value-current_count={e(@like_count, 0)}
             class={
               "btn btn-ghost btn-circle w-10 h-10 like like_with_label",
-              "lg:tooltip lg:tooltip-bottom": !@no_data_tip
+              "lg:tooltip lg:tooltip-top": !@no_data_tip
             }
             data-id="like_action"
             data-role="like_enabled"
@@ -54,7 +54,7 @@
             <span class="sr-only">{l("Like")}</span>
             <LazyImage
               parent_id={deterministic_dom_id(__MODULE__, id(emoji), "emoji", @id)}
-              class="w-5 h-5"
+              class="w-[18px] h-[18px]"
               media={emoji}
               alt={e(emoji, :metadata, "label", nil) || e(emoji, :metadata, "shortcode", nil)}
             />
@@ -77,8 +77,8 @@
             }}
             variant="ghost"
             tooltip={if !@no_data_tip, do: l("Like")}
-            tooltip_position="bottom"
-            class={"like like_with_label text-amber-400", "!w-10 !h-10": @showing_within == :thread_embed}
+            tooltip_position="top"
+            class={"like like_with_label text-warning", "!w-10 !h-10": @showing_within == :thread_embed}
             data-id="like_action"
             data-role="like_enabled"
           />
@@ -100,9 +100,9 @@
             }}
             variant="ghost"
             tooltip={if !@no_data_tip, do: l("Like")}
-            tooltip_position="bottom"
+            tooltip_position="top"
             class={
-              "like like_with_label text-base-content/60 hover:text-amber-400",
+              "like like_with_label text-muted hover:text-warning",
               "!w-10 !h-10": @showing_within == :thread_embed
             }
             data-id="like_action"
@@ -111,7 +111,7 @@
       {/case}
       <span
         data-role="like_count"
-        class="ml-1 text-[13px] text-base-content/70 tabular-nums"
+        class="ml-1 text-[13px] text-muted tabular-nums"
         :if={e(@like_count, 0) > 0 &&
           (@showing_within == :thread_embed ||
              Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__))}
@@ -127,7 +127,7 @@
         title={l("You can't like this")}
       />
       <span
-        class="tabular-nums text-[13px] text-base-content/70"
+        class="tabular-nums text-[13px] text-muted"
         :if={e(@like_count, 0) > 0 &&
           (@showing_within == :thread_embed ||
              Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__))}

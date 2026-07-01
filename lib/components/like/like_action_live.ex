@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Reactions.LikeActionLive do
   # prop label, :string, default: nil
   prop showing_within, :atom, default: nil
   prop my_like, :any, default: nil
-  prop icon, :string, default: "ph:fire-duotone"
+  prop icon, :string, default: "ph:fire-fill"
   prop icon_pressed, :string, default: "ph:fire-fill"
   prop no_data_tip, :boolean, default: false
 

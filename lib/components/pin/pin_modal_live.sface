@@ -11,7 +11,7 @@
       type="button"
       class="btn mt-4 w-full btn-warning rounded-full normal-case"
     >
-      <#Icon iconify="ph:push-pin-simple-slash-duotone" class="w-4 h-4" />
+      <#Icon iconify="ph:push-pin-simple-slash-fill" class="w-4 h-4" />
       {l("Unpin from spotlight")}
     </button>
   {#else}
@@ -27,7 +27,7 @@
       phx-value-component={@parent_component}
       class="btn mt-4 w-full btn-primary rounded-full normal-case"
     >
-      <#Icon iconify="ph:push-pin-duotone" class="w-4 h-4" />
+      <#Icon iconify="ph:push-pin-fill" class="w-4 h-4" />
       {l("Pin to spotlight")}
     </button>
   {/if}
