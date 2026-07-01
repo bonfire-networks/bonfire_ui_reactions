@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Reactions.RuntimeConfig do
   @behaviour Bonfire.Common.ConfigModule
   def config_module, do: true
 
-  declare_extension("Reactions",
+  declare_extension(l("Reactions"),
     icon: "material-symbols:add-reaction",
     emoji: "👏",
     description: l("Likes, boosts, pins, bookmarks, etc."),
