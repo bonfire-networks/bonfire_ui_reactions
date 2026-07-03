@@ -11,6 +11,7 @@
         pressed={@my_bookmark}
         tooltip={l("Bookmark")}
         tooltip_position="top"
+        size="sm"
         phx_click="Bonfire.Social.Bookmarks:bookmark"
         phx_target={@myself}
         phx_values={%{direction: if(@my_bookmark, do: "down", else: "up"), id: @object_id, component: __MODULE__}}
@@ -24,6 +25,7 @@
         icon_class="w-[18px] h-[18px]"
         aria_label={l("Cannot bookmark")}
         variant="ghost"
+        size="sm"
         disabled
         class="text-base-content/20"
         data-role="bookmark_disabled"

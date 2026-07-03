@@ -9,31 +9,33 @@
     reset_cache_target={@myself}
   >
     {!-- Carousel navigation arrows, shown in the header to the right of the title --}
-    <:action :if={length(@entries) > 1}>
-      <div class="flex items-center gap-1.5">
-        <button
-          type="button"
-          aria-label={l("Scroll left")}
-          class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
-          phx-click={JS.dispatch("scroll-left", to: "#pinned-carousel")}
-        >
-          <#Icon iconify="ph:caret-left" class="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          aria-label={l("Scroll right")}
-          class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
-          phx-click={JS.dispatch("scroll-right", to: "#pinned-carousel")}
-        >
-          <#Icon iconify="ph:caret-right" class="w-4 h-4" />
-        </button>
-      </div>
+    <:action>
+      {#if length(@entries) > 1 and !@hide_scroll_buttons}
+        <div class="flex items-center gap-1.5">
+          <button
+            type="button"
+            aria-label={l("Scroll left")}
+            class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
+            phx-click={JS.dispatch("scroll-left", to: "#pinned-carousel")}
+          >
+            <#Icon iconify="ph:caret-left" class="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            aria-label={l("Scroll right")}
+            class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
+            phx-click={JS.dispatch("scroll-right", to: "#pinned-carousel")}
+          >
+            <#Icon iconify="ph:caret-right" class="w-4 h-4" />
+          </button>
+        </div>
+      {/if}
     </:action>
     <div class="grid grid-cols-1 overflow-hidden relative">
       {!-- Carousel --}
       <div
         id="pinned-carousel"
-        class="flex items-start gap-3 overflow-x-auto touch-pan-y scroll-smooth snap-x snap-mandatory pb-2"
+        class="flex items-start gap-3 overflow-x-auto touch-pan-y scroll-smooth snap-x snap-mandatory"
         phx-hook="CarouselScroll"
         style="scrollbar-width: thin; scrollbar-color: oklch(var(--s)) oklch(var(--s) / 0.15);"
       >
@@ -43,7 +45,7 @@
             {#match activity}
               <div
                 class="spotlight_clamp flex-shrink-0 snap-start rounded-box border-hair bg-base-100 border-secondary p-card"
-                style="width: 70%;"
+                style={"width: #{carousel_item_width(@visible_items)};"}
               >
                 <StatefulComponent
                   module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}

@@ -37,7 +37,7 @@
         {#match _}
           <div class="">
             <div class="flex items-center gap-2">
-              <LinkLive to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
+              <LinkLive to={path(pin)} class="flex-1 text-sm font-medium link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
               </LinkLive>
             </div>
             <div class="flex items-center gap-2 mt-4">
@@ -125,7 +125,7 @@
             {#match _}
               <li class="flex flex-col items-center justify-center pb-8 splide__slide">>
                 <div class="flex items-center gap-2">
-                  <LinkLive to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
+                  <LinkLive to={path(pin)} class="flex-1 text-sm font-medium link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
                   </LinkLive>
                 </div>
                 <div class="flex items-center gap-2 mt-4">

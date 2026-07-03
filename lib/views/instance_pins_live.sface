@@ -1,9 +1,14 @@
 <div
-  class="w-full max-w-[720px] mx-auto px-2 sm:px-0"
+  class={"w-full", "max-w-[720px] mx-auto px-2 sm:px-0": is_nil(@embed_variant)}
   data-theme={@embed_theme || Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
+  data-embed-links={if not is_nil(@embed_variant), do: "_blank"}
 >
-  {#if (@embed_variant || @live_action) == :carousel}
-    <Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive id="instance_pins_carousel" />
+  {#if @embed_variant == :carousel}
+    <Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive
+      id="instance_pins_carousel"
+      hide_scroll_buttons
+      visible_items={3.5}
+    />
   {#else}
     <Bonfire.UI.Reactions.WidgetInstancePinnedLive
       widget_title={@widget_title}

@@ -8,6 +8,8 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   prop title, :string, default: nil
   prop object_types, :any, default: []
   prop entries, :any, default: []
+  prop hide_scroll_buttons, :boolean, default: false
+  prop visible_items, :number, default: nil
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)
@@ -20,4 +22,17 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   def handle_event("reset_instance_pinned", _params, socket) do
     {:noreply, assign(socket, entries: InstancePins.list_activities(cache: :refresh))}
   end
+
+  @doc """
+  Returns the carousel item width for the requested number of initially visible items.
+  """
+  def carousel_item_width(nil), do: "70%"
+
+  def carousel_item_width(visible_items) when is_number(visible_items) and visible_items > 0 do
+    gap_rem = 0.75
+
+    "calc((100% - #{(visible_items - 1) * gap_rem}rem) / #{visible_items})"
+  end
+
+  def carousel_item_width(_), do: "70%"
 end
