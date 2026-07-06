@@ -10,7 +10,7 @@
   >
     {!-- Carousel navigation arrows, shown in the header to the right of the title --}
     <:action>
-      {#if length(@entries) > 1 and !@hide_scroll_buttons}
+      {#if length(@entries) > 1 and !@hide_scroll_buttons and socket_connected?(@__context__)}
         <div class="flex items-center gap-1.5">
           <button
             type="button"
