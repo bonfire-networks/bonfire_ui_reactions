@@ -1,4 +1,4 @@
-<div class="relative z-[999999]">
+<div class="relative">
   {#if @object_type != Bonfire.Data.Social.Message}
     <Dropdown
       id={deterministic_dom_id(__MODULE__, id(@object_id), "share_menu", @parent_id)}
