@@ -24,6 +24,10 @@ defmodule Bonfire.UI.Reactions.InstancePinsLive do
      |> assign(
        page: "instance_pins",
        selected_tab: :instance_pins,
+       # layout choice: embeds pass embed_variant, the in-app route uses live_action
+       variant:
+         socket.assigns[:embed_variant] ||
+           if(socket.assigns[:live_action] == :carousel, do: :carousel),
        widget_title: widget_title,
        page_title: widget_title
      )

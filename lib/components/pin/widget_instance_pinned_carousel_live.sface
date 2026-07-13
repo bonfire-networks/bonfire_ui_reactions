@@ -1,7 +1,6 @@
 <div data-id="instance_pinned_widget">
   <Bonfire.UI.Common.WidgetBlockLive
-    widget_title={l("Spotlight")}
-    class="w-full p-base relative overflow-hidden bg-base-300 border-y-hair border-secondary"
+    class="w-full relative overflow-hidden bg-transparent"
     empty={@entries == []}
     empty_icon="ph:push-pin-fill"
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}

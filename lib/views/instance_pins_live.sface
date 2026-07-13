@@ -3,7 +3,7 @@
   data-theme={@embed_theme || Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
   data-embed-links={if not is_nil(@embed_variant), do: "_blank"}
 >
-  {#if @embed_variant == :carousel}
+  {#if @variant == :carousel}
     <Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive
       id="instance_pins_carousel"
       hide_scroll_buttons

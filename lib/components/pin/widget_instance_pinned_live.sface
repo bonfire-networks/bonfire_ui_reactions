@@ -2,26 +2,14 @@
   {#match entries}
     <div :if={!@hide_when_empty || entries != []} data-id="instance_pinned_widget">
       <Bonfire.UI.Common.WidgetBlockLive
-        class="w-full pt-4 flex-auto mx-auto bonfire-wrapper overflow-hidden"
-        title_class="pb-2 text-xs px-4 font-medium uppercase tracking-wide text-base-content"
-        widget_title={@widget_title || l("Spotlight")}
+        class="w-full flex-auto mx-auto overflow-hidden"
         reset_cache_event={if is_nil(@entries),
           do: "Bonfire.UI.Reactions.WidgetInstancePinnedLive:reset_instance_pinned"}
         empty={entries == []}
         empty_icon="ph:push-pin-fill"
         empty_message={l("No instance pins yet.")}
       >
-        <:action :if={@with_action}>
-          <LinkLive
-            to={~p"/instance/pins"}
-            class="text-xs font-medium text-muted hover:text-primary"
-            aria-label={l("View all instance pins")}
-          >
-            {l("View all")}
-          </LinkLive>
-        </:action>
-
-        <ul class="flex flex-col   divide-hair divide-secondary" role="list">
+        <ul class="flex flex-col divide-hair divide-secondary" role="list">
           {#for entry <- entries}
             {#case e(entry, :activity, nil)}
               {#match nil}
