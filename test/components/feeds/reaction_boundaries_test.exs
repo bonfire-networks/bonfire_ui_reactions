@@ -17,7 +17,7 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
   test "reaction buttons are enabled for a user viewing a public post in their feed", %{
     me: me
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)
@@ -38,7 +38,7 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
   end
 
   test "reaction buttons show correct initial state for a fresh post", %{me: me} do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)

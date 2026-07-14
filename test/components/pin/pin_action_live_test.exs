@@ -109,7 +109,7 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
     @tag :todo
     # Depends on `Bonfire.Social.Pins` being enabled
     test "open button shows scope label and modal <h3> renders the title_text", %{} do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       me = fake_user!(account)

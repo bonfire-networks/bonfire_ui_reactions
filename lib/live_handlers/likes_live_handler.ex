@@ -230,7 +230,11 @@ defmodule Bonfire.Social.Likes.LiveHandler do
     |> repo().maybe_preload([edge: [:emoji]], skip_boundary_check: true)
     |> Enum.map(fn l -> e(l, :edge, nil) || l end)
     # current_user: current_user)
-    |> repo().maybe_preload([emoji: [:extra_info]], skip_boundary_check: true)
+    # `emoji` is a polymorphic `has_one(:emoji, Needle.Pointer)`: it resolves to a standard
+    # `Bonfire.Data.Social.Emoji` (has the `extra_info` mixin) OR a `Bonfire.Files.Media` for a
+    # custom emoji (no `extra_info`). `prune: true` fits `[emoji: [:extra_info]]` to the concrete
+    # resolved type instead of raising on the generic Pointer — same as `FeedsLiveHandler`.
+    |> repo().maybe_preload([emoji: [:extra_info]], skip_boundary_check: true, prune: true)
     |> debug("preloaded?")
     |> Map.new(fn l ->
       {e(l, :object_id, nil) || e(l, :edge, :object_id, nil),

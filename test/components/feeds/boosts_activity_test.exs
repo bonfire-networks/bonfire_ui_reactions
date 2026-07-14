@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     alice: alice,
     conn: conn
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     attrs = %{
       post_content: %{summary: "summary", html_body: "first post"}
@@ -78,7 +78,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       post_content: %{summary: "summary", html_body: "first post"}
     }
 
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     assert {:ok, post} =
              Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -189,7 +189,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
       post_content: %{summary: "summary", html_body: "first post"}
     }
 
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     assert {:ok, post} =
              Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
@@ -210,7 +210,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     alice: alice,
     conn: conn
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     attrs = %{
       post_content: %{summary: "summary", html_body: "a post to check boost state"}

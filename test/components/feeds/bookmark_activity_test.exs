@@ -17,7 +17,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BookmarkActivityTest do
   test "As a user I want to see a bookmarked post in my bookmarks feed", %{
     alice: alice
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)
@@ -37,7 +37,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BookmarkActivityTest do
   test "As a user, when I bookmark an activity, the button state should change", %{
     alice: alice
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)
@@ -64,7 +64,7 @@ defmodule Bonfire.UI.Reactions.Feeds.BookmarkActivityTest do
   test "As a user, when I remove a bookmark, the button state should change back", %{
     alice: alice
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)

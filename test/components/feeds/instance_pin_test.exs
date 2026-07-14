@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
   describe "instance pin button visibility" do
     test "regular user does NOT see 'Pin to spotlight' on a post page", %{} do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       user = fake_user!(account)
@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
     @tag :todo
     test "admin sees 'Pin to spotlight' on a post page", %{} do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -46,7 +46,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
     test "admin sees 'Unpin from spotlight' in the modal when the post is already pinned to the spotlight",
          %{} do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -72,7 +72,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
   describe "instance pin button action (persistence)" do
     test "admin clicking 'Pin to spotlight' in the modal actually pins the post", %{} do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -97,7 +97,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     end
 
     test "admin clicking 'Unpin from spotlight' in the modal actually unpins the post", %{} do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -125,7 +125,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
   describe "dashboard pinned widget" do
     test "pinned activity renders in the widget on dashboard", %{} do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -184,7 +184,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
   describe "instance pins embed" do
     test "embed renders full width while the in-app page keeps its max width and in-tab links" do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -219,7 +219,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     end
 
     test "pinned activity links open in a new tab" do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -251,7 +251,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     end
 
     test "embed marks itself for client-side rich-text link rewriting" do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -281,7 +281,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     end
 
     test "carousel embed renders without scroll buttons" do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)
@@ -314,7 +314,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     end
 
     test "guest poll vote CTA opens the Bonfire page in a new tab" do
-      Process.put(:feed_live_update_many_preload_mode, :inline)
+      Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
       account = fake_account!()
       admin = fake_admin!(account)

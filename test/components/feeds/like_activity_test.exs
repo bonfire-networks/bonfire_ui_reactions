@@ -46,7 +46,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
   test "As a user I want to see if I already liked an activity", %{
     alice: alice
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)
@@ -70,7 +70,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
   } do
     account2 = fake_account!()
     bob = fake_user!(account2)
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     attrs = %{
       post_content: %{summary: "summary", html_body: "first post"}
@@ -89,7 +89,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
   test "As a user, when I like an activity, the label should change from like to liked", %{
     alice: alice
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)
@@ -116,7 +116,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
   test "As a user, when I unlike an activity, the label should change from liked to like", %{
     alice: alice
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)
@@ -143,7 +143,7 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
   end
 
   test "like toggle works on a post page", %{alice: alice} do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     account2 = fake_account!()
     bob = fake_user!(account2)

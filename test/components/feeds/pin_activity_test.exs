@@ -81,7 +81,7 @@ defmodule Bonfire.UI.Reactions.Feeds.PinActivityTest do
     conn: conn,
     me: me
   } do
-    Process.put(:feed_live_update_many_preload_mode, :inline)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
     attrs = %{
       post_content: %{summary: "thread root", html_body: "discussion starter"}
