@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Reactions.InstancePinsLive do
 
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
-  def mount(raw_params, _session, socket) do
+  def mount(raw_params, session, socket) do
     widget_title = e(socket.assigns, :widget_title, l("Instance Pins"))
     params = socket.assigns[:current_params] || (is_map(raw_params) && raw_params) || %{}
 
@@ -16,8 +16,9 @@ defmodule Bonfire.UI.Reactions.InstancePinsLive do
       socket
       |> Bonfire.UI.Common.ThemeHelper.setup_embed(e(params, "theme", nil), true)
       |> assign_new(:live_action, fn -> nil end)
-      # only the embed controller assigns embed_variant, so nil = the in-app routes
-      |> assign_new(:embed_variant, fn -> nil end)
+      # only the embed controller sets embed_variant (via the session, since conn assigns don't
+      # reach a controller-rendered LiveView), so nil = the in-app routes
+      |> assign_new(:embed_variant, fn -> embed_variant_from_session(session) end)
 
     {:ok,
      socket
@@ -33,6 +34,10 @@ defmodule Bonfire.UI.Reactions.InstancePinsLive do
      )
      |> maybe_assign_embed_link_target()}
   end
+
+  defp embed_variant_from_session(%{"embed_variant" => "carousel"}), do: :carousel
+  defp embed_variant_from_session(%{"embed_variant" => "list"}), do: :list
+  defp embed_variant_from_session(_), do: nil
 
   # in embeds, links must escape the iframe: LinkLive & co read link_target from
   # context, and the iframe layout reads it (same mechanism as `:go`) to rewrite
