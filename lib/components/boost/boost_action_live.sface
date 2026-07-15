@@ -8,7 +8,7 @@
         "btn btn-ghost btn-circle btn-sm",
         if(@my_boost, do: "text-success", else: "text-muted hover:text-primary")
       }
-      label={l("Boost or quote")}
+      label={if @my_boost, do: l("Boosted, open boost menu"), else: l("Boost or quote")}
     >
       <:trigger>
         <#Icon iconify="ph:rocket-launch-fill" class="w-[18px] h-[18px]" />
