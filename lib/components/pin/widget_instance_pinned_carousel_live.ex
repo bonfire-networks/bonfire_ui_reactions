@@ -10,6 +10,8 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   prop entries, :any, default: []
   prop hide_scroll_buttons, :boolean, default: false
   prop visible_items, :number, default: nil
+  # on small screens we always show fewer items so cards stay legible; @visible_items applies from the `sm:` breakpoint up
+  prop visible_items_mobile, :number, default: 1.5
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)

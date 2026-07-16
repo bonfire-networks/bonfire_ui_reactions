@@ -34,7 +34,7 @@
       {!-- Carousel --}
       <div
         id="pinned-carousel"
-        class="flex items-start gap-3 overflow-x-auto touch-pan-y scroll-smooth snap-x snap-mandatory"
+        class="flex items-start gap-3 overflow-x-auto touch-pan-x scroll-smooth snap-x snap-mandatory"
         phx-hook="CarouselScroll"
         style="scrollbar-width: thin; scrollbar-color: oklch(var(--s)) oklch(var(--s) / 0.15);"
       >
@@ -43,8 +43,8 @@
             {#match nil}
             {#match activity}
               <div
-                class="spotlight_clamp flex-shrink-0 snap-start rounded-box border-hair bg-base-100 border-secondary p-card"
-                style={"width: #{carousel_item_width(@visible_items)};"}
+                class="spotlight_clamp flex-shrink-0 snap-start rounded-box border-hair bg-base-100 border-secondary p-card w-[var(--carousel-item-w-mobile)] sm:w-[var(--carousel-item-w)]"
+                style={"--carousel-item-w-mobile: #{carousel_item_width(@visible_items_mobile)}; --carousel-item-w: #{carousel_item_width(@visible_items)};"}
               >
                 <StatefulComponent
                   module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
