@@ -76,7 +76,9 @@ defmodule Bonfire.UI.Reactions.Boost.QuoteAppendTest do
       # the URL in the published body so the existing AP-quote pipeline can
       # detect it.
       {:ok, view, _html} = live(conn, "/post/#{post.id}")
-      url = Bonfire.Common.URIs.canonical_url(post)
+      # the freshly-published `post` isn't preloaded with `:peered`; this test just needs the
+      # canonical URL as an expected value, so opt into the lazy preload (a legit lazy caller)
+      url = Bonfire.Common.URIs.canonical_url(post, preload_if_needed: true)
 
       view
       |> element("#smart_input_form")
