@@ -97,8 +97,7 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
       component_id: assigns.id,
       object: object || e(assigns, :object_id, nil),
       object_id: e(assigns, :object_id, nil) || uid(object),
-      previous_my_bookmark: e(assigns, :my_bookmark, nil),
-      previous_bookmark_count: e(assigns, :bookmark_count, nil)
+      previous_my_bookmark: e(assigns, :my_bookmark, nil)
     }
   end
 
@@ -107,30 +106,15 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
 
     # debug(my_states, "bookmarks")
 
-    objects_counts =
-      if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-           current_user: current_user
-         ) do
-        list_of_components
-        |> Enum.map(fn %{object: object} ->
-          object
-        end)
-        |> filter_empty([])
-        |> debug("list_of_objects")
-        |> repo().maybe_preload(:bookmark_count, follow_pointers: false)
-        |> Map.new(fn o -> {e(o, :id, nil), e(o, :bookmark_count, :object_count, nil)} end)
-
-        # |> debug("bookmark_counts")
-      end
+    # NOTE: no bookmark count is preloaded here: bookmarks are personal, nothing in the
+    # UI displays a count, and no `bookmark_count` assoc is defined in bonfire_data.exs
 
     list_of_components
     |> Map.new(fn component ->
       {component.component_id,
        %{
          my_bookmark:
-           Map.get(my_states, component.object_id) || component.previous_my_bookmark || false,
-         bookmark_count:
-           e(objects_counts, component.object_id, nil) || component.previous_bookmark_count
+           Map.get(my_states, component.object_id) || component.previous_my_bookmark || false
        }}
     end)
   end

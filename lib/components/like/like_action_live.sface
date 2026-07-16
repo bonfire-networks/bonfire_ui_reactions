@@ -115,8 +115,7 @@
         data-role="like_count"
         class="text-caption text-muted tabular-nums"
         :if={e(@like_count, 0) > 0 &&
-          (@showing_within == :thread_embed ||
-             Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__))}
+          (@showing_within == :thread_embed || show_activity_counts?(@show_counts, @__context__))}
       >{e(@like_count, 0)}</span>
     {#match _}
       <.icon_button
@@ -132,8 +131,7 @@
       <span
         class="tabular-nums text-caption text-muted"
         :if={e(@like_count, 0) > 0 &&
-          (@showing_within == :thread_embed ||
-             Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__))}
+          (@showing_within == :thread_embed || show_activity_counts?(@show_counts, @__context__))}
       >{e(@like_count, 0)}</span>
   {/case}
 

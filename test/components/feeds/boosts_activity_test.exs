@@ -42,29 +42,56 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
     alice: alice,
     account: account,
     bob: bob,
-    carl: carl,
-    conn: conn
+    carl: carl
   } do
-    if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-         current_user: alice,
-         current_account: account
-       ) do
-      attrs = %{
-        post_content: %{summary: "summary", html_body: "first post"}
-      }
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
-      assert {:ok, post} =
-               Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    me =
+      Bonfire.Common.Utils.current_user(
+        Bonfire.Common.Settings.put([:ui, :show_activity_counts], true, current_user: me)
+      )
 
-      assert {:ok, _boost} = Boosts.boost(bob, post)
-      assert {:ok, _boost} = Boosts.boost(carl, post)
-      assert {:ok, _boost} = Boosts.boost(me, post)
-      assert _unboosted = Boosts.unboost(me, post)
+    attrs = %{
+      post_content: %{summary: "summary", html_body: "first post"}
+    }
 
-      conn
-      |> visit("/post/#{post.id}")
-      |> assert_has("[data-id=boost_action]")
-    end
+    assert {:ok, post} =
+             Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+
+    assert {:ok, _boost} = Boosts.boost(bob, post)
+    assert {:ok, _boost} = Boosts.boost(carl, post)
+    assert {:ok, _boost} = Boosts.boost(me, post)
+    assert _unboosted = Boosts.unboost(me, post)
+
+    conn(user: me, account: account)
+    |> visit("/post/#{post.id}")
+    |> assert_has("[data-id=boost_action]")
+    |> assert_has("[data-role=boost_count]", text: "2")
+  end
+
+  test "boost counts stay hidden when show_activity_counts is off (the default)", %{
+    me: me,
+    alice: alice,
+    account: account,
+    bob: bob,
+    carl: carl
+  } do
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
+
+    attrs = %{
+      post_content: %{summary: "summary", html_body: "first post"}
+    }
+
+    assert {:ok, post} =
+             Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+
+    assert {:ok, _boost} = Boosts.boost(bob, post)
+    assert {:ok, _boost} = Boosts.boost(carl, post)
+
+    conn(user: me, account: account)
+    |> visit("/post/#{post.id}")
+    |> assert_has("[data-id=boost_action]")
+    |> refute_has("[data-role=boost_count]")
   end
 
   test "As a user I want to see if I already boosted an activity", %{
@@ -155,29 +182,30 @@ defmodule Bonfire.UI.Reactions.Feeds.BoostsActivityTest do
   test "As a user, when I unboost an activity, the counter should decrement", %{
     me: me,
     alice: alice,
-    account: account,
-    conn: conn
+    account: account
   } do
-    if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-         current_user: me,
-         current_account: account
-       ) do
-      attrs = %{
-        post_content: %{summary: "summary", html_body: "first post"}
-      }
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
-      assert {:ok, post} =
-               Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    me =
+      Bonfire.Common.Utils.current_user(
+        Bonfire.Common.Settings.put([:ui, :show_activity_counts], true, current_user: me)
+      )
 
-      assert {:ok, _boost} = Boosts.boost(alice, post)
-      assert {:ok, _boost} = Boosts.boost(me, post)
+    attrs = %{
+      post_content: %{summary: "summary", html_body: "first post"}
+    }
 
-      conn
-      |> visit("/post/#{post.id}")
-      |> assert_has("[data-id=boost_action]", text: "Boosted (2)")
-      |> click_button("[data-id=boost_action]")
-      |> assert_has("[data-id=boost_action]", text: "Boost (1)")
-    end
+    assert {:ok, post} =
+             Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+
+    assert {:ok, _boost} = Boosts.boost(alice, post)
+    assert {:ok, _boost} = Boosts.boost(me, post)
+
+    conn(user: me, account: account)
+    |> visit("/post/#{post.id}")
+    |> assert_has("[data-role=boost_count]", text: "2")
+    |> click_button("[data-id=boost_action]", "Boosted")
+    |> assert_has("[data-role=boost_count]", text: "1")
   end
 
   test "As a user, when I unboost an activity, the label should change to boost", %{

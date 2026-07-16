@@ -14,33 +14,34 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     {:ok, conn: conn, account: account, me: me, alice: alice}
   end
 
-  @tag :skip
   test "As a user I want to see the activity total likes", %{
     alice: alice,
     account: account
   } do
-    if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-         current_user: alice,
-         current_account: account
-       ) do
-      account2 = fake_account!()
-      bob = fake_user!(account2)
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
 
-      Follows.follow(bob, alice)
+    alice =
+      Bonfire.Common.Utils.current_user(
+        Bonfire.Common.Settings.put([:ui, :show_activity_counts], true, current_user: alice)
+      )
 
-      attrs = %{
-        post_content: %{summary: "summary", html_body: "first post"}
-      }
+    account2 = fake_account!()
+    bob = fake_user!(account2)
 
-      assert {:ok, post} =
-               Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+    Follows.follow(bob, alice)
 
-      assert {:ok, _like} = Likes.like(bob, post)
+    attrs = %{
+      post_content: %{summary: "summary", html_body: "first post"}
+    }
 
-      conn(user: alice, account: account)
-      |> visit("/feed")
-      |> assert_has(".activity", text: "Like (1)")
-    end
+    assert {:ok, post} =
+             Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+
+    assert {:ok, _like} = Likes.like(bob, post)
+
+    conn(user: alice, account: account)
+    |> visit("/feed")
+    |> assert_has("[data-role=like_count]", text: "1")
   end
 
   test "As a user I want to see if I already liked an activity", %{

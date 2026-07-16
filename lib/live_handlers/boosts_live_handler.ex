@@ -75,18 +75,28 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
     end
   end
 
-  defp boost_action(object, boost?, _params, socket) do
+  defp boost_action(object, boost?, params, socket) do
+    # the count rendered on the button is the source of truth for the optimistic update — the
+    # socket's assign can be nil/stale (e.g. before the async batch preload lands)
+    current_count = booster_count(params) || e(socket, :assigns, :boost_count, 0) || 0
+    new_count = max(0, current_count + if(boost?, do: 1, else: -1))
+
     # TODO: send this to ActionsLive if using feed_live_update_many_preload_mode :async_actions
     ComponentID.send_updates(
       Bonfire.UI.Reactions.BoostActionLive,
       uid(object),
-      my_boost: boost?
+      my_boost: boost?,
+      boost_count: new_count
     )
 
     {:noreply,
      socket
-     |> assign(:my_boost, boost?)}
+     |> assign(:my_boost, boost?)
+     |> assign(:boost_count, new_count)}
   end
+
+  defp booster_count(%{"current_count" => a}), do: Types.maybe_to_integer(a, nil)
+  defp booster_count(_), do: nil
 
   def update_many(assigns_sockets, opts \\ []) do
     {first_assigns, _socket} = List.first(assigns_sockets)
@@ -149,10 +159,13 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
     #     %{}
     #   end
 
+    show_counts? =
+      !!Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
+        current_user: current_user
+      )
+
     objects_counts =
-      if Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-           current_user: current_user
-         ) do
+      if show_counts? do
         list_of_components
         |> Enum.map(fn %{object: object} ->
           object
@@ -170,7 +183,9 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
          my_boost:
            Map.get(my_states, component.object_id) || component.previous_my_boost || false,
          boost_count:
-           e(objects_counts, component.object_id, nil) || component.previous_boost_count
+           e(objects_counts, component.object_id, nil) || component.previous_boost_count,
+         # the setting resolved once for the whole batch, so badges skip the per-render lookup
+         show_counts: show_counts?
          #  quote_permission:
          #    Map.get(quote_permissions, component.object_id) || component.previous_quote_permission
        }}

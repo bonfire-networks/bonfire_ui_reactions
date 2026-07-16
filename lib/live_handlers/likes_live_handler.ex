@@ -191,11 +191,13 @@ defmodule Bonfire.Social.Likes.LiveHandler do
 
     force_counts? = Enum.any?(list_of_components, &(&1.showing_within == :thread_embed))
 
+    show_counts? =
+      !!Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
+        current_user: current_user
+      )
+
     objects_counts =
-      if force_counts? ||
-           Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-             current_user: current_user
-           ) do
+      if force_counts? || show_counts? do
         list_of_components
         |> Enum.map(fn %{object: object} ->
           object
@@ -211,7 +213,10 @@ defmodule Bonfire.Social.Likes.LiveHandler do
       {component.component_id,
        %{
          my_like: Map.get(my_states, component.object_id) || component.previous_my_like || false,
-         like_count: e(objects_counts, component.object_id, nil) || component.previous_like_count
+         like_count: e(objects_counts, component.object_id, nil) || component.previous_like_count,
+         # the setting resolved once for the whole batch, so badges skip the per-render lookup
+         # (NOT force_counts? — the thread_embed exception stays in the template)
+         show_counts: show_counts?
        }}
     end)
   end

@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="relative flex items-center">
   {#if @object_type != Bonfire.Data.Social.Message}
     <Dropdown
       id={deterministic_dom_id(__MODULE__, id(@object_id), "share_menu", @parent_id)}
@@ -29,6 +29,7 @@
               phx-target={@myself}
               phx-value-id={@object_id}
               phx-value-component={__MODULE__}
+              phx-value-current_count={e(@boost_count, 0)}
             >
               {#if @my_boost}
                 <#Icon
@@ -46,8 +47,7 @@
 
               <span
                 class="tabular-nums"
-                :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-                  e(@boost_count, 0) > 0}
+                :if={show_activity_counts?(@show_counts, @__context__) && e(@boost_count, 0) > 0}
               >{e(@boost_count, 0)}</span>
             </button>
           {#match _}
@@ -68,8 +68,7 @@
                 </span>
                 <span
                   class="tabular-nums"
-                  :if={Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, @__context__) &&
-                    e(@boost_count, 0) > 0}
+                  :if={show_activity_counts?(@show_counts, @__context__) && e(@boost_count, 0) > 0}
                 >{e(@boost_count, 0)}</span>
               </span>
             </button>
@@ -173,6 +172,11 @@
         </li>
       {/if}
     </Dropdown>
+    <span
+      data-role="boost_count"
+      class="text-caption text-muted tabular-nums"
+      :if={show_activity_counts?(@show_counts, @__context__) && e(@boost_count, 0) > 0}
+    >{e(@boost_count, 0)}</span>
   {#else}
     <.icon_button
       icon="ph:arrows-counter-clockwise-fill"
