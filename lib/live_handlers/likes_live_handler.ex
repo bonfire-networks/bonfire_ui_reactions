@@ -192,9 +192,7 @@ defmodule Bonfire.Social.Likes.LiveHandler do
     force_counts? = Enum.any?(list_of_components, &(&1.showing_within == :thread_embed))
 
     show_counts? =
-      !!Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-        current_user: current_user
-      )
+      !!Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil, current_user: current_user)
 
     objects_counts =
       if force_counts? || show_counts? do

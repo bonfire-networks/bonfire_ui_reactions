@@ -9,6 +9,7 @@ defmodule Bonfire.UI.Reactions.LikeActionLive do
   prop like_count, :any, default: 0
   # prop label, :string, default: nil
   prop showing_within, :atom, default: nil
+
   # nil = look up the setting; a boolean skips the per-render settings lookup (see `show_activity_counts?/2`)
   prop show_counts, :any, default: nil
   prop my_like, :any, default: nil

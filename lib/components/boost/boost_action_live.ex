@@ -8,6 +8,7 @@ defmodule Bonfire.UI.Reactions.BoostActionLive do
   prop object_boundary, :any, default: :skip_boundary_preload
   prop boost_count, :any
   prop showing_within, :atom
+
   # nil = look up the setting; a boolean skips the per-render settings lookup (see `show_activity_counts?/2`)
   prop show_counts, :any, default: nil
   prop my_boost, :any, default: nil

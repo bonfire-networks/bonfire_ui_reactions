@@ -160,9 +160,7 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
     #   end
 
     show_counts? =
-      !!Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil,
-        current_user: current_user
-      )
+      !!Bonfire.Common.Settings.get([:ui, :show_activity_counts], nil, current_user: current_user)
 
     objects_counts =
       if show_counts? do
