@@ -3,6 +3,7 @@
     class="w-full relative overflow-hidden bg-transparent pb-2"
     empty={@entries == []}
     empty_icon="ph:push-pin-fill"
+    title={@title || nil}
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
     reset_cache_event="reset_instance_pinned"
     reset_cache_target={@myself}
