@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   # TODO: dedup with Bonfire.UI.Reactions.PinnedCarouselLive
 
   prop title, :string, default: nil
+  prop wrapper_class, :css_class, default: nil
   prop object_types, :any, default: []
   prop entries, :any, default: []
   prop hide_scroll_buttons, :boolean, default: false

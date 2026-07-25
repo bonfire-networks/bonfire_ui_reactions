@@ -168,6 +168,9 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       conn(user: admin, account: account)
       |> visit("/dashboard")
       |> assert_has("[data-id=instance_pinned_widget]")
+      |> assert_has(
+        "[data-id=instance_pinned_widget] aside.p-card.border-t-hair.border-secondary"
+      )
       |> assert_has("[data-id=instance_pinned_widget]",
         text: "a pinned post visible on dashboard"
       )

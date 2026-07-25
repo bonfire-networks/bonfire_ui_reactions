@@ -1,9 +1,9 @@
 <div data-id="instance_pinned_widget">
   <Bonfire.UI.Common.WidgetBlockLive
-    class="w-full relative overflow-hidden bg-transparent pb-2"
+    class={@wrapper_class || "w-full relative overflow-hidden bg-transparent pb-2"}
     empty={@entries == []}
     empty_icon="ph:push-pin-fill"
-    title={@title || nil}
+    widget_title={@title}
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
     reset_cache_event="reset_instance_pinned"
     reset_cache_target={@myself}
