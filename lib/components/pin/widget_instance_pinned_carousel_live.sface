@@ -53,7 +53,7 @@
                   activity={activity}
                   showing_within={:pinned}
                   hide_actions
-                  class="flex-1 spotlight_activity"
+                  class="flex-1 spotlight_activity !touch-pan-x"
                   show_minimal_subject_and_note
                 />
               </div>

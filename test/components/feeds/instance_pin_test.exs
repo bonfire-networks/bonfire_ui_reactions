@@ -314,6 +314,14 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       assert Floki.find(document, "#pinned-carousel") != []
       assert Floki.find(document, ~s(button[aria-label="Scroll left"])) == []
       assert Floki.find(document, ~s(button[aria-label="Scroll right"])) == []
+
+      carousel_classes =
+        document
+        |> Floki.find("#pinned-carousel [class]")
+        |> Enum.flat_map(&Floki.attribute(&1, "class"))
+        |> Enum.flat_map(&String.split/1)
+
+      assert "!touch-pan-x" in carousel_classes
     end
 
     test "guest poll vote CTA opens the Bonfire page in a new tab" do
