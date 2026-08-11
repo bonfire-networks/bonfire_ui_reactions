@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedLive do
      assign_flash(
        socket,
        :info,
-       l("Spotlight has been reset.") <> l(" You need to reload to see updates, if any.")
+       l("Spotlight has been reset.") <> " " <> l("You need to reload to see updates, if any.")
      )}
   end
 end
