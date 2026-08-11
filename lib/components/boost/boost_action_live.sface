@@ -4,6 +4,7 @@
       id={deterministic_dom_id(__MODULE__, id(@object_id), "share_menu", @parent_id)}
       position="bottom"
       wrapper_class="z-dropdown"
+      expanded_touch_target
       trigger_class={
         "btn btn-ghost btn-circle btn-sm",
         if(@my_boost, do: "text-success", else: "text-muted hover:text-primary")

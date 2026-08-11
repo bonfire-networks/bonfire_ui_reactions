@@ -4,6 +4,7 @@
     empty={@entries == []}
     empty_icon="ph:push-pin-fill"
     widget_title={@title}
+    title_class={@title_class}
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
     reset_cache_event="reset_instance_pinned"
     reset_cache_target={@myself}
@@ -15,17 +16,21 @@
           <button
             type="button"
             aria-label={l("Scroll left")}
-            class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
+            data-role="carousel-previous"
+            class="touch-target-expanded size-8 min-h-8 min-w-8 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer touch-manipulation"
             phx-click={JS.dispatch("scroll-left", to: "#pinned-carousel")}
           >
+            <span class="touch-target-hit-area" aria-hidden="true" />
             <#Icon iconify="ph:caret-left" class="w-4 h-4" />
           </button>
           <button
             type="button"
             aria-label={l("Scroll right")}
-            class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
+            data-role="carousel-next"
+            class="touch-target-expanded size-8 min-h-8 min-w-8 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer touch-manipulation"
             phx-click={JS.dispatch("scroll-right", to: "#pinned-carousel")}
           >
+            <span class="touch-target-hit-area" aria-hidden="true" />
             <#Icon iconify="ph:caret-right" class="w-4 h-4" />
           </button>
         </div>
