@@ -24,7 +24,7 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
   end
 
   def do_bookmark(object, params, socket) do
-    with {:ok, current_user} <- current_user_or_remote_interaction(socket, l("bookmark"), object),
+    with {:ok, current_user} <- current_user_or_remote_interaction(socket, "bookmark", object),
          {:ok, _bookmark} <- Bonfire.Social.Bookmarks.bookmark(current_user, object) do
       bookmark_action(object, true, params, socket)
       |> debug("bookmarked")

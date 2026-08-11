@@ -22,7 +22,7 @@
               class="flex py-2 px-3 gap-2  transition-interactive focus-ring phx-click-loading:opacity-60 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait"
               id={@id || "boost_#{@object_id}"}
               data-id="boost_action"
-              data-tip={l("Boost")}
+              data-tip={lc("verb: action", "Boost", [], :bonfire_social)}
               data-boosted={@my_boost}
               data-role="boost_enabled"
               disabled={if @object_type == Bonfire.Data.Social.Message, do: "disabled"}
@@ -43,7 +43,7 @@
                   iconify="ph:arrows-counter-clockwise-fill"
                   class="w-[18px] h-[18px] group-hover:text-success"
                 />
-                <span class="text-sm">{l("Boost")}</span>
+                <span class="text-sm">{lc("verb: action", "Boost", [], :bonfire_social)}</span>
               {/if}
 
               <span

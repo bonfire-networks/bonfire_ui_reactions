@@ -53,7 +53,7 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
 
   # boost in LV
   def do_boost(object, params, socket) do
-    with {:ok, current_user} <- current_user_or_remote_interaction(socket, l("boost"), object),
+    with {:ok, current_user} <- current_user_or_remote_interaction(socket, "boost", object),
          {:ok, _boost} <-
            Bonfire.Social.Boosts.boost(current_user, object,
              object_creator: e(socket, :assigns, :creator, nil)
