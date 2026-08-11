@@ -169,9 +169,10 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       |> visit("/dashboard")
       |> assert_has("[data-id=instance_pinned_widget]")
       |> assert_has("[data-id=instance_pinned_widget] aside")
-      |> assert_has(
-        "[data-id=instance_pinned_widget] aside > div.flex.items-center.justify-between.pb-card.text-xs.font-normal.uppercase.tracking-wide.text-base-content.px-card"
-      )
+      # only the structural classes WidgetBlockLive always emits — the typography ones
+      # (pb-card, text-xs, uppercase...) come from the `title_class` a flavour's dashboard_live
+      # passes, and not every flavour/generated dashboard supplies one
+      |> assert_has("[data-id=instance_pinned_widget] aside > div.flex.items-center.justify-between")
       |> assert_has("[data-id=instance_pinned_widget]",
         text: "a pinned post visible on dashboard"
       )
