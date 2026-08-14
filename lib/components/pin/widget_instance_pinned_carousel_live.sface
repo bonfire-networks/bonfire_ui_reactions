@@ -13,43 +13,36 @@
     <:action>
       {#if length(@entries) > 1 and !@hide_scroll_buttons and socket_connected?(@__context__)}
         <div class="flex items-center gap-1.5">
-          <button
-            type="button"
-            aria-label={l("Scroll left")}
+          <.icon_button
+            icon="ph:caret-left"
+            aria_label={l("Scroll left")}
+            variant="outline"
+            size="sm"
+            class="border-secondary"
             data-role="carousel-previous"
-            class="touch-target-expanded size-8 min-h-8 min-w-8 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer touch-manipulation"
-            phx-click={JS.dispatch("scroll-left", to: "#pinned-carousel")}
-          >
-            <span class="touch-target-hit-area" aria-hidden="true" />
-            <#Icon iconify="ph:caret-left" class="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            aria-label={l("Scroll right")}
+            phx_click={JS.dispatch("scroll-left", to: "#pinned-carousel")}
+          />
+          <.icon_button
+            icon="ph:caret-right"
+            aria_label={l("Scroll right")}
+            variant="outline"
+            size="sm"
+            class="border-secondary"
             data-role="carousel-next"
-            class="touch-target-expanded size-8 min-h-8 min-w-8 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer touch-manipulation"
-            phx-click={JS.dispatch("scroll-right", to: "#pinned-carousel")}
-          >
-            <span class="touch-target-hit-area" aria-hidden="true" />
-            <#Icon iconify="ph:caret-right" class="w-4 h-4" />
-          </button>
+            phx_click={JS.dispatch("scroll-right", to: "#pinned-carousel")}
+          />
         </div>
       {/if}
     </:action>
     <div class="grid grid-cols-1 overflow-hidden relative">
       {!-- Carousel --}
-      <div
-        id="pinned-carousel"
-        class="flex items-start gap-3 overflow-x-auto touch-pan-x scroll-smooth snap-x snap-mandatory"
-        phx-hook="CarouselScroll"
-        style="scrollbar-width: thin; scrollbar-color: oklch(var(--s)) oklch(var(--s) / 0.15);"
-      >
+      <div id="pinned-carousel" class="carousel-scroll items-start" phx-hook="CarouselScroll">
         {#for entry <- @entries}
           {#case e(entry, :activity, nil)}
             {#match nil}
             {#match activity}
               <div
-                class="spotlight_clamp flex-shrink-0 snap-start rounded-box border-hair bg-base-100 border-secondary p-card w-[var(--carousel-item-w-mobile)] sm:w-[var(--carousel-item-w)]"
+                class="spotlight_clamp rounded-box border-hair bg-base-100 border-secondary p-card w-[var(--carousel-item-w-mobile)] sm:w-[var(--carousel-item-w)]"
                 style={"--carousel-item-w-mobile: #{carousel_item_width(@visible_items_mobile)}; --carousel-item-w: #{carousel_item_width(@visible_items)};"}
               >
                 <StatefulComponent
@@ -58,7 +51,7 @@
                   activity={activity}
                   showing_within={:pinned}
                   hide_actions
-                  class="flex-1 spotlight_activity !touch-pan-x"
+                  class="flex-1 spotlight_activity"
                   show_minimal_subject_and_note
                 />
               </div>

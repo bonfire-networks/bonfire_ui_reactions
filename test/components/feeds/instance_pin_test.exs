@@ -325,7 +325,18 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
         |> Enum.flat_map(&Floki.attribute(&1, "class"))
         |> Enum.flat_map(&String.split/1)
 
-      assert "!touch-pan-x" in carousel_classes
+      # `touch-action: pan-x` anywhere in here would tell the browser this
+      # subtree handles nothing but horizontal gestures, so a thumb swipe
+      # landing on a card could no longer scroll the page. The carousel pans
+      # natively in both axes instead — see `.carousel-scroll` in app.css.
+      refute "touch-pan-x" in carousel_classes
+      refute "!touch-pan-x" in carousel_classes
+
+      assert document
+             |> Floki.find("#pinned-carousel")
+             |> Floki.attribute("class")
+             |> Enum.flat_map(&String.split/1)
+             |> Enum.member?("carousel-scroll")
     end
 
     test "guest poll vote CTA opens the Bonfire page in a new tab" do
