@@ -1,14 +1,19 @@
 {
-  "name": "assets",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "emoji-picker-element": "^1.26.1"
-  }
+	"name": "bonfire_ui_reactions",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"build.ext": "npx esbuild ./js/emoji_picker.js --target=es2020 --bundle --format=esm --minify --drop:console --drop:debugger --outfile=../../../priv/static/assets/emoji_picker.js",
+		"watch.ext": "NODE_ENV=development npx esbuild ./js/emoji_picker.js --target=es2020 --bundle --format=esm --sourcemap --outfile=../../../priv/static/assets/emoji_picker.js --watch"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"emoji-picker-element": "^1.26.1"
+	},
+	"private": true,
+	"devDependencies": {
+		"esbuild": "^0.19.9"
+	}
 }

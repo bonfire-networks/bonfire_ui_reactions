@@ -49,3 +49,4 @@ deps.path
 # extension-cleanup skill artifacts
 .cleanup-report.md
 .cleanup-state.md
+assets/.yarn/install-state.gz
