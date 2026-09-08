@@ -23,8 +23,10 @@ defmodule Bonfire.UI.Reactions.ReactionLists.LiveHandler do
         :quote -> {Bonfire.Social.Quotes, & &1.created.creator}
       end
 
+    filters = if reaction == :quote, do: [in_thread: thread_id], else: [objects: thread_id]
+
     %{edges: reactions, page_info: page_info} =
-      context.list_paginated([in_thread: thread_id],
+      context.list_paginated(filters,
         current_user: current_user(socket),
         preload: :subject,
         paginate?: true,

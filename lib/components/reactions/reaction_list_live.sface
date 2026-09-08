@@ -9,7 +9,7 @@
           <Bonfire.UI.Common.AvatarLive
             user_id={id(person)}
             parent_id={@id}
-            src={e(person, :profile, :icon, nil)}
+            src={Bonfire.Common.Media.avatar_url(person)}
             title={e(person, :profile, :name, nil) || e(person, :character, :username, "")}
             is_remote={!check_is_local?(person, preload_if_needed: false)}
             class="size-10 rounded-full"
