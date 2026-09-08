@@ -1,0 +1,37 @@
+<div id={@id} data-role={@list_role}>
+  <ul class="flex flex-col gap-2" aria-label={@label}>
+    {#for person <- @people}
+      <li id={"#{@id}_#{id(person)}"} data-role={@person_role}>
+        <LinkLive
+          to={path(person)}
+          class="flex items-center gap-3 rounded-lg p-2 hover:bg-base-200 focus-ring"
+        >
+          <Bonfire.UI.Common.AvatarLive
+            user_id={id(person)}
+            parent_id={@id}
+            src={e(person, :profile, :icon, nil)}
+            title={e(person, :profile, :name, nil) || e(person, :character, :username, "")}
+            is_remote={!check_is_local?(person, preload_if_needed: false)}
+            class="size-10 rounded-full"
+            wrapper_class="shrink-0"
+          />
+          <span class="flex min-w-0 flex-col">
+            <span class="font-medium break-words">{e(person, :profile, :name, nil) || e(person, :character, :username, l("User"))}</span>
+            <span class="text-sm text-muted break-all">@{e(person, :character, :username, "")}</span>
+          </span>
+        </LinkLive>
+      </li>
+    {/for}
+  </ul>
+  <p :if={@people == []} class="py-4 text-sm text-muted" role="status">
+    {@empty_label}
+  </p>
+  <button
+    :if={Bonfire.UI.Common.LoadMoreLive.end_cursor(@page_info)}
+    id={"#{@id}_load_more"}
+    type="button"
+    phx-click="Bonfire.UI.Reactions.ReactionLists:load_more"
+    phx-target={@myself}
+    class="btn btn-ghost btn-sm mt-4 w-full focus-ring phx-click-loading:opacity-60 phx-click-loading:pointer-events-none"
+  >{l("Load more")}</button>
+</div>

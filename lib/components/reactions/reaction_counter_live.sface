@@ -1,0 +1,23 @@
+<div data-role={"#{@role}_summary"} class="text-sm text-base-content">
+  {#if @count > 0 and current_user(@__context__)}
+    <Bonfire.UI.Common.OpenModalLive
+      id={deterministic_dom_id(__MODULE__, @thread_id, @role, @parent_id)}
+      title_text={@title}
+      open_btn_aria_label={@label}
+      open_btn_wrapper_class="link link-hover focus-ring rounded-sm phx-click-loading:opacity-60 phx-click-loading:pointer-events-none"
+      no_actions
+      modal_assigns={[
+        modal_component: Bonfire.UI.Reactions.ReactionListLive,
+        modal_component_stateful?: true,
+        reaction: @reaction,
+        thread_id: @thread_id
+      ]}
+    >
+      <:open_btn>
+        <span data-id={"#{@role}_count"} class="tabular-nums font-medium">{@label}</span>
+      </:open_btn>
+    </Bonfire.UI.Common.OpenModalLive>
+  {#else}
+    <span data-id={"#{@role}_count"} class="tabular-nums font-medium">{@label}</span>
+  {/if}
+</div>
