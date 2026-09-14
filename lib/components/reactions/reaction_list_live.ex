@@ -14,13 +14,23 @@ defmodule Bonfire.UI.Reactions.ReactionListLive do
   def render(assigns) do
     {list_role, person_role, label, empty_label} =
       case assigns.reaction do
-        :boost -> {"booster_list", "booster", l("People who boosted"), l("No visible boosts yet.")}
-        :like -> {"liker_list", "liker", l("People who liked"), l("No visible likes yet.")}
-        :quote -> {"quoter_list", "quoter", l("People who quoted"), l("No visible quotes yet.")}
+        :boost ->
+          {"booster_list", "booster", l("People who boosted"), l("No visible boosts yet.")}
+
+        :like ->
+          {"liker_list", "liker", l("People who liked"), l("No visible likes yet.")}
+
+        :quote ->
+          {"quoter_list", "quoter", l("People who quoted"), l("No visible quotes yet.")}
       end
 
     assigns
-    |> assign(list_role: list_role, person_role: person_role, label: label, empty_label: empty_label)
+    |> assign(
+      list_role: list_role,
+      person_role: person_role,
+      label: label,
+      empty_label: empty_label
+    )
     |> render_sface()
   end
 

@@ -11,9 +11,17 @@ defmodule Bonfire.UI.Reactions.ReactionCounterLive do
   def render(assigns) do
     {role, title, label} =
       case assigns.reaction do
-        :boost -> {"boosts", l("Boosted by"), lp("%{count} Boost", "%{count} Boosts", assigns.count, count: assigns.count)}
-        :like -> {"likes", l("Liked by"), lp("%{count} Like", "%{count} Likes", assigns.count, count: assigns.count)}
-        :quote -> {"quotes", l("Quoted by"), lp("%{count} Quote", "%{count} Quotes", assigns.count, count: assigns.count)}
+        :boost ->
+          {"boosts", l("Boosted by"),
+           lp("%{count} Boost", "%{count} Boosts", assigns.count, count: assigns.count)}
+
+        :like ->
+          {"likes", l("Liked by"),
+           lp("%{count} Like", "%{count} Likes", assigns.count, count: assigns.count)}
+
+        :quote ->
+          {"quotes", l("Quoted by"),
+           lp("%{count} Quote", "%{count} Quotes", assigns.count, count: assigns.count)}
       end
 
     assigns

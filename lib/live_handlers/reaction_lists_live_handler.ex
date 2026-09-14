@@ -37,7 +37,7 @@ defmodule Bonfire.UI.Reactions.ReactionLists.LiveHandler do
     new_people =
       reactions
       |> Enum.map(extract_person)
-      |> repo().maybe_preload([profile: [:icon], character: [:peered]])
+      |> repo().maybe_preload(profile: [:icon], character: [:peered])
 
     people =
       (if(cursor, do: socket.assigns.people, else: []) ++ new_people)
