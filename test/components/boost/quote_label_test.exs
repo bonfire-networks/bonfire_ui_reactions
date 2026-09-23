@@ -80,13 +80,7 @@ defmodule Bonfire.UI.Reactions.Boost.QuoteAppendTest do
       # canonical URL as an expected value, so opt into the lazy preload (a legit lazy caller)
       url = Bonfire.Common.URIs.canonical_url(post, preload_if_needed: true)
 
-      view
-      |> element("#smart_input_form")
-      |> render_submit(%{
-        "post" => %{"post_content" => %{"html_body" => "my hot take"}},
-        "quoted_url" => url,
-        "to_boundaries" => "public"
-      })
+      submit_composer(view, "my hot take", %{"quoted_url" => url, "to_boundaries" => "public"})
 
       latest =
         from(p in Bonfire.Data.Social.Post,
