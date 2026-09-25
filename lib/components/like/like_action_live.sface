@@ -67,6 +67,7 @@
             :if={@object_id}
             id={@id}
             icon={@icon_pressed}
+            icon_class="w-[18px] h-[18px]"
             aria_label={lc("verb: action", "Like", [], :bonfire_social)}
             pressed
             size="sm"
@@ -92,6 +93,7 @@
             id={@id}
             icon={@icon}
             size="sm"
+            icon_class="w-[18px] h-[18px]"
             aria_label={lc("verb: action", "Like", [], :bonfire_social)}
             pressed={false}
             phx_click="Bonfire.Social.Likes:like"
