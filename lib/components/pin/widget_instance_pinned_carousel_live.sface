@@ -1,9 +1,13 @@
 <div data-id="instance_pinned_widget">
   <Bonfire.UI.Common.WidgetBlockLive
+    :if={@entries != [] or !@hide_empty}
     class={@wrapper_class || "w-full relative overflow-hidden bg-transparent pb-2"}
     empty={@entries == []}
     empty_icon="ph:push-pin-fill"
     widget_title={@title}
+    widget_subtitle={@subtitle}
+    heading_class={@heading_class}
+    subtitle_class={@subtitle_class}
     title_class={@title_class}
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
     reset_cache_event="reset_instance_pinned"
@@ -11,38 +15,45 @@
   >
     {!-- Carousel navigation arrows, shown in the header to the right of the title --}
     <:action>
-      {#if length(@entries) > 1 and !@hide_scroll_buttons and socket_connected?(@__context__)}
+      {!-- plain data attributes (handled by a delegated listener in scroll.js) rather than `JS.dispatch`, so the arrows also work on the static pages guests get without a LiveView socket --}
+      {#if length(@entries) > 1 and !@hide_scroll_buttons}
         <div class="flex items-center gap-1.5">
           <.icon_button
             icon="carbon:chevron-left"
             aria_label={l("Scroll left")}
             variant="outline"
             size="sm"
-            class="border-secondary"
+            class={@button_class}
             data-role="carousel-previous"
-            phx_click={JS.dispatch("scroll-left", to: "#pinned-carousel")}
+            data-carousel-scroll="previous"
+            aria-controls="pinned-carousel"
           />
           <.icon_button
             icon="carbon:chevron-right"
             aria_label={l("Scroll right")}
             variant="outline"
             size="sm"
-            class="border-secondary"
+            class={@button_class}
             data-role="carousel-next"
-            phx_click={JS.dispatch("scroll-right", to: "#pinned-carousel")}
+            data-carousel-scroll="next"
+            aria-controls="pinned-carousel"
           />
         </div>
       {/if}
     </:action>
     <div class="grid grid-cols-1 overflow-hidden relative">
       {!-- Carousel --}
-      <div id="pinned-carousel" class="carousel-scroll items-start" phx-hook="CarouselScroll">
+      <div
+        id="pinned-carousel"
+        class={"carousel-scroll items-start", @carousel_class}
+        phx-hook="CarouselScroll"
+      >
         {#for entry <- @entries}
           {#case e(entry, :activity, nil)}
             {#match nil}
             {#match activity}
               <div
-                class="spotlight_clamp rounded-box border-hair bg-base-100 border-secondary p-card w-[var(--carousel-item-w-mobile)] sm:w-[var(--carousel-item-w)]"
+                class={"spotlight_clamp w-[var(--carousel-item-w-mobile)] sm:w-[var(--carousel-item-w)]", @card_class}
                 style={"--carousel-item-w-mobile: #{carousel_item_width(@visible_items_mobile)}; --carousel-item-w: #{carousel_item_width(@visible_items)};"}
               >
                 <StatefulComponent

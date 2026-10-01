@@ -13,6 +13,24 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   prop hide_scroll_buttons, :boolean, default: false
   prop visible_items, :number, default: nil
 
+  @doc "Render nothing (rather than the \"nothing in the spotlight\" placeholder) when there are no pins, e.g. for guests who can't pin anything."
+  prop hide_empty, :boolean, default: false
+
+  @doc "Optional line under the title."
+  prop subtitle, :string, default: nil
+
+  @doc "Extra classes for the title, subtitle, and prev/next buttons."
+  prop heading_class, :css_class, default: nil
+  prop subtitle_class, :css_class, default: nil
+  prop button_class, :css_class, default: "border-secondary"
+
+  @doc "Extra classes for the horizontal scroll container (eg. padding so the first card starts on a page gutter)."
+  prop carousel_class, :css_class, default: nil
+
+  @doc "Override the classes of each carousel card."
+  prop card_class, :css_class,
+    default: "rounded-box border-hair bg-base-100 border-secondary p-card"
+
   # on small screens we always show fewer items so cards stay legible; @visible_items applies from the `sm:` breakpoint up
   prop visible_items_mobile, :number, default: 1.5
 
