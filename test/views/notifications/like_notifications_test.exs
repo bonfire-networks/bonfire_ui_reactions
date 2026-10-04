@@ -7,7 +7,7 @@ defmodule Bonfire.Social.Notifications.Likes.Test do
   import Bonfire.Files.Simulation
 
   describe "show" do
-    # @tag :skip_ci
+    # @tag Bonfire.Common.RuntimeConfig.skip_in_ci()
     test "likes on my posts (even from people I'm not following) in my notifications" do
       some_account = fake_account!()
       someone = fake_user!(some_account)
