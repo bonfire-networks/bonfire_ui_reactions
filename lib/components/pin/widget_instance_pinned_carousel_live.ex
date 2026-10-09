@@ -22,14 +22,14 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   @doc "Extra classes for the title, subtitle, and prev/next buttons."
   prop heading_class, :css_class, default: nil
   prop subtitle_class, :css_class, default: nil
-  prop button_class, :css_class, default: "border-secondary"
+  prop button_class, :css_class, default: "border-divider"
 
   @doc "Extra classes for the horizontal scroll container (eg. padding so the first card starts on a page gutter)."
   prop carousel_class, :css_class, default: nil
 
   @doc "Override the classes of each carousel card."
   prop card_class, :css_class,
-    default: "rounded-box border-hair bg-base-100 border-secondary p-card"
+    default: "rounded-box border-hair bg-base-100 border-divider p-card"
 
   # on small screens we always show fewer items so cards stay legible; @visible_items applies from the `sm:` breakpoint up
   prop visible_items_mobile, :number, default: 1.5

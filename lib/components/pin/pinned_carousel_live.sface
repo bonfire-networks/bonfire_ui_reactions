@@ -41,7 +41,7 @@
               </LinkLive>
             </div>
             <div class="flex items-center gap-2 mt-4">
-              <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-base-content/10">
+              <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-fill-strong">
                 <div
                   style="width: 0%"
                   class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
@@ -82,13 +82,13 @@
         },
     }">
   <section x-ref="splide" class="splide" aria-label="pinned items">
-    <div class="flex justify-between w-full pb-1 mb-6 text-sm font-medium tracking-wide border-b border-secondary text-muted">
+    <div class="flex justify-between w-full pb-1 mb-6 text-sm font-medium tracking-wide border-b border-divider text-muted">
       <div :if={@title} class="">{@title}</div>
       <div class="flex gap-3 splide__arrows">
-        <button class="splide__arrow splide__arrow--prev !static !bg-base-content/5">
+        <button class="splide__arrow splide__arrow--prev !static !bg-fill">
           <#Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
         </button>
-        <button class="splide__arrow splide__arrow--next !static !bg-base-content/5">
+        <button class="splide__arrow splide__arrow--next !static !bg-fill">
           <#Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
         </button>
       </div>
@@ -115,7 +115,7 @@
                 <LinkLive to={path(pin)} class="flex flex-col w-full gap-3">
                   <div
                     style="background-image: url(https://picsum.photos/200/300)"
-                    class="bg-center mx-auto bg-no-repeat bg-cover rounded h-[100px] bg-base-content/5 w-full"
+                    class="bg-center mx-auto bg-no-repeat bg-cover rounded h-[100px] bg-fill w-full"
                   >
                   </div>
                   <div class="text-base font-medium tracking-wide line-clamp-2">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
@@ -129,7 +129,7 @@
                   </LinkLive>
                 </div>
                 <div class="flex items-center gap-2 mt-4">
-                  <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-base-content/10">
+                  <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-fill-strong">
                     <div
                       style="width: 0%"
                       class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"

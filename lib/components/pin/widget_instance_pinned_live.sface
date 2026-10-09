@@ -9,7 +9,7 @@
         empty_icon="ph:push-pin-fill"
         empty_message={l("No instance pins yet.")}
       >
-        <ul class="flex flex-col divide-hair divide-secondary" role="list">
+        <ul class="flex flex-col divide-hair divide-divider" role="list">
           {#for entry <- entries}
             {#case e(entry, :activity, nil)}
               {#match nil}
