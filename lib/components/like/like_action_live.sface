@@ -28,7 +28,7 @@
           >
             <span class="touch-target-hit-area" aria-hidden="true" />
             <span class="sr-only">{lc("verb: action", "Like", [], :bonfire_social)}</span>
-            <span class="text-warning text-[20px]">{emoji}</span>
+            <span class="text-warning text-xl">{emoji}</span>
           </button>
         {#match %{media_type: "emoji"} = emoji}
           {!-- Custom emoji image reaction --}
@@ -117,7 +117,7 @@
       {/case}
       <span
         data-role="like_count"
-        class="text-caption text-muted tabular-nums"
+        class="text-xs text-muted tabular-nums"
         :if={e(@like_count, 0) > 0 &&
           (@showing_within == :thread_embed || show_activity_counts?(@show_counts, @__context__))}
       >{e(@like_count, 0)}</span>
@@ -134,7 +134,7 @@
         title={l("You can't like this")}
       />
       <span
-        class="tabular-nums text-caption text-muted"
+        class="tabular-nums text-xs text-muted"
         :if={e(@like_count, 0) > 0 &&
           (@showing_within == :thread_embed || show_activity_counts?(@show_counts, @__context__))}
       >{e(@like_count, 0)}</span>

@@ -21,7 +21,7 @@
       {#case pin}
         {#match %{post_content: %{id: _}}}
           <div>
-            <div class="rounded-lg shadow bg-base-200">
+            <div class="rounded-box shadow bg-base-200">
               <LinkLive
                 to={path(pin)}
                 class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"

@@ -61,7 +61,7 @@
               <span class="flex gap-1 text-subtle">
                 <#Icon
                   iconify="ph:arrows-counter-clockwise-fill"
-                  class="w-[18px] h-[18px]  text-base-content/20"
+                  class="w-[18px] h-[18px] text-base-content/20"
                 />
 
                 <span class="feed_activity_text">
@@ -175,7 +175,7 @@
     </Dropdown>
     <span
       data-role="boost_count"
-      class="text-caption text-muted tabular-nums"
+      class="text-xs text-muted tabular-nums"
       :if={show_activity_counts?(@show_counts, @__context__) && e(@boost_count, 0) > 0}
     >{e(@boost_count, 0)}</span>
   {#else}
