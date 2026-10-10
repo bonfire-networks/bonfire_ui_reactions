@@ -86,10 +86,10 @@
       <div :if={@title} class="">{@title}</div>
       <div class="flex gap-3 splide__arrows">
         <button class="splide__arrow splide__arrow--prev !static !bg-fill">
-          <#Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
+          <#Icon iconify="heroicons:arrow-long-right-20-solid" class="size-5" />
         </button>
         <button class="splide__arrow splide__arrow--next !static !bg-fill">
-          <#Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
+          <#Icon iconify="heroicons:arrow-long-right-20-solid" class="size-5" />
         </button>
       </div>
     </div>
@@ -109,13 +109,13 @@
                   phx-value-scope={:instance}
                   phx-value-component={__MODULE__}
                 >
-                  <#Icon iconify="bi:pin-angle-fill" class="w-5 h-5" />
+                  <#Icon iconify="bi:pin-angle-fill" class="size-5" />
                 </div> 
                 --}
                 <LinkLive to={path(pin)} class="flex flex-col w-full gap-3">
                   <div
                     style="background-image: url(https://picsum.photos/200/300)"
-                    class="bg-center mx-auto bg-no-repeat bg-cover rounded h-[100px] bg-fill w-full"
+                    class="bg-center mx-auto bg-no-repeat bg-cover rounded h-25 bg-fill w-full"
                   >
                   </div>
                   <div class="text-base font-medium tracking-wide line-clamp-2">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||

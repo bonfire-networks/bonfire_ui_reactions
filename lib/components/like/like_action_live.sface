@@ -45,7 +45,7 @@
             phx-value-component={__MODULE__}
             phx-value-current_count={e(@like_count, 0)}
             class={
-              "btn btn-ghost btn-circle w-10 h-10 touch-target-expanded like like_with_label",
+              "btn btn-ghost btn-circle size-10 touch-target-expanded like like_with_label",
               "lg:tooltip lg:tooltip-top": !@no_data_tip
             }
             data-id="like_action"
@@ -56,7 +56,7 @@
             <span class="sr-only">{lc("verb: action", "Like", [], :bonfire_social)}</span>
             <LazyImage
               parent_id={deterministic_dom_id(__MODULE__, id(emoji), "emoji", @id)}
-              class="w-[18px] h-[18px]"
+              class="size-4.5"
               media={emoji}
               alt={e(emoji, :metadata, "label", nil) || e(emoji, :metadata, "shortcode", nil)}
             />
@@ -67,7 +67,7 @@
             :if={@object_id}
             id={@id}
             icon={@icon_pressed}
-            icon_class="w-[18px] h-[18px]"
+            icon_class="size-4.5"
             aria_label={lc("verb: action", "Like", [], :bonfire_social)}
             pressed
             size="sm"
@@ -93,7 +93,7 @@
             id={@id}
             icon={@icon}
             size="sm"
-            icon_class="w-[18px] h-[18px]"
+            icon_class="size-4.5"
             aria_label={lc("verb: action", "Like", [], :bonfire_social)}
             pressed={false}
             phx_click="Bonfire.Social.Likes:like"
@@ -127,7 +127,7 @@
         aria_label={l("Cannot like this")}
         disabled
         variant="ghost"
-        icon_class="w-[18px] h-[18px]"
+        icon_class="size-4.5"
         size="sm"
         class="like like_with_label text-base-content/20"
         data-role="like_disabled"

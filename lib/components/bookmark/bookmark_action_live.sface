@@ -5,7 +5,7 @@
         :if={@object_id}
         id={@id}
         icon={if @my_bookmark, do: "ph:bookmark-fill", else: "ph:bookmark-fill"}
-        icon_class="w-[18px] h-[18px]"
+        icon_class="size-4.5"
         aria_label={if @my_bookmark, do: l("Remove bookmark"), else: l("Bookmark")}
         variant="ghost"
         pressed={@my_bookmark}
@@ -22,7 +22,7 @@
     {#match _}
       <.icon_button
         icon="carbon:bookmark-filled"
-        icon_class="w-[18px] h-[18px]"
+        icon_class="size-4.5"
         aria_label={l("Cannot bookmark")}
         variant="ghost"
         size="sm"

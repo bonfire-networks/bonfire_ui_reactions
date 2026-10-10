@@ -12,7 +12,7 @@
       label={if @my_boost, do: l("Boosted, open boost menu"), else: l("Boost or quote")}
     >
       <:trigger>
-        <#Icon iconify="ph:rocket-launch-fill" class="w-[18px] h-[18px]" />
+        <#Icon iconify="ph:rocket-launch-fill" class="size-4.5" />
       </:trigger>
 
       <li>
@@ -35,13 +35,13 @@
               {#if @my_boost}
                 <#Icon
                   iconify="ph:arrows-counter-clockwise-fill"
-                  class="w-[18px] h-[18px] group-hover:text-success text-success"
+                  class="size-4.5 group-hover:text-success text-success"
                 />
                 <span class="text-success text-sm">{l("Boosted")}</span>
               {#else}
                 <#Icon
                   iconify="ph:arrows-counter-clockwise-fill"
-                  class="w-[18px] h-[18px] group-hover:text-success"
+                  class="size-4.5 group-hover:text-success"
                 />
                 <span class="text-sm">{lc("verb: action", "Boost", [], :bonfire_social)}</span>
               {/if}
@@ -61,7 +61,7 @@
               <span class="flex gap-1 text-subtle">
                 <#Icon
                   iconify="ph:arrows-counter-clockwise-fill"
-                  class="w-[18px] h-[18px] text-base-content/20"
+                  class="size-4.5 text-base-content/20"
                 />
 
                 <span class="feed_activity_text">
@@ -91,7 +91,7 @@
             class="flex py-2 px-3 gap-2 font-medium cursor-not-allowed opacity-70 quote"
             title={l("You can't quote this activity")}
           >
-            <#Icon iconify="ph:quotes-fill" class="w-[18px] h-[18px]" />
+            <#Icon iconify="ph:quotes-fill" class="size-4.5" />
 
             <div class="flex flex-col">
               <span class="text-sm">{l("Quote")}</span>
@@ -106,7 +106,7 @@
             phx-value-id={@object_id}
             data-role="quote_enabled"
           >
-            <#Icon iconify="ph:quotes-fill" class="w-[18px] h-[18px]" />
+            <#Icon iconify="ph:quotes-fill" class="size-4.5" />
             <span class="text-sm">{l("Quote")}</span>
           </button>
         {#else}
@@ -122,7 +122,7 @@
                 phx-value-id={@object_id}
                 data-role="quote_enabled"
               >
-                <#Icon iconify="ph:quotes-fill" class="w-[18px] h-[18px]" />
+                <#Icon iconify="ph:quotes-fill" class="size-4.5" />
                 <span class="text-sm">{l("Quote")}</span>
               </button>
             {#match {:request_needed, _}}
@@ -133,7 +133,7 @@
                 phx-value-id={@object_id}
                 data-role="quote_enabled"
               >
-                <#Icon iconify="ph:quotes-fill" class="w-[18px] h-[18px]" />
+                <#Icon iconify="ph:quotes-fill" class="size-4.5" />
                 <div class="flex flex-col">
                   <span class="text-sm">{l("Quote")}</span>
                   <span class="font-normal text-muted text-xs">{l("pending approval")}</span>
@@ -147,7 +147,7 @@
                 class="flex py-2 px-3 gap-2 font-medium cursor-not-allowed opacity-70 quote"
                 title={l("You can't quote this activity")}
               >
-                <#Icon iconify="ph:quotes-fill" class="w-[18px] h-[18px]" />
+                <#Icon iconify="ph:quotes-fill" class="size-4.5" />
 
                 <div class="flex flex-col">
                   <span class="text-sm">{l("Quote")}</span>
@@ -167,7 +167,7 @@
             phx-value-id={@object_id}
             data-role="broadcast_enabled"
           >
-            <#Icon iconify="ph:megaphone-fill" class="w-[18px] h-[18px]" />
+            <#Icon iconify="ph:megaphone-fill" class="size-4.5" />
             <span class="text-sm">{l("Broadcast and notify users")}</span>
           </button>
         </li>
