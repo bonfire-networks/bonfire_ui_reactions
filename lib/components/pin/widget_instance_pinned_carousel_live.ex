@@ -31,8 +31,8 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   prop card_class, :css_class,
     default: "rounded-box border-hair bg-base-100 border-divider p-card"
 
-  # on small screens we always show fewer items so cards stay legible; @visible_items applies from the `sm:` breakpoint up
-  prop visible_items_mobile, :number, default: 1.5
+  # on small screens we show one card plus a peek of the next so cards stay legible (or a number of items); @visible_items applies from the `sm:` breakpoint up
+  prop visible_items_mobile, :any, default: :peek
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)
@@ -47,9 +47,12 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   end
 
   @doc """
-  Returns the carousel item width for the requested number of initially visible items.
+  Returns the carousel item width for the requested number of initially visible items, or `:peek` for one full card with the first 1rem of the next showing.
   """
   def carousel_item_width(nil), do: "70%"
+
+  # 0.75rem gap + 1rem of the next card
+  def carousel_item_width(:peek), do: "calc(100% - 1.75rem)"
 
   def carousel_item_width(visible_items) when is_number(visible_items) and visible_items > 0 do
     gap_rem = 0.75

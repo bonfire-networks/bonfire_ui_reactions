@@ -148,8 +148,14 @@
       {/if}
   {/case}
   <:open_btn>
-    <div class="text-left flex items-center justify-between w-full gap-2 text-sm">
-      <span class="flex-1 text-sm">
+    <div class="text-left flex items-center w-full gap-3 text-sm">
+      {#case @scope}
+        {#match :thread_answer}
+          <#Icon iconify="mdi:message-check" class="size-4 shrink-0 text-muted" />
+        {#match _}
+          <#Icon iconify="ph:push-pin-duotone" class="size-4 shrink-0 text-muted" />
+      {/case}
+      <span class="flex-1 truncate">
         {!-- neutral: instance pin-state isn't preloaded, it's resolved in the modal --}
         {#if @scope == :instance}
           {l("Pin or unpin from spotlight")}
@@ -171,12 +177,6 @@
           {/if}
         {/if}
       </span>
-      {#case @scope}
-        {#match :thread_answer}
-          <#Icon iconify="mdi:message-check" class="size-4" />
-        {#match _}
-          <#Icon iconify="ph:push-pin-duotone" class="size-5" />
-      {/case}
     </div>
   </:open_btn>
 </Bonfire.UI.Common.OpenModalLive>
