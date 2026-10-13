@@ -22,7 +22,7 @@ defmodule Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive do
   @doc "Extra classes for the title, subtitle, and prev/next buttons."
   prop heading_class, :css_class, default: nil
   prop subtitle_class, :css_class, default: nil
-  prop button_class, :css_class, default: "border-divider"
+  prop button_class, :css_class, default: "border-transparent bg-transparent text-muted hover:text-base-content"
 
   @doc "Extra classes for the horizontal scroll container (eg. padding so the first card starts on a page gutter)."
   prop carousel_class, :css_class, default: nil
