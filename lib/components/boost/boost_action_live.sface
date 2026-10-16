@@ -73,27 +73,30 @@
         {!-- Skip the per-activity quote permission DB query when boundary isn't preloaded
                (or for guests) — the actual quote action will validate server-side.
              Quoting OR asking to: someone who may only ask still quotes, pending approval (`Quotes.check_quote_permission/2` below tells them apart), so asking for `:quote` alone here would disable it for them --}
-        {#if !Bonfire.Boundaries.can_interact_or_unloaded?(
+        {#case Bonfire.Boundaries.interaction_refusal(
             @__context__,
             {:any, [Bonfire.Social.Quotes.quote_verb(), :request]},
             @object_boundary,
             target_user: @creator
           )}
-          <button
-            type="button"
-            disabled="disabled"
-            data-role="quote_disabled"
-            class="flex py-2 px-3 gap-2 font-medium cursor-not-allowed opacity-70 quote"
-            title={l("You can't quote this activity")}
-          >
-            <#Icon iconify="ph:quotes-fill" class="size-4.5" />
+          {#match refusal when not is_nil(refusal)}
+            <button
+              type="button"
+              disabled="disabled"
+              data-role="quote_disabled"
+              class="flex py-2 px-3 gap-2 font-medium cursor-not-allowed opacity-70 quote"
+              title={Bonfire.UI.Common.refusal_text(refusal, l("You can't quote this activity"))}
+            >
+              <#Icon iconify="ph:quotes-fill" class="size-4.5" />
 
-            <div class="flex flex-col">
-              <span class="text-sm">{l("Quote")}</span>
-              <span class="font-normal text-muted text-xs">{l("You cannot quote this post")}</span>
-            </div>
-          </button>
-        {#elseif current_user(@__context__) == nil or @object_boundary in [nil, :skip_boundary_preload]}
+              <div class="flex flex-col">
+                <span class="text-sm">{l("Quote")}</span>
+                {!-- shown, not only as a title, which a disabled button never gets hovered for --}
+                <span data-role="quote_refusal" class="font-normal text-muted text-xs">{Bonfire.UI.Common.refusal_text(refusal, l("You cannot quote this post"))}</span>
+              </div>
+            </button>
+          {#match _}
+        {#if current_user(@__context__) == nil or @object_boundary in [nil, :skip_boundary_preload]}
           <button
             class="flex py-2 px-3 gap-2  transition-interactive focus-ring phx-click-loading:opacity-60 phx-click-loading:pointer-events-none"
             phx-click="Bonfire.Social.Boosts:quote"
@@ -151,6 +154,7 @@
               </button>
           {/case}
         {/if}
+        {/case}
       </li>
       {#if Bonfire.Me.Accounts.is_admin?(current_user(@__context__)) ||
           Bonfire.Boundaries.can?(current_user(@__context__), :moderate, :instance)}
