@@ -58,11 +58,9 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
     |> refute_has("[data-id='bookmark_action'][aria-pressed]")
   end
 
-  # With optimistic UI, reaction buttons render as enabled by default (boundaries
-  # are checked server-side on click). These tests verify that clicking a reaction
-  # on a restricted post shows an error instead of succeeding.
+  # The post's boundary is loaded with the page (`Bonfire.Boundaries.LiveHandler.preload_boundaries/2`), so a reaction someone may not make is disabled rather than refused on click.
 
-  test "liking a post fails when user lacks :like permission", %{me: me} do
+  test "liking is disabled when the user lacks :like permission", %{me: me} do
     account2 = fake_account!()
     bob = fake_user!(account2)
 
@@ -82,12 +80,11 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
 
     conn(user: bob, account: account2)
     |> visit("/post/#{post.id}")
-    |> assert_has("[data-role='like_enabled']")
-    |> click_button("[data-role='like_enabled']", "Like")
-    |> assert_has("[role=alert]")
+    |> assert_has("[data-role='like_disabled']")
+    |> refute_has("[data-role='like_enabled']")
   end
 
-  test "boosting a post fails when user lacks :boost permission", %{me: me} do
+  test "boosting is disabled when the user lacks :boost permission", %{me: me} do
     account2 = fake_account!()
     bob = fake_user!(account2)
 
@@ -107,9 +104,8 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
 
     conn(user: bob, account: account2)
     |> visit("/post/#{post.id}")
-    |> assert_has("[data-role='boost_enabled']")
-    |> click_button("[data-role='boost_enabled']", "Boost")
-    |> assert_has("[role=alert]")
+    |> assert_has("[data-role='boost_disabled']")
+    |> refute_has("[data-role='boost_enabled']")
   end
 
   test "reaction buttons are enabled when user has full interaction permissions", %{me: me} do
@@ -136,7 +132,7 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
     |> assert_has("[data-role='boost_enabled']")
   end
 
-  test "liking and boosting fail with manual read-only ACL setup", %{me: me} do
+  test "liking and boosting are disabled with a manual read-only ACL", %{me: me} do
     account2 = fake_account!()
     bob = fake_user!(account2)
 
@@ -158,11 +154,11 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
     Grants.grant(bob.id, acl.id, :see, true, current_user: me)
     Controlleds.add_acls(post, acl)
 
-    # Buttons render as enabled (optimistic UI), but clicking them should fail
     conn(user: bob, account: account2)
     |> visit("/post/#{post.id}")
-    |> assert_has("[data-role='like_enabled']")
-    |> click_button("[data-role='like_enabled']", "Like")
-    |> assert_has("[role=alert]")
+    |> assert_has("[data-role='like_disabled']")
+    |> assert_has("[data-role='boost_disabled']")
+    |> refute_has("[data-role='like_enabled']")
+    |> refute_has("[data-role='boost_enabled']")
   end
 end

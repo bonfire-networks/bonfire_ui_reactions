@@ -71,10 +71,11 @@
       </li>
       <li>
         {!-- Skip the per-activity quote permission DB query when boundary isn't preloaded
-               (or for guests) — the actual quote action will validate server-side. --}
+               (or for guests) — the actual quote action will validate server-side.
+             Quoting OR asking to: someone who may only ask still quotes, pending approval (`Quotes.check_quote_permission/2` below tells them apart), so asking for `:quote` alone here would disable it for them --}
         {#if !Bonfire.Boundaries.can_interact_or_unloaded?(
             @__context__,
-            Bonfire.Social.Quotes.quote_verb(),
+            {:any, [Bonfire.Social.Quotes.quote_verb(), :request]},
             @object_boundary,
             target_user: @creator
           )}
