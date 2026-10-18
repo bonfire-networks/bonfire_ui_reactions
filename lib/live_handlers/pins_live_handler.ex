@@ -106,6 +106,10 @@ defmodule Bonfire.Social.Pins.LiveHandler do
           {:sidebar_groups, %{user_id: user_id}}
         )
       end
+
+      # a group page's ⋯ menu reads these pins with the page, and its buttons are stateless, so the `send_updates` above doesn't reach them
+      if module_enabled?(Bonfire.Classify.LiveHandler, socket),
+        do: send(self(), {{Bonfire.Classify.LiveHandler, :refresh_pins}, uid(object)})
     end
 
     Bonfire.UI.Common.OpenModalLive.close()
