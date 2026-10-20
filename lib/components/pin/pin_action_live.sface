@@ -3,180 +3,46 @@
   id={deterministic_dom_id("pin_modal", id(@object), to_string(@scope), @parent_id)}
   no_actions
   title_text={modal_title(assigns)}
-  open_btn_wrapper_class="flex items-center gap-2 text-sm w-full flex-1"
+  open_btn_wrapper_class={if @as_icon,
+    do: "btn btn-ghost btn-circle btn-sm text-muted hover:text-base-content",
+    else: "flex items-center gap-2 text-sm w-full flex-1"}
 >
-  {#case @scope}
-    {#match :thread_answer}
-      {#if pinned?(assigns)}
-        <p class="mt-2 prose-sm prose">{l("You can remove it if you like")}</p>
-        <button
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="down"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          type="button"
-          class="btn mt-4 w-full btn-warning rounded-full normal-case"
-        >
-          <#Icon iconify="mdi:message-check" class="size-4" />
-          {l("Unmark as answer")}
-        </button>
-      {#else}
-        <p class="mt-2 prose-sm prose">{l("It will then be highlighted in the thread.")}</p>
+  {#if @scope == :instance}
+    {!-- the spotlight's pinned state isn't preloaded with the page: `PinModalLive` looks it up when the modal opens --}
+    <StatefulComponent
+      id={deterministic_dom_id("pin_modal_content", id(@object), to_string(@scope), @parent_id)}
+      module={maybe_component(Bonfire.UI.Reactions.PinModalLive, @__context__)}
+      object={@object}
+      scope={@scope}
+      scope_object={@scope_object}
+      pinned?={@pinned?}
+      parent_component={@component}
+      __context__={@__context__}
+    />
+  {#else}
+    <Bonfire.UI.Reactions.PinButtonLive
+      object={@object}
+      scope={@scope}
+      scope_object={@scope_object}
+      pinned?={pinned?(assigns)}
+      component={@component}
+    />
+  {/if}
 
-        <button
-          :if={@object}
-          data-id="pin_action"
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="up"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full normal-case"
-        >
-          <#Icon iconify="mdi:message-check" class="size-4" />
-          {l("Mark as answer")}
-        </button>
-      {/if}
-    {#match :thread}
-      {#if pinned?(assigns)}
-        <p class="mt-2 prose-sm prose">{l("Unpin to remove it from the top of the thread.")}</p>
-        <button
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="down"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          type="button"
-          class="btn mt-4 w-full btn-warning rounded-full normal-case"
-        >
-          <#Icon iconify="ph:push-pin-simple-slash-fill" class="size-4" />
-          {l("Unpin from thread")}
-        </button>
-      {#else}
-        <p class="mt-2 prose-sm prose">{l("Pins will be shown at the top of the thread.")}</p>
-
-        <button
-          :if={@object}
-          data-id="pin_action"
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="up"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full normal-case"
-        >
-          <#Icon iconify="ph:push-pin-fill" class="size-4" />
-          {l("Pin to top of thread")}
-        </button>
-      {/if}
-    {#match :instance}
-      <StatefulComponent
-        id={deterministic_dom_id("pin_modal_content", id(@object), to_string(@scope), @parent_id)}
-        module={maybe_component(Bonfire.UI.Reactions.PinModalLive, @__context__)}
-        object={@object}
-        scope={@scope}
-        scope_object={@scope_object}
-        pinned?={@pinned?}
-        my_pin={@my_pin}
-        parent_component={__MODULE__}
-        __context__={@__context__}
-      />
-    {#match :sidebar}
-      {#if pinned?(assigns)}
-        <p class="mt-2 prose-sm prose">{l("Unpin to remove this group from your sidebar (you'll stay a member).")}</p>
-        <button
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="down"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          type="button"
-          class="btn mt-4 w-full btn-warning rounded-full normal-case"
-        >
-          <#Icon iconify="ph:push-pin-simple-slash-fill" class="size-4" />
-          {l("Unpin from sidebar")}
-        </button>
-      {#else}
-        <p class="mt-2 prose-sm prose">{l("It will appear in your groups sidebar for quick access.")}</p>
-
-        <button
-          :if={@object}
-          data-id="pin_action"
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="up"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full normal-case"
-        >
-          <#Icon iconify="ph:push-pin-fill" class="size-4" />
-          {l("Pin to sidebar")}
-        </button>
-      {/if}
-    {#match _profile}
-      {#if pinned?(assigns)}
-        <p class="mt-2 prose-sm prose">{l("Unpin to remove it from your profile highlights.")}</p>
-        <button
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="down"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          type="button"
-          class="btn mt-4 w-full btn-warning rounded-full normal-case"
-        >
-          <#Icon iconify="ph:push-pin-simple-slash-fill" class="size-4" />
-          {l("Unpin from profile")}
-        </button>
-      {#else}
-        <p class="mt-2 prose-sm prose">{l("It will appear in your profile highlights tab.")}</p>
-
-        <button
-          :if={@object}
-          data-id="pin_action"
-          phx-click="Bonfire.Social.Pins:pin"
-          phx-value-direction="up"
-          phx-value-id={id(@object)}
-          phx-value-scope={@scope_object || @scope}
-          phx-value-component={__MODULE__}
-          class="btn mt-4 w-full btn-primary rounded-full normal-case"
-        >
-          <#Icon iconify="ph:push-pin-fill" class="size-4" />
-          {l("Pin to your profile")}
-        </button>
-      {/if}
-  {/case}
   <:open_btn>
     <div class="text-left flex items-center w-full gap-3 text-sm">
-      {#case @scope}
-        {#match :thread_answer}
-          <#Icon iconify="mdi:message-check" class="size-4 shrink-0 text-muted" />
-        {#match _}
-          <#Icon iconify="ph:push-pin-duotone" class="size-4 shrink-0 text-muted" />
-      {/case}
-      <span class="flex-1 truncate">
-        {!-- neutral: instance pin-state isn't preloaded, it's resolved in the modal --}
-        {#if @scope == :instance}
-          {l("Pin or unpin from spotlight")}
-        {#else}
-          {#if @pinned? || @my_pin}
-            {case @scope do
-              :thread -> l("Unpin from top of thread")
-              :thread_answer -> l("Unmark as answer")
-              :sidebar -> l("Unpin from sidebar")
-              _profile -> l("Unpin from your profile")
-            end}
-          {#else}
-            {case @scope do
-              :thread -> l("Pin to top of thread")
-              :thread_answer -> l("Mark as answer")
-              :sidebar -> l("Pin to sidebar")
-              _profile -> l("Pin to your profile")
-            end}
-          {/if}
-        {/if}
-      </span>
+      {#if @scope == :thread_answer}
+        <#Icon iconify="mdi:message-check" class="size-4 shrink-0 text-muted" />
+      {#elseif @as_icon and pinned?(assigns)}
+        <#Icon iconify="ph:push-pin-simple-slash" class="size-4 shrink-0 text-muted" />
+      {#else}
+        <#Icon iconify="ph:push-pin-duotone" class="size-4 shrink-0 text-muted" />
+      {/if}
+      <span class={"flex-1 truncate", "sr-only": @as_icon}>{cond do
+          @scope == :instance -> labels(@scope).title
+          pinned?(assigns) -> labels(@scope).unpin
+          true -> labels(@scope).pin
+        end}</span>
     </div>
   </:open_btn>
 </Bonfire.UI.Common.OpenModalLive>

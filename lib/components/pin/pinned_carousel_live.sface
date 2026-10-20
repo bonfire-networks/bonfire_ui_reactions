@@ -1,146 +1,39 @@
-{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.5.x/dist/css/glide.core.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.5.x"></script>
+<div
+  id={@id}
+  data-id="instance_pinned_widget"
+  class={@class, hidden: @entries == [] and @hide_empty}
+>
+  <Bonfire.UI.Common.WidgetBlockLive
+    :if={@entries != [] or !@hide_empty}
+    class={@wrapper_class || "w-full relative bg-transparent"}
+    empty={@entries == []}
+    empty_icon="ph:push-pin-fill"
+    empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
+    widget_title={@title || l("Pinned")}
+    title_class={@title_class}
+    heading_class={@heading_class}
+  >
+    <:action>
+      <Bonfire.UI.Common.CarouselArrowsLive track={"#{@id}-track"} count={length(@entries)} />
+    </:action>
 
-<section
-    x-data="{
-      init() {
-         new Glider(this.$refs.glider, {
-            slidesToShow: 3,
-            dots: '#dots',
-            draggable: true,
-            arrows: {
-              prev: '.glider-prev',
-              next: '.glider-next'
-            }
-          }).mount();
-      }
-    }"
-   class="glider-contain" aria-label="pinned stuff">
-  <div x-ref="glider" id="pinned_carousel" class="gap-3 glider">
-    {#for %{edge: %{object: pin}} <- @pins}
-      {#case pin}
-        {#match %{post_content: %{id: _}}}
-          <div>
-            <div class="rounded-box shadow bg-base-200">
-              <LinkLive
-                to={path(pin)}
-                class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"
-              >{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
-                  rich(e(pin, :post_content, :html_body, ""))}</LinkLive>
-              <div
-                :if={e(pin, :post_content, :name, nil) ||
-                  (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
-                class="mt-2 text-sm text-muted line-clamp-3"
-              >{rich(e(pin, :post_content, :html_body, nil))}</div>
-            </div>
-          </div>
-        {#match _}
-          <div class="">
-            <div class="flex items-center gap-2">
-              <LinkLive to={path(pin)} class="flex-1 text-sm font-medium link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
-              </LinkLive>
-            </div>
-            <div class="flex items-center gap-2 mt-4">
-              <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-fill-strong">
-                <div
-                  style="width: 0%"
-                  class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
-                />
-              </div>
-              <div class="text-xs font-medium text-muted">0 of 3</div>
-            </div>
-          </div>
-      {/case}
-    {/for}
-  </div>
-  <div role="tablist" class="dots" />
-</section> --}
-
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js" />
-
-<style>
-  .splide__pagination__page.is-active {
-  background: #333;
-  }
-</style>
-
-<div x-data="{
-        init() {
-            new Splide(this.$refs.splide, {
-                perPage: 3,
-                gap: '1rem',
-                breakpoints: {
-                    640: {
-                        perPage: 1,
-                    },
-                },
-            }).mount()
-        },
-    }">
-  <section x-ref="splide" class="splide" aria-label="pinned items">
-    <div class="flex justify-between w-full pb-1 mb-6 text-sm font-medium tracking-wide border-b border-divider text-muted">
-      <div :if={@title} class="">{@title}</div>
-      <div class="flex gap-3 splide__arrows">
-        <button class="splide__arrow splide__arrow--prev !static !bg-fill">
-          <#Icon iconify="heroicons:arrow-long-right-20-solid" class="size-5" />
-        </button>
-        <button class="splide__arrow splide__arrow--next !static !bg-fill">
-          <#Icon iconify="heroicons:arrow-long-right-20-solid" class="size-5" />
-        </button>
-      </div>
-    </div>
-
-    <div class="splide__track">
-      <ul class="items-start splide__list">
-        {#for %{edge: %{object: pin}} <- @pins}
-          {#case pin}
-            {#match %{post_content: %{id: _}}}
-              <li class="flex flex-col items-center justify-center pb-8 splide__slide">
-                {!-- 
-                <div
-                  data-id="pin_action"
-                  phx-click="Bonfire.Social.Pins:pin"
-                  phx-value-direction="down"
-                  phx-value-id={id(pin)}
-                  phx-value-scope={:instance}
-                  phx-value-component={__MODULE__}
-                >
-                  <#Icon iconify="bi:pin-angle-fill" class="size-5" />
-                </div> 
-                --}
-                <LinkLive to={path(pin)} class="flex flex-col w-full gap-3">
-                  <div
-                    style="background-image: url(https://picsum.photos/200/300)"
-                    class="bg-center mx-auto bg-no-repeat bg-cover rounded h-25 bg-fill w-full"
-                  >
-                  </div>
-                  <div class="text-base font-medium tracking-wide line-clamp-2">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
-                      rich(e(pin, :post_content, :html_body, ""))}</div>
-                </LinkLive>
-              </li>
-            {#match _}
-              <li class="flex flex-col items-center justify-center pb-8 splide__slide">>
-                <div class="flex items-center gap-2">
-                  <LinkLive to={path(pin)} class="flex-1 text-sm font-medium link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
-                  </LinkLive>
-                </div>
-                <div class="flex items-center gap-2 mt-4">
-                  <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-fill-strong">
-                    <div
-                      style="width: 0%"
-                      class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
-                    />
-                  </div>
-                  <div class="text-xs font-medium text-muted">0 of 3</div>
-                </div>
-              </li>
-          {/case}
-        {/for}
-      </ul>
-    </div>
-  </section>
+    <Bonfire.UI.Common.CarouselLive
+      id={"#{@id}-track"}
+      items={@entries}
+      visible_items={@visible_items}
+      class={@carousel_class}
+    >
+      <:card :let={item: entry}>
+        <StatelessComponent
+          module={maybe_component(Bonfire.UI.Reactions.PinnedCardLive, @__context__)}
+          activity={entry.activity}
+          participants={e(entry, :participants, [])}
+          participants_more_count={e(entry, :participants_more_count, 0)}
+          scope={@scope}
+          scope_object={id(@scope_object)}
+          can_unpin={@can_unpin}
+        />
+      </:card>
+    </Bonfire.UI.Common.CarouselLive>
+  </Bonfire.UI.Common.WidgetBlockLive>
 </div>

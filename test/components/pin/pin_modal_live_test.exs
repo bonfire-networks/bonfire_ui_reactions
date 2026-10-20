@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Reactions.PinModalLiveTest do
 
   alias Bonfire.UI.Reactions.PinModalLive
   alias Bonfire.Social.Pins
-  alias Bonfire.Posts
+  import Bonfire.Posts.Fake, only: [fake_post!: 3]
 
   # Unlike the feed-level trigger, the modal resolves pin-state from the DB on open.
   defp update_assigns(post, admin, overrides) do
@@ -13,7 +13,6 @@ defmodule Bonfire.UI.Reactions.PinModalLiveTest do
         scope_object: nil,
         object: post,
         pinned?: nil,
-        my_pin: nil,
         __context__: %{current_user_id: admin.id, current_user: admin}
       },
       overrides
@@ -29,12 +28,7 @@ defmodule Bonfire.UI.Reactions.PinModalLiveTest do
     account = fake_account!()
     admin = fake_admin!(account)
 
-    {:ok, post} =
-      Posts.publish(
-        current_user: admin,
-        post_attrs: %{post_content: %{html_body: "instance pin modal test"}},
-        boundary: "public"
-      )
+    post = fake_post!(admin, "public", %{post_content: %{html_body: "instance pin modal test"}})
 
     {:ok, account: account, admin: admin, post: post}
   end

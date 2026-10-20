@@ -8,24 +8,20 @@ defmodule Bonfire.UI.Reactions.Routes do
         pipe_through(:browser)
 
         live("/instance/pins", InstancePinsLive, :list, as: :instance_pins)
+        # kept for links made before the list and the carousel became one
+        live("/instance/pins/carousel", InstancePinsLive, :carousel, as: :instance_pins_carousel)
       end
 
       pipeline :cacheable_pins_public do
         plug(Bonfire.UI.Common.CacheControlPlug, purgeable: true, cache_query_string: true)
       end
 
-      # horizontal carousel variant of the spotlight, on its own URL
-      scope "/", Bonfire.UI.Reactions do
-        pipe_through(:browser)
-
-        live("/instance/pins/carousel", InstancePinsLive, :carousel, as: :instance_pins_carousel)
-      end
-
       scope "/", Bonfire.UI.Reactions do
         pipe_through([:browser_or_cacheable, :cacheable_pins_public, :iframe_embeddable])
 
         get("/instance/pins/embed", EmbedInstancePinsController, :index)
-        get("/instance/pins/carousel/embed", EmbedInstancePinsController, :carousel)
+        # kept for embeds made before the list and the carousel became one
+        get("/instance/pins/carousel/embed", EmbedInstancePinsController, :index)
       end
 
       # pages you need to view as a user

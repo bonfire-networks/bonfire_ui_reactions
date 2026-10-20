@@ -3,10 +3,9 @@ defmodule Bonfire.UI.Reactions.PinModalLive do
 
   prop object, :any, required: true
   prop pinned?, :boolean, default: nil
-  prop my_pin, :boolean, default: nil
-  prop scope, :atom, default: :profile
+  prop scope, :atom, required: true
   prop scope_object, :string, default: nil
-  prop parent_component, :atom, default: Bonfire.UI.Reactions.PinActionLive
+  prop parent_component, :atom, required: true
 
   def update(assigns, socket) do
     {:ok,
@@ -19,7 +18,6 @@ defmodule Bonfire.UI.Reactions.PinModalLive do
   # `true` prop short-circuits — a nil/false `:boolean` prop must not, or the DB
   # query is skipped and an already-pinned object wrongly shows "Pin".
   defp pinned?(%{pinned?: true}), do: true
-  defp pinned?(%{my_pin: true}), do: true
 
   defp pinned?(%{scope: :instance, object: object} = assigns) when not is_nil(object) do
     if module_enabled?(Bonfire.Social.Pins, assigns[:__context__]) do

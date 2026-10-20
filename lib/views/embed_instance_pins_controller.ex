@@ -1,26 +1,19 @@
 defmodule Bonfire.UI.Reactions.EmbedInstancePinsController do
   use Bonfire.UI.Common.Web, :controller
 
-  def index(conn, params), do: render_embed(conn, params, :list)
-
-  def carousel(conn, params), do: render_embed(conn, params, :carousel)
-
-  defp render_embed(conn, _params, embed_variant),
+  def index(conn, params),
     do:
       conn
       |> assign(
-        widget_title: l("Featured content"),
         no_header: true,
         without_sidebar: true,
         without_secondary_widgets: true,
         sidebar_widgets: [],
-        force_static: true,
-        embed_variant: embed_variant
+        force_static: true
       )
       |> live_render(Bonfire.UI.Reactions.InstancePinsLive,
         layout: {Bonfire.UI.Common.LayoutView, :iframe},
-        # conn assigns don't reach a controller-rendered LiveView's mount, so pass the variant
-        # through the session (survives the disconnected→connected remount too)
-        session: %{"embed_variant" => to_string(embed_variant)}
+        # conn assigns don't reach a controller-rendered LiveView's mount, so pass these through the session (survives the disconnected→connected remount too); `"params"` becomes its `current_params`, as for `EmbedCommentsController`
+        session: %{"embed" => true, "params" => params}
       )
 end

@@ -2,7 +2,9 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
   use Bonfire.UI.Reactions.ConnCase, async: System.get_env("TEST_UI_ASYNC") != "no"
 
   alias Bonfire.UI.Reactions.PinActionLive
-  alias Bonfire.Social.Pins
+  use Surface.LiveViewTest
+
+  doctest Bonfire.UI.Reactions.PinActionLive
   alias Bonfire.Posts
 
   defp base_assigns(scope, overrides \\ %{}) do
@@ -18,6 +20,30 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
     )
   end
 
+  # one button for every scope's modal, so pin and unpin always carry the same hooks and the scope's own wording
+  describe "PinButtonLive" do
+    test "offers to unpin when pinned, and to pin when not, with the scope's wording" do
+      for {pinned?, data_id, direction, label} <- [
+            {true, "unpin_action", "down", "Unpin from top of thread"},
+            {false, "pin_action", "up", "Pin to top of thread"}
+          ] do
+        assigns = %{pinned?: pinned?}
+
+        html =
+          render_surface do
+            ~F"""
+            <Bonfire.UI.Reactions.PinButtonLive object={%{id: "a_post"}} scope={:thread} scope_object="a_thread" pinned?={@pinned?} component={Bonfire.UI.Reactions.PinActionLive} />
+            """
+          end
+
+        [button] = html |> Floki.parse_document!() |> Floki.find("button[data-id=#{data_id}]")
+        assert Floki.attribute(button, "phx-value-direction") == [direction]
+        assert Floki.attribute(button, "phx-value-scope") == ["a_thread"]
+        assert Floki.text(button) =~ label
+      end
+    end
+  end
+
   describe "modal_title/1 dispatch table" do
     test "covers all scope × pinned-state combinations" do
       cases = [
@@ -28,6 +54,10 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
         # instance pin-state isn't preloaded here, so the title is neutral
         {:instance, true, "Pin or unpin from spotlight"},
         {:instance, false, "Pin or unpin from spotlight"},
+        {:group, true, "This is pinned to the top of the group"},
+        {:group, false, "Pin to top of group"},
+        {:topic, true, "This is pinned to the top of the topic"},
+        {:topic, false, "Pin to top of topic"},
         {:profile, true, "This is pinned to your profile"},
         {:profile, false, "Pin to your profile"},
         # unknown scope falls through to profile titles
@@ -59,49 +89,6 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
     test "returns false when prop is nil or missing and there is no fallback match" do
       refute PinActionLive.pinned?(base_assigns(:instance, %{pinned?: nil}))
       refute PinActionLive.pinned?(base_assigns(:instance))
-    end
-
-    test "uses live-updated my_pin when present" do
-      assert PinActionLive.pinned?(base_assigns(:instance, %{my_pin: true}))
-      refute PinActionLive.pinned?(base_assigns(:instance, %{my_pin: false}))
-    end
-
-    test "does not check instance pin state when no explicit prop is present" do
-      account = fake_account!()
-      admin = fake_admin!(account)
-
-      {:ok, post} =
-        Posts.publish(
-          current_user: admin,
-          post_attrs: %{post_content: %{html_body: "instance-pinned post"}},
-          boundary: "public"
-        )
-
-      try do
-        Pins.pin(admin, post, :instance)
-      rescue
-        _ -> :ok
-      end
-
-      # sanity: the pin really exists in the DB
-      assert Pins.pinned?(:instance, post)
-
-      refute PinActionLive.pinned?(
-               base_assigns(:instance, %{
-                 object: post,
-                 __context__: %{current_user_id: admin.id, current_user: admin}
-               })
-             )
-
-      # but explicit props still win, regardless of context
-      assert PinActionLive.pinned?(base_assigns(:instance, %{object: post, pinned?: true}))
-      refute PinActionLive.pinned?(base_assigns(:instance, %{object: post, pinned?: false}))
-    end
-
-    test "returns false for anonymous user even with prop missing" do
-      refute PinActionLive.pinned?(base_assigns(:instance))
-      refute PinActionLive.pinned?(base_assigns(:thread, %{scope_object: "anything"}))
-      refute PinActionLive.pinned?(base_assigns(:profile))
     end
   end
 

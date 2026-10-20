@@ -80,37 +80,25 @@ defmodule Bonfire.Social.Pins.LiveHandler do
   end
 
   def do_unpin(id, params, socket) do
-    with _ <-
-           Bonfire.Social.Pins.unpin(
-             current_user_required!(socket),
-             id,
-             scoped(params)
-           ) do
-      after_pin(id, false, params, socket)
+    case Bonfire.Social.Pins.unpin(current_user_required!(socket), id, scoped(params)) do
+      {:error, e} -> {:noreply, assign_error(socket, e)}
+      _ -> after_pin(id, false, params, socket)
     end
   end
 
   defp after_pin(object, pinned?, params, socket) do
+    scope = scoped(params)
+
     # same-process surfaces (hero menu, settings) flip their button state
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.PinActionLive),
       uid(object),
       pinned?: pinned?,
-      my_pin: pinned?
+      # which of a post menu's pin rows changed (`PermittedActionsLive`)
+      pin_scope: scope
     )
 
-    if e(params, "scope", nil) in ["sidebar", "instance"] do
-      if user_id = current_user_id(socket) do
-        Bonfire.UI.Common.PersistentLive.maybe_send(
-          socket,
-          {:sidebar_groups, %{user_id: user_id}}
-        )
-      end
-
-      # a group page's ⋯ menu reads these pins with the page, and its buttons are stateless, so the `send_updates` above doesn't reach them
-      if module_enabled?(Bonfire.Classify.LiveHandler, socket),
-        do: send(self(), {{Bonfire.Classify.LiveHandler, :refresh_pins}, uid(object)})
-    end
+    # the carousels, the groups sidebar and the group page's ⋯ menu hear of it from `Bonfire.Social.Pins` (`handle_info/2` below), as they do of pins made in another tab, by an API client or over federation
 
     Bonfire.UI.Common.OpenModalLive.close()
 
@@ -119,15 +107,40 @@ defmodule Bonfire.Social.Pins.LiveHandler do
      |> assign_flash(:info, if(pinned?, do: l("Pinned!"), else: l("Unpinned")))}
   end
 
-  # defp list_my_pinned(current_user, objects) when is_list(objects) do
-  #   Cache.cached_preloads_for_objects("my_pin:#{uid(current_user)}:", objects, fn list_of_ids -> do_list_my_pinned(current_user, list_of_ids) end)
-  # end
+  @doc "A scope's pins changed (broadcast by `Bonfire.Social.Pins` on `Pins.pins_topic/1`, which the carousels, the groups sidebar and the group page subscribe to): each of them in this process reloads what it shows. A post pin can only change a carousel, a group pin only the sidebar and the ⋯ menu, and a reorder (`:unknown`) either."
+  def handle_info(
+        {:pins_changed, %{scope_id: scope_id, object_id: object_id, kind: kind}},
+        socket
+      ) do
+    case kind do
+      :post ->
+        reload_carousel(scope_id)
+        {:noreply, socket}
 
-  # defp do_list_my_pinned(current_user, list_of_ids)
-  #      when is_list(list_of_ids) and length(list_of_ids) > 0 do
-  #   Bonfire.Social.Pins.get!(current_user, list_of_ids, preload: false)
-  #   |> Map.new(fn l -> {e(l, :edge, :object_id, nil), true} end)
-  # end
+      :group ->
+        reload_group_pins(object_id, socket)
 
-  # defp do_list_my_pinned(_, _objects), do: %{}
+      :unknown ->
+        reload_carousel(scope_id)
+        reload_group_pins(object_id, socket)
+    end
+  end
+
+  defp reload_carousel(scope_id),
+    do:
+      ComponentID.send_updates(Bonfire.UI.Reactions.PinnedCarouselLive, scope_id, reload: true)
+
+  defp reload_group_pins(object_id, socket) do
+    # the sidebar registers under its user, in PersistentLive's process (it subscribes from there)
+    if user_id = current_user_id(socket),
+      do:
+        ComponentID.send_updates(Bonfire.UI.Groups.SidebarGroupsLive, user_id, %{
+          reload_pins: true
+        })
+
+    # the ⋯ menu reads the group's pins with the page, so the page reloads them; a no-op on any other page
+    maybe_apply(Bonfire.Classify.LiveHandler, :handle_info, [{:refresh_pins, object_id}, socket],
+      fallback_return: {:noreply, socket}
+    )
+  end
 end

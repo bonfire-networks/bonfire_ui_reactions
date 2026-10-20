@@ -1,0 +1,23 @@
+{#case PinActionLive.labels(@scope)}
+  {#match labels}
+    <p class="mt-2 prose-sm prose">{if @pinned?, do: labels.unpin_hint, else: labels.pin_hint}</p>
+    <button
+      data-id={if @pinned?, do: "unpin_action", else: "pin_action"}
+      type="button"
+      phx-click="Bonfire.Social.Pins:pin"
+      phx-value-direction={if @pinned?, do: "down", else: "up"}
+      phx-value-id={id(@object)}
+      phx-value-scope={@scope_object || @scope}
+      phx-value-component={@component}
+      class={"btn mt-4 w-full rounded-full normal-case", "btn-warning": @pinned?, "btn-primary": !@pinned?}
+    >
+      {#if @scope == :thread_answer}
+        <#Icon iconify="mdi:message-check" class="size-4" />
+      {#elseif @pinned?}
+        <#Icon iconify="ph:push-pin-simple-slash-fill" class="size-4" />
+      {#else}
+        <#Icon iconify="ph:push-pin-fill" class="size-4" />
+      {/if}
+      {if @pinned?, do: labels.unpin, else: labels.pin}
+    </button>
+{/case}

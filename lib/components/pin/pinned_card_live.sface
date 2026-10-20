@@ -1,0 +1,36 @@
+<div
+  data-role="pinned_card"
+  class={
+    "spotlight_clamp relative h-full rounded-box bg-base-100 p-card ring-1 ring-inset ring-divider",
+    "[&_[data-role=subject]]:pr-9": @can_unpin
+  }
+>
+  {!-- the Top discussions preview, as `WidgetTrendingDiscussionsLive` renders it --}
+  <StatefulComponent
+    module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
+    id={Bonfire.UI.Social.ActivityLive.component_id(id(@activity), "pinned", "pinned_")}
+    activity={@activity}
+    class="flex-1 spotlight_activity"
+    showing_within={:widget}
+    custom_actions={Bonfire.UI.Social.Activity.DiscussionPreviewActionsLive}
+    participants={@participants}
+    participants_more_count={@participants_more_count}
+  />
+
+  {!-- on the subject row: the card's padding from the corner, centred on the 40px avatar --}
+  <div
+    :if={@can_unpin}
+    data-role={"pin_to_#{@scope}"}
+    class="absolute top-card right-card flex h-10 items-center"
+  >
+    <StatelessComponent
+      module={maybe_component(Bonfire.UI.Reactions.PinActionLive, @__context__)}
+      parent_id={deterministic_dom_id(__MODULE__, id(@activity), "unpin", @scope_object)}
+      scope={@scope}
+      scope_object={@scope_object}
+      object={e(@activity, :object, nil)}
+      pinned?
+      as_icon
+    />
+  </div>
+</div>
