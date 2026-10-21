@@ -1,18 +1,18 @@
 defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
-  @moduledoc "The one way pinned posts show: the pins of a `scope` (the instance spotlight, or a group or topic) as `PinnedCardLive`s in the shared `Bonfire.UI.Common.CarouselLive`. It loads its own pins, as `WidgetTrendingDiscussionsLive` loads its discussions."
+  @moduledoc "The one way pinned posts show: the pins of a `scope` (the instance spotlight, or a group or topic) as `PinnedCardLive`s in the shared `Bonfire.UI.Common.CarouselLive`."
   use Bonfire.UI.Common.Web, :stateful_component
 
   @doc "`:instance` for the spotlight, or `:group`/`:topic` for the pins of `scope_object`"
   prop scope, :atom, default: :instance
   prop scope_object, :any, default: nil
 
-  @doc "The widget's title, as the other widgets have (`WidgetBlockLive`'s `widget_title`); \"Pinned\" when none"
+  @doc "The widget's title; \"Pinned\" when none"
   prop title, :string, default: nil
 
   @doc "How many whole cards show from the `sm` breakpoint up, always with the next one's edge; one below it"
   prop visible_items, :integer, default: 1
 
-  @doc "Render nothing (rather than the \"nothing in the spotlight\" placeholder) when there are no pins, e.g. for guests who can't pin anything."
+  @doc "Render nothing (rather than the \"nothing in the spotlight\" placeholder) when there are no pins"
   prop hide_empty, :boolean, default: false
 
   @doc "Extra classes for the outer element, the card block and the scroll container, eg. a page's own gutters"
@@ -20,7 +20,7 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
   prop wrapper_class, :css_class, default: nil
   prop carousel_class, :css_class, default: nil
 
-  @doc "Classes for the header row and the title, as `WidgetBlockLive` takes them: its own defaults on the dashboard, a page's own elsewhere (eg. the group page's small grey label)"
+  @doc "Classes for the header row and the title, as `WidgetBlockLive` takes them: its own defaults on the dashboard, a page's own elsewhere"
   prop title_class, :css_class,
     default: "pb-card text-xs font-normal uppercase tracking-wide text-base-content"
 
@@ -74,10 +74,9 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
     |> PubSub.subscribe(socket)
   end
 
-  # a pin whose activity the viewer can't see would be an empty card
   defp load(scope, scope_object, user) do
     if module_enabled?(Bonfire.Social.Pins, user),
-      do: scope |> do_load(scope_object, user) |> Enum.filter(&e(&1, :activity, nil)),
+      do: do_load(scope, scope_object, user),
       else: []
   end
 
@@ -87,10 +86,7 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
 
   defp do_load(_scope, scope_object, user),
     do:
-      Bonfire.Social.Pins.list_pinned_activities(scope_object,
-        current_user: user,
-        with_participants: true
-      )
+      Bonfire.Social.Pins.list_pinned_activities(scope_object, current_user: user)
       |> e(:edges, [])
 
   defp can_unpin?(_scope, _scope_object, nil), do: false

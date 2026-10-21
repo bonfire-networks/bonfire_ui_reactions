@@ -9,13 +9,11 @@ defmodule Bonfire.UI.Reactions.InstancePinsLive do
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
   def mount(raw_params, session, socket) do
-    widget_title = l("Instance Pins")
     params = socket.assigns[:current_params] || (is_map(raw_params) && raw_params) || %{}
 
     socket =
       socket
       |> Bonfire.UI.Common.ThemeHelper.setup_embed(e(params, "theme", nil), true)
-      # only the embed controller sets it, through the session: conn assigns don't reach a controller-rendered LiveView
       |> assign_new(:embed?, fn -> session["embed"] == true end)
 
     {:ok,
@@ -23,10 +21,8 @@ defmodule Bonfire.UI.Reactions.InstancePinsLive do
      |> assign(
        page: "instance_pins",
        selected_tab: :instance_pins,
-       # how many cards show from the `sm` breakpoint up
        visible_items: visible_items(params["items"]),
-       widget_title: widget_title,
-       page_title: widget_title
+       page_title: l("Instance Pins")
      )
      |> maybe_assign_embed_link_target()}
   end

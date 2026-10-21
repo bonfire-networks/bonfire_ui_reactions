@@ -1,12 +1,8 @@
 defmodule Bonfire.UI.Reactions.PinnedCardLive do
-  @moduledoc "A pinned post as a card in `PinnedCarouselLive`, for the spotlight and for groups and topics alike: the Top discussions preview (`ActivityLive` with `DiscussionPreviewActionsLive`), with an Unpin action for whoever may unpin it."
+  @moduledoc "A pinned post as a card in `PinnedCarouselLive`, for the spotlight and for groups and topics alike, with an Unpin action for whoever may unpin it."
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop activity, :any, required: true
-
-  @doc "Who else is in the thread, for the preview's facepile (`Bonfire.Social.Threads.attach_participants/2`)"
-  prop participants, :list, default: []
-  prop participants_more_count, :integer, default: 0
 
   @doc "`:instance`, `:group` or `:topic`: where it is pinned, for the Unpin wording"
   prop scope, :atom, required: true

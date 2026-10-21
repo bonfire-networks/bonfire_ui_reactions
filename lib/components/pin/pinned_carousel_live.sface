@@ -27,8 +27,6 @@
         <StatelessComponent
           module={maybe_component(Bonfire.UI.Reactions.PinnedCardLive, @__context__)}
           activity={entry.activity}
-          participants={e(entry, :participants, [])}
-          participants_more_count={e(entry, :participants_more_count, 0)}
           scope={@scope}
           scope_object={id(@scope_object)}
           can_unpin={@can_unpin}

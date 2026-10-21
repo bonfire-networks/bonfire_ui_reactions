@@ -7,13 +7,13 @@ defmodule Bonfire.UI.Reactions.PinActionLive do
   prop scope, :atom, default: :profile
   prop scope_object, :string, default: nil
 
-  @doc "Show only the icon, with the label for screen readers (as `DownloadMarkdownLive`'s `as_icon`), eg. on a pinned card"
+  @doc "Show only the icon, with the label for screen readers, eg. on a pinned card"
   prop as_icon, :boolean, default: false
 
   @doc "The stateful component `Pins.LiveHandler` tells about the toggle (by object id), as `PinModalLive`'s `parent_component`"
   prop component, :atom, default: __MODULE__
 
-  # used only to build a unique modal DOM id; optional (callers that omit it get a nil suffix)
+  # only for a unique modal DOM id
   prop parent_id, :any, default: nil
 
   def pinned?(%{pinned?: pinned?}) when is_boolean(pinned?), do: pinned?

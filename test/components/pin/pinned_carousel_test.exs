@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Reactions.PinnedCarouselTest do
-  @moduledoc "`PinnedCarouselLive` is the one way pinned posts show: it loads the pins of its `scope` (the instance spotlight by default, or a group or topic) and shows them as the Top discussions preview in the Peek track."
+  @moduledoc "`PinnedCarouselLive` is the one way pinned posts show: it loads the pins of its `scope` (the instance spotlight by default, or a group or topic) and shows them as the Top discussions preview in a carousel."
   use Bonfire.UI.Reactions.ConnCase, async: false
   use Surface.LiveViewTest
 
@@ -79,23 +79,6 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselTest do
 
     assert [_ | _] =
              Floki.find(doc, "[data-role=pinned_card] [data-role=discussion_preview_actions]")
-  end
-
-  test "the spotlight's cards show who else is in the thread", context do
-    post = fake_post!(context.admin, "public", %{post_content: %{html_body: "a spotlit discussion"}})
-
-    {:ok, _} =
-      Bonfire.Posts.publish(
-        current_user: fake_user!(fake_account!()),
-        post_attrs: %{reply_to_id: id(post), post_content: %{html_body: "<p>a reply</p>"}},
-        boundary: "public"
-      )
-
-    Pins.pin(context.admin, post, :instance)
-
-    doc = carousel(context, %{title: "Spotlight"}) |> Floki.parse_document!()
-
-    assert [_ | _] = Floki.find(doc, "[data-role=pinned_card] [data-role=thread_participants]")
   end
 
   # its parent re-renders it often: only a new scope, or a pin or unpin (`reload`), loads the pins and decides who may unpin again

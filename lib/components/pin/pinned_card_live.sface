@@ -5,7 +5,6 @@
     "[&_[data-role=subject]]:pr-9": @can_unpin
   }
 >
-  {!-- the Top discussions preview, as `WidgetTrendingDiscussionsLive` renders it --}
   <StatefulComponent
     module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
     id={Bonfire.UI.Social.ActivityLive.component_id(id(@activity), "pinned", "pinned_")}
@@ -13,8 +12,6 @@
     class="flex-1 spotlight_activity"
     showing_within={:widget}
     custom_actions={Bonfire.UI.Social.Activity.DiscussionPreviewActionsLive}
-    participants={@participants}
-    participants_more_count={@participants_more_count}
   />
 
   {!-- on the subject row: the card's padding from the corner, centred on the 40px avatar --}

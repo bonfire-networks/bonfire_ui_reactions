@@ -89,7 +89,6 @@ defmodule Bonfire.Social.Pins.LiveHandler do
   defp after_pin(object, pinned?, params, socket) do
     scope = scoped(params)
 
-    # same-process surfaces (hero menu, settings) flip their button state
     ComponentID.send_updates(
       e(params, "component", Bonfire.UI.Reactions.PinActionLive),
       uid(object),
@@ -98,8 +97,6 @@ defmodule Bonfire.Social.Pins.LiveHandler do
       pin_scope: scope
     )
 
-    # the carousels, the groups sidebar and the group page's ⋯ menu hear of it from `Bonfire.Social.Pins` (`handle_info/2` below), as they do of pins made in another tab, by an API client or over federation
-
     Bonfire.UI.Common.OpenModalLive.close()
 
     {:noreply,
@@ -107,7 +104,7 @@ defmodule Bonfire.Social.Pins.LiveHandler do
      |> assign_flash(:info, if(pinned?, do: l("Pinned!"), else: l("Unpinned")))}
   end
 
-  @doc "A scope's pins changed (broadcast by `Bonfire.Social.Pins` on `Pins.pins_topic/1`, which the carousels, the groups sidebar and the group page subscribe to): each of them in this process reloads what it shows. A post pin can only change a carousel, a group pin only the sidebar and the ⋯ menu, and a reorder (`:unknown`) either."
+  @doc "A scope's pins changed (`Bonfire.Social.Pins.pins_topic/1`): reload what this process shows for that kind of pin; a reorder (`:unknown`) may touch either."
   def handle_info(
         {:pins_changed, %{scope_id: scope_id, object_id: object_id, kind: kind}},
         socket

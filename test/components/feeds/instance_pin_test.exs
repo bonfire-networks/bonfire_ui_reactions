@@ -148,10 +148,6 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
       assert Pins.pinned?(:instance, post)
 
-      # the Spotlight widget caches its list (6h); bust it so this freshly-pinned post shows
-      # (matches what the widget's manual refresh button does)
-      Bonfire.Social.Pins.list_spotlight_activities(cache: :reset)
-
       # Verify backend returns activities
       assert %{edges: [_ | _] = edges} = Pins.list_instance_pins_activities(current_user: admin)
 
@@ -256,6 +252,42 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     end)
   end
 
+  # the cached list holds the activities, the facepile is loaded when the card renders
+  test "a spotlight card's facepile shows someone who replied after the list was cached" do
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
+    account = fake_account!()
+    admin = fake_admin!(account)
+
+    post = fake_post!(admin, "public", %{post_content: %{html_body: "spotlit with replies"}})
+
+    reply = fn replier ->
+      {:ok, _} =
+        Posts.publish(
+          current_user: replier,
+          post_attrs: %{reply_to_id: post.id, post_content: %{html_body: "a reply"}},
+          boundary: "public"
+        )
+    end
+
+    # a facepile that isn't empty when the list is cached
+    first = fake_user!(fake_account!())
+    reply.(first)
+
+    Pins.pin(admin, post, :instance)
+    on_exit(fn -> Bonfire.Social.Pins.list_spotlight_activities(cache: :reset) end)
+
+    conn(user: admin, account: account)
+    |> visit("/dashboard")
+    |> assert_has("[data-role=pinned_card] [data-role=thread_participants] [id*='#{first.id}']")
+
+    later = fake_user!(fake_account!())
+    reply.(later)
+
+    conn(user: admin, account: account)
+    |> visit("/dashboard")
+    |> assert_has("[data-role=pinned_card] [data-role=thread_participants] [id*='#{later.id}']")
+  end
+
   # on a real page, where the carousel learns who is looking from the page's context
   test "an instance admin can unpin from the spotlight's cards, a member can't" do
     Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
@@ -265,7 +297,6 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     post = fake_post!(admin, "public", %{post_content: %{html_body: "spotlit for unpinning"}})
 
     Pins.pin(admin, post, :instance)
-    Bonfire.Social.Pins.list_spotlight_activities(cache: :reset)
 
     conn(user: admin, account: account)
     |> visit("/dashboard")
@@ -291,8 +322,6 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
         Pins.pin(admin, post, :instance)
       end
-
-      Bonfire.Social.Pins.list_spotlight_activities(cache: :reset)
 
       for path <- ["/instance/pins/embed?items=3", "/instance/pins/carousel/embed?items=3"] do
         document =
@@ -320,7 +349,6 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       post = fake_post!(admin, "public", %{post_content: %{html_body: "full width embed pin"}})
 
       Pins.pin(admin, post, :instance)
-      Bonfire.Social.Pins.list_spotlight_activities(cache: :reset)
 
       embed_html =
         conn()
@@ -350,7 +378,6 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       post = fake_post!(admin, "public", %{post_content: %{html_body: "new tab pinned link"}})
 
       Pins.pin(admin, post, :instance)
-      Bonfire.Social.Pins.list_spotlight_activities(cache: :reset)
 
       links =
         conn()
@@ -377,7 +404,6 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       post = fake_post!(admin, "public", %{post_content: %{html_body: "rewrite marker pin"}})
 
       Pins.pin(admin, post, :instance)
-      Bonfire.Social.Pins.list_spotlight_activities(cache: :reset)
 
       embed_html = conn() |> get("/instance/pins/embed") |> html_response(200)
 
@@ -404,8 +430,6 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
         Pins.pin(admin, post, :instance)
       end
-
-      Bonfire.Social.Pins.list_spotlight_activities(cache: :reset)
 
       html =
         conn()
@@ -459,7 +483,6 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
         )
 
       Pins.pin(admin, poll, :instance)
-      Bonfire.Social.Pins.list_spotlight_activities(cache: :reset)
 
       [link] =
         conn()

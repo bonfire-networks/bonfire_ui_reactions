@@ -5,7 +5,7 @@
 >
   <Bonfire.UI.Reactions.PinnedCarouselLive
     id="instance_pins_carousel"
-    title={@widget_title}
+    title={@page_title}
     visible_items={@visible_items}
   />
 </div>
