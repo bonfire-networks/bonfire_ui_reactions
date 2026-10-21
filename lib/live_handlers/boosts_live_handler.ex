@@ -37,6 +37,9 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
            ) do
       boost_action(object, true, params, socket)
     else
+      {:error, :already_boosted} ->
+        {:noreply, assign_error(socket, l("You already boosted this."))}
+
       {:error, e} ->
         error(e)
         {:noreply, assign_error(socket, e)}
