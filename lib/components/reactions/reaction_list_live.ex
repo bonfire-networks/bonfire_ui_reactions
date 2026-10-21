@@ -1,10 +1,11 @@
 defmodule Bonfire.UI.Reactions.ReactionListLive do
   @moduledoc """
-  Loads the people behind the discussion's reaction totals only when its modal opens.
+  Loads the people behind an object's reaction totals only when its modal opens, for the discussion's counters and grouped notifications alike.
   """
   use Bonfire.UI.Common.Web, :stateful_component
 
-  prop thread_id, :string, required: true
+  # the thread for quotes, the reacted-to object for boosts and likes
+  prop object_id, :string, required: true
   prop reaction, :atom, default: :boost, values: [:boost, :like, :quote]
   data people, :list, default: []
   data page_info, :any, default: nil
@@ -38,7 +39,7 @@ defmodule Bonfire.UI.Reactions.ReactionListLive do
   def update(assigns, socket) do
     socket = assign(socket, assigns)
 
-    if socket.assigns.loaded_key == {socket.assigns.thread_id, socket.assigns.reaction} do
+    if socket.assigns.loaded_key == {socket.assigns.object_id, socket.assigns.reaction} do
       {:ok, socket}
     else
       {:ok, Bonfire.UI.Reactions.ReactionLists.LiveHandler.load_people(socket)}

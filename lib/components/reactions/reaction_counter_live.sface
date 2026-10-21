@@ -10,7 +10,7 @@
         modal_component: Bonfire.UI.Reactions.ReactionListLive,
         modal_component_stateful?: true,
         reaction: @reaction,
-        thread_id: @thread_id
+        object_id: @thread_id
       ]}
     >
       <:open_btn>

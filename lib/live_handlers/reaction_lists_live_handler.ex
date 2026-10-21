@@ -12,9 +12,9 @@ defmodule Bonfire.UI.Reactions.ReactionLists.LiveHandler do
     end
   end
 
-  @doc "Loads visible thread reactions, keeping each person once across pages."
+  @doc "Loads visible reactions to an object (or quotes in its thread), keeping each person once across pages."
   def load_people(socket, cursor \\ nil) do
-    %{thread_id: thread_id, reaction: reaction} = socket.assigns
+    %{object_id: object_id, reaction: reaction} = socket.assigns
 
     {context, extract_person} =
       case reaction do
@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Reactions.ReactionLists.LiveHandler do
         :quote -> {Bonfire.Social.Quotes, & &1.created.creator}
       end
 
-    filters = if reaction == :quote, do: [in_thread: thread_id], else: [objects: thread_id]
+    filters = if reaction == :quote, do: [in_thread: object_id], else: [objects: object_id]
 
     %{edges: reactions, page_info: page_info} =
       context.list_paginated(filters,
@@ -43,6 +43,6 @@ defmodule Bonfire.UI.Reactions.ReactionLists.LiveHandler do
       (if(cursor, do: socket.assigns.people, else: []) ++ new_people)
       |> Enum.uniq_by(&id/1)
 
-    assign(socket, people: people, page_info: page_info, loaded_key: {thread_id, reaction})
+    assign(socket, people: people, page_info: page_info, loaded_key: {object_id, reaction})
   end
 end
