@@ -22,6 +22,7 @@
       items={@entries}
       visible_items={@visible_items}
       class={@carousel_class}
+      expandable
     >
       <:card :let={item: entry}>
         <StatelessComponent

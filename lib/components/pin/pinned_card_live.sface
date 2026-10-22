@@ -1,7 +1,7 @@
 <div
   data-role="pinned_card"
   class={
-    "spotlight_clamp relative h-full rounded-box bg-base-100 p-card ring-1 ring-inset ring-divider",
+    "spotlight_clamp relative rounded-box bg-base-100 p-card ring-1 ring-inset ring-divider",
     "[&_[data-role=subject]]:pr-9": @can_unpin
   }
 >
