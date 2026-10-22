@@ -23,7 +23,13 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
         html =
           render_surface do
             ~F"""
-            <Bonfire.UI.Reactions.PinButtonLive object={%{id: "a_post"}} scope={:thread} scope_object="a_thread" pinned?={@pinned?} component={Bonfire.UI.Reactions.PinActionLive} />
+            <Bonfire.UI.Reactions.PinButtonLive
+              object={%{id: "a_post"}}
+              scope={:thread}
+              scope_object="a_thread"
+              pinned?={@pinned?}
+              component={Bonfire.UI.Reactions.PinActionLive}
+            />
             """
           end
 
@@ -40,7 +46,8 @@ defmodule Bonfire.UI.Reactions.PinActionLiveTest do
       assert PinActionLive.modal_title(base_assigns(:thread, %{pinned?: true})) ==
                "This is pinned to the thread"
 
-      assert PinActionLive.modal_title(base_assigns(:thread, %{pinned?: false})) == "Pin to thread"
+      assert PinActionLive.modal_title(base_assigns(:thread, %{pinned?: false})) ==
+               "Pin to thread"
 
       # the spotlight's pinned state isn't preloaded here
       for pinned? <- [true, false] do

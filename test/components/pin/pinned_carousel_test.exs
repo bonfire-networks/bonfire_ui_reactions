@@ -23,7 +23,12 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselTest do
 
     # a scope other than the instance: pins work the same whoever holds them, so the admin's own stand in for a group's
     for body <- ["pinned to another scope", "also pinned there", "a third pin"] do
-      {:ok, _} = Pins.pin(admin, fake_post!(admin, "public", %{post_content: %{html_body: body}}), id(admin))
+      {:ok, _} =
+        Pins.pin(
+          admin,
+          fake_post!(admin, "public", %{post_content: %{html_body: body}}),
+          id(admin)
+        )
     end
 
     %{admin: admin}
@@ -96,7 +101,10 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselTest do
              PinnedCarouselLive.update(%{scope: :instance, scope_object: nil}, socket)
 
     assert {:ok, %{assigns: %{entries: [_ | _]}}} =
-             PinnedCarouselLive.update(%{scope: :instance, scope_object: nil, reload: true}, socket)
+             PinnedCarouselLive.update(
+               %{scope: :instance, scope_object: nil, reload: true},
+               socket
+             )
   end
 
   test "several pins get dots, and arrows only from the sm breakpoint up", context do
@@ -130,7 +138,12 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselTest do
     other = fake_user!(fake_account!())
 
     for body <- ["someone else's pin", "and another"] do
-      {:ok, _} = Pins.pin(other, fake_post!(other, "public", %{post_content: %{html_body: body}}), id(other))
+      {:ok, _} =
+        Pins.pin(
+          other,
+          fake_post!(other, "public", %{post_content: %{html_body: body}}),
+          id(other)
+        )
     end
 
     assigns = %{admin: context.admin, other: other, __context__: %{current_user: context.admin}}
@@ -138,8 +151,18 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselTest do
     html =
       render_surface do
         ~F"""
-        <PinnedCarouselLive id="group_pins" scope={:group} scope_object={@admin} __context__={@__context__} />
-        <PinnedCarouselLive id="topic_pins" scope={:topic} scope_object={@other} __context__={@__context__} />
+        <PinnedCarouselLive
+          id="group_pins"
+          scope={:group}
+          scope_object={@admin}
+          __context__={@__context__}
+        />
+        <PinnedCarouselLive
+          id="topic_pins"
+          scope={:topic}
+          scope_object={@other}
+          __context__={@__context__}
+        />
         """
       end
 
@@ -164,7 +187,13 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselTest do
 
   test "a pinned post's image shows in its card", context do
     media = Bonfire.Social.Fake.upload_media(:images, context.admin)
-    post = fake_post!(context.admin, "public", %{post_content: %{html_body: "a pin with a picture"}, uploaded_media: [media]})
+
+    post =
+      fake_post!(context.admin, "public", %{
+        post_content: %{html_body: "a pin with a picture"},
+        uploaded_media: [media]
+      })
+
     {:ok, _} = Pins.pin(context.admin, post, id(context.admin))
 
     doc = scoped_pins(context, %{visible_items: 3}) |> Floki.parse_document!()

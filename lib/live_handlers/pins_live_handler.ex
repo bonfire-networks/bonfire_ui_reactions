@@ -124,8 +124,7 @@ defmodule Bonfire.Social.Pins.LiveHandler do
   end
 
   defp reload_carousel(scope_id),
-    do:
-      ComponentID.send_updates(Bonfire.UI.Reactions.PinnedCarouselLive, scope_id, reload: true)
+    do: ComponentID.send_updates(Bonfire.UI.Reactions.PinnedCarouselLive, scope_id, reload: true)
 
   defp reload_group_pins(object_id, socket) do
     # the sidebar registers under its user, in PersistentLive's process (it subscribes from there)

@@ -169,7 +169,8 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       |> assert_has("[data-id=instance_pinned_widget]")
       |> assert_has("[data-id=instance_pinned_widget] aside")
       # the dashboard's own widget heading, as Top discussions and the others have
-      |> assert_has("[data-id=instance_pinned_widget] [data-role=widget-header].uppercase [data-role=widget-heading]",
+      |> assert_has(
+        "[data-id=instance_pinned_widget] [data-role=widget-header].uppercase [data-role=widget-heading]",
         text: "Spotlight"
       )
       |> assert_has("[data-id=instance_pinned_widget] [data-role=pinned_card]",
@@ -195,7 +196,10 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     on_exit(fn -> Bonfire.Social.Pins.list_spotlight_activities(cache: :reset) end)
 
     spotlit? = fn ->
-      Enum.any?(Bonfire.Social.Pins.list_spotlight_activities(), &(&1.activity.object_id == post.id))
+      Enum.any?(
+        Bonfire.Social.Pins.list_spotlight_activities(),
+        &(&1.activity.object_id == post.id)
+      )
     end
 
     # primes the cache without the post
@@ -247,7 +251,12 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
         "scope" => "instance"
       })
 
-      refute Phoenix.LiveViewTest.has_element?(view, "[data-role=pinned_card]", "spotlit then unpinned")
+      refute Phoenix.LiveViewTest.has_element?(
+               view,
+               "[data-role=pinned_card]",
+               "spotlit then unpinned"
+             )
+
       Phoenix.LiveViewTest.render(view)
     end)
   end
@@ -300,14 +309,18 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
     conn(user: admin, account: account)
     |> visit("/dashboard")
-    |> assert_has("[data-id=instance_pinned_widget] [data-role=pinned_card] [data-role=pin_to_instance]")
+    |> assert_has(
+      "[data-id=instance_pinned_widget] [data-role=pinned_card] [data-role=pin_to_instance]"
+    )
 
     member_account = fake_account!()
     member = fake_user!(member_account)
 
     conn(user: member, account: member_account)
     |> visit("/dashboard")
-    |> assert_has("[data-id=instance_pinned_widget] [data-role=pinned_card]", text: "spotlit for unpinning")
+    |> assert_has("[data-id=instance_pinned_widget] [data-role=pinned_card]",
+      text: "spotlit for unpinning"
+    )
     |> refute_has("[data-id=instance_pinned_widget] [data-role=pin_to_instance]")
   end
 
@@ -330,7 +343,9 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
           |> html_response(200)
           |> Floki.parse_document!()
 
-        assert [_ | _] = Floki.find(document, "#instance_pins_carousel-track [data-role=pinned_card]"), path
+        assert [_ | _] =
+                 Floki.find(document, "#instance_pins_carousel-track [data-role=pinned_card]"),
+               path
 
         assert document
                |> Floki.find("[data-carousel-card]")
