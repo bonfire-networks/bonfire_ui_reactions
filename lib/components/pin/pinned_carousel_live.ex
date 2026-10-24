@@ -9,6 +9,9 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
   @doc "The widget's title; \"Pinned\" when none"
   prop title, :string, default: nil
 
+  @doc "Off where the host already names the widget, eg. an embed on another site, which gives the section its own heading"
+  prop show_title, :boolean, default: true
+
   @doc "How many whole cards show from the `sm` breakpoint up, always with the next one's edge; one below it"
   prop visible_items, :integer, default: 1
 

@@ -6,6 +6,7 @@
   <Bonfire.UI.Reactions.PinnedCarouselLive
     id="instance_pins_carousel"
     title={@page_title}
+    show_title={!@embed?}
     visible_items={@visible_items}
   />
 </div>

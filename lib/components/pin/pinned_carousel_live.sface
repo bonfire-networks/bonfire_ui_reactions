@@ -9,7 +9,7 @@
     empty={@entries == []}
     empty_icon="ph:push-pin-fill"
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
-    widget_title={@title || l("Pinned")}
+    widget_title={if @show_title, do: @title || l("Pinned")}
     title_class={@title_class}
     heading_class={@heading_class}
   >
