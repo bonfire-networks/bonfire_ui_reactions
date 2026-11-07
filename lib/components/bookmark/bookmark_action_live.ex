@@ -2,6 +2,8 @@ defmodule Bonfire.UI.Reactions.BookmarkActionLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   prop object_id, :any
+  # what it's about, already loaded, so bookmarking it needn't look it up by `object_id` again
+  prop object, :any, default: nil
   prop object_type, :any
   prop my_bookmark, :boolean, default: false
   # prop label, :string, default: nil

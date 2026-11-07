@@ -11,8 +11,8 @@ defmodule Bonfire.Social.Boosts.LiveHandler do
     end
   end
 
-  # boost in LV stateful component
-  def handle_event("boost", params, %{assigns: %{object: object}} = socket) do
+  # boost in LV stateful component (a nil object, from a component given only `object_id`, falls through to the id below)
+  def handle_event("boost", params, %{assigns: %{object: %{id: _} = object}} = socket) do
     do_boost(object, params, socket)
   end
 

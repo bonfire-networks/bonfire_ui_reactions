@@ -2,11 +2,11 @@ defmodule Bonfire.Social.Bookmarks.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
-  # bookmark in LV stateful
+  # bookmark in LV stateful (a nil object, from a component given only `object_id`, falls through to the id below)
   def handle_event(
         "bookmark",
         %{"direction" => "up"} = params,
-        %{assigns: %{object: object}} = socket
+        %{assigns: %{object: %{id: _} = object}} = socket
       ) do
     do_bookmark(object, params, socket)
   end

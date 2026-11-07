@@ -67,11 +67,11 @@ defmodule Bonfire.Social.Likes.LiveHandler do
   #   {:reply, %{custom_emoji: custom_emojis}, socket}
   # end
 
-  # like in LV stateful
+  # like in LV stateful (a nil object, from a component given only `object_id`, falls through to the id below)
   def handle_event(
         "like",
         %{"direction" => "up"} = params,
-        %{assigns: %{object: object}} = socket
+        %{assigns: %{object: %{id: _} = object}} = socket
       ) do
     do_like(object, params, socket)
   end

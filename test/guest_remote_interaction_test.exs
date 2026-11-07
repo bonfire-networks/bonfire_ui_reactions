@@ -28,4 +28,65 @@ defmodule Bonfire.UI.Reactions.GuestRemoteInteractionTest do
     assert to =~ "/remote_interaction"
     assert to =~ "type=like"
   end
+
+  # a visitor with no live socket clicks with a plain request to the LiveHandler route (`bonfire_basic.js`), carrying only the button's values
+  describe "without a live socket" do
+    setup do
+      Bonfire.Federate.ActivityPub.set_federating(:instance, true)
+
+      post =
+        fake_post!(fake_user!(fake_account!()), "public", %{
+          post_content: %{html_body: "<p>a public post</p>"}
+        })
+
+      {:ok, post: post}
+    end
+
+    for {name, path} <- [
+          like: "/LiveHandler/Bonfire.Social.Likes/like?direction=up",
+          boost: "/LiveHandler/Bonfire.Social.Boosts/boost?"
+        ] do
+      test "guest #{name} is redirected to the remote-interaction form", %{post: post} do
+        conn = get(build_conn(), unquote(path) <> "&id=#{post.id}")
+
+        assert conn.status in [301, 302],
+               "not redirected (#{conn.status}): " <>
+                 (conn.resp_body
+                  |> Floki.parse_document!()
+                  |> Floki.find("main, body")
+                  |> Floki.text()
+                  |> String.split()
+                  |> Enum.join(" ")
+                  |> String.slice(0, 300))
+
+        to = redirected_to(conn)
+        assert to =~ "/remote_interaction"
+        assert to =~ "type=#{unquote(name)}"
+      end
+    end
+  end
+
+  # a link built where the page renders, from the post it holds, so it must name the post itself
+  test "guest flag link on a public post leads to the remote-interaction form, with the post's address" do
+    author = fake_user!(fake_account!())
+    Bonfire.Federate.ActivityPub.set_federating(:instance, true)
+    post = fake_post!(author, "public", %{post_content: %{html_body: "<p>a public post</p>"}})
+
+    {:ok, _view, html} = live(build_conn(), "/discussion/#{post.id}")
+
+    links =
+      html
+      |> Floki.parse_document!()
+      |> Floki.attribute("a", "href")
+      |> Enum.filter(&String.contains?(&1, "/remote_interaction?type=flag"))
+
+    assert links != [], "no flag link for a guest"
+
+    assert Enum.all?(
+             links,
+             &(URI.decode_www_form(&1) =~
+                 Bonfire.Common.URIs.canonical_url(post, preload_if_needed: true))
+           ),
+           inspect(links)
+  end
 end
