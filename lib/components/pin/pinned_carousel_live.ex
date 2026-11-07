@@ -83,7 +83,8 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
       else: []
   end
 
-  defp do_load(:instance, _, _user), do: Bonfire.Social.Pins.list_spotlight_activities()
+  defp do_load(:instance, _, user),
+    do: Bonfire.Social.Pins.list_spotlight_activities(current_user: user)
 
   defp do_load(_scope, nil, _user), do: []
 

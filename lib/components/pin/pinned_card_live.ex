@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Reactions.PinnedCardLive do
 
   prop activity, :any, required: true
 
-  @doc "`:instance`, `:group` or `:topic`: where it is pinned, for the Unpin wording"
+  @doc "`:instance`, `:group` or `:topic`: where it is pinned, for the Unpin wording. Also whether the card checks the viewer's access itself: the spotlight's pins are loaded for everyone without a boundary check (`Pins.list_spotlight_activities/0`), while a group's or topic's are already limited to what the viewer may see and read (`Pins.list_pinned_activities/2`)"
   prop scope, :atom, required: true
 
   @doc "The group's or topic's id; none for the spotlight, whose Unpin names the `:instance` scope itself"
