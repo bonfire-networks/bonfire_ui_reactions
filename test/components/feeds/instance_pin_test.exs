@@ -516,7 +516,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       [href] = Floki.attribute(link, "href")
       assert href == "/discussion/#{poll.id}"
 
-      # outside the embed the same pinned poll keeps the in-app login flow
+      # outside the embed the same pinned poll goes to the remote-interaction page
       [in_app_link] =
         conn()
         |> get("/instance/pins")
@@ -524,7 +524,8 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
         |> Floki.parse_document!()
         |> Floki.find("[data-role=sign-in-to-vote]")
 
-      assert Floki.attribute(in_app_link, "href") == ["/login"]
+      [in_app_href] = Floki.attribute(in_app_link, "href")
+      assert in_app_href =~ "remote_interaction?type=vote"
       assert Floki.attribute(in_app_link, "target") == []
     end
   end
