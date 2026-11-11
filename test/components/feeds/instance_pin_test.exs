@@ -67,6 +67,8 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       conn(user: admin, account: account)
       |> visit("/post/#{post.id}")
       |> assert_has("article", text: "already instance pinned post")
+      # the menu's permission rows, the spotlight one among them, load when it opens
+      |> open_more_menu()
       |> assert_has("[data-role=open_modal]", text: "Pin or unpin from spotlight")
       |> click_button("[data-role=open_modal]", "Pin or unpin from spotlight")
       |> assert_has("[data-id=modal-contents]", text: "Unpin from spotlight")
@@ -90,6 +92,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       session =
         conn(user: admin, account: account)
         |> visit("/post/#{post.id}")
+        |> open_more_menu()
         |> click_button("[data-role=open_modal]", "Pin or unpin from spotlight")
 
       within(session, "[data-id=modal-contents]", fn session ->
@@ -116,6 +119,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       session =
         conn(user: admin, account: account)
         |> visit("/post/#{post.id}")
+        |> open_more_menu()
         |> click_button("[data-role=open_modal]", "Pin or unpin from spotlight")
 
       within(session, "[data-id=modal-contents]", fn session ->
