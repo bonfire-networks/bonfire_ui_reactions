@@ -1,5 +1,8 @@
 defmodule Bonfire.Social.Likes.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
+
+  # a guest is sent to the remote interaction flow by the handler itself
+  @guest_allowed_events ~w(like)
   import Untangle
 
   # with a Media as custom emoji

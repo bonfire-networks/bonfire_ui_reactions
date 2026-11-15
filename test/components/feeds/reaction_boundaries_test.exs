@@ -152,7 +152,7 @@ defmodule Bonfire.UI.Reactions.Feeds.ReactionBoundariesTest do
     {:ok, acl} = Acls.simple_create(me, "read-only for bob")
     Grants.grant(bob.id, acl.id, :read, true, current_user: me)
     Grants.grant(bob.id, acl.id, :see, true, current_user: me)
-    Controlleds.add_acls(post, acl)
+    Controlleds.add_acls(post, acl, current_user: me)
 
     conn(user: bob, account: account2)
     |> visit("/post/#{post.id}")

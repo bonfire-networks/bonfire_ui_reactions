@@ -1,5 +1,8 @@
 defmodule Bonfire.Social.Bookmarks.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
+
+  # a guest is sent to the remote interaction flow by the handler itself
+  @guest_allowed_events ~w(bookmark)
   import Untangle
 
   # bookmark in LV stateful (a nil object, from a component given only `object_id`, falls through to the id below)

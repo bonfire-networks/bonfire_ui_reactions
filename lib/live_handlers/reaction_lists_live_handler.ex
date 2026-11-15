@@ -4,6 +4,8 @@ defmodule Bonfire.UI.Reactions.ReactionLists.LiveHandler do
   """
   use Bonfire.UI.Common.Web, :live_handler
 
+  @guest_allowed_events ~w(load_more)
+
   @doc false
   def handle_event("load_more", _, socket) do
     case Bonfire.UI.Common.LoadMoreLive.end_cursor(socket.assigns.page_info) do

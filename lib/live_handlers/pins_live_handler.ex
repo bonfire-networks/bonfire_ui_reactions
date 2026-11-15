@@ -1,5 +1,8 @@
 defmodule Bonfire.Social.Pins.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
+
+  # a guest is sent to the remote interaction flow by the handler itself
+  @guest_allowed_events ~w(pin)
   import Untangle
 
   # pin in LV stateful

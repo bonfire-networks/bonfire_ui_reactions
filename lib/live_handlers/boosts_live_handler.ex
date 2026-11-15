@@ -1,5 +1,8 @@
 defmodule Bonfire.Social.Boosts.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
+
+  # a guest is sent to the remote interaction flow by the handler itself
+  @guest_allowed_events ~w(boost)
   import Untangle
 
   # The URL is appended to the body server-side (via `prepare_post_attrs`'s

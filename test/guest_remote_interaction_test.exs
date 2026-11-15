@@ -64,6 +64,24 @@ defmodule Bonfire.UI.Reactions.GuestRemoteInteractionTest do
         assert to =~ "type=#{unquote(name)}"
       end
     end
+
+    # the route loads no user from the session, so a request carrying a signed-in user's cookie (eg. one another site makes their browser send) acts as a guest, not as them
+    test "a signed-in user's session cookie does not act as them", %{post: post} do
+      account = fake_account!()
+      me = fake_user!(account)
+
+      # control: the same session is signed in where the session user is loaded
+      assert get(conn(user: me, account: account), "/settings").status == 200
+
+      conn =
+        get(
+          conn(user: me, account: account),
+          "/LiveHandler/Bonfire.Social.Likes/like?direction=up&id=#{post.id}"
+        )
+
+      assert redirected_to(conn) =~ "/remote_interaction"
+      refute Bonfire.Social.Likes.liked?(me, post)
+    end
   end
 
   # a link built where the page renders, from the post it holds, so it must name the post itself
