@@ -162,4 +162,33 @@ defmodule Bonfire.UI.Reactions.Feeds.LikeActivityTest do
     |> click_button("Like")
     |> assert_has("[data-id='like_action'][aria-pressed]")
   end
+
+  test "As a user, when I disable reactions for myself, I don't see the like button", %{
+    alice: alice
+  } do
+    Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
+
+    account2 = fake_account!()
+
+    bob =
+      Bonfire.Common.Utils.current_user(
+        Bonfire.Common.Settings.put([:bonfire_ui_reactions, :modularity], :disabled,
+          current_user: fake_user!(account2)
+        )
+      )
+
+    attrs = %{
+      post_content: %{summary: "summary", html_body: "a post with reactions off"}
+    }
+
+    assert {:ok, post} =
+             Posts.publish(current_user: alice, post_attrs: attrs, boundary: "public")
+
+    conn(user: bob, account: account2)
+    |> visit("/feed/local")
+    |> assert_has("[data-object_id='#{post.id}']")
+    |> within("[data-object_id='#{post.id}']", fn session ->
+      refute_has(session, "[data-id='like_action']")
+    end)
+  end
 end
