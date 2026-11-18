@@ -74,7 +74,7 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
 
     scope_id
     |> Bonfire.Social.Pins.pins_topic()
-    |> PubSub.subscribe(socket)
+    |> PubSub.subscribe_once(socket)
   end
 
   defp load(scope, scope_object, user) do
