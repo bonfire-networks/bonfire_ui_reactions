@@ -2,6 +2,18 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
   @moduledoc "The one way pinned posts show: the pins of a `scope` (the instance spotlight, or a group or topic) as `PinnedCardLive`s in the shared `Bonfire.UI.Common.CarouselLive`."
   use Bonfire.UI.Common.Web, :stateful_component
 
+  # "Spotlight" takes the domain of an extension that already translates it
+  declare_widget(l("Spotlight", [], nil, :bonfire_ui_me),
+    id: :instance_pinned,
+    width: :wide,
+    # a stable id: the carousel's scroll buttons point at its track by it
+    props: [
+      id: "instance_pinned_widget",
+      title: l("Spotlight", [], nil, :bonfire_ui_me),
+      hide_empty: true
+    ]
+  )
+
   @doc "`:instance` for the spotlight, or `:group`/`:topic` for the pins of `scope_object`"
   prop scope, :atom, default: :instance
   prop scope_object, :any, default: nil
