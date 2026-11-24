@@ -14,6 +14,14 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
     ]
   )
 
+  @doc "Its props when embedded on another site (see `Bonfire.UI.Common.EmbedWidgetLive`): `?items=` whole cards, no title, as the host site gives the section its own heading, and the placeholder when nothing is pinned."
+  def embed_props(params),
+    do: [
+      visible_items: Bonfire.UI.Reactions.InstancePinsLive.visible_items(params["items"]),
+      show_title: false,
+      hide_empty: false
+    ]
+
   @doc "`:instance` for the spotlight, or `:group`/`:topic` for the pins of `scope_object`"
   prop scope, :atom, default: :instance
   prop scope_object, :any, default: nil

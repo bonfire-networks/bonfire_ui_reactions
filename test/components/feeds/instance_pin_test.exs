@@ -216,6 +216,35 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
     refute spotlit?.()
   end
 
+  test "pinning or unpinning to the instance purges the Spotlight embed's saved copies" do
+    admin = fake_admin!(fake_account!())
+    post = fake_post!(admin, "public", %{post_content: %{html_body: "pinned with an embed"}})
+
+    # a copy saved on disk, as the static cache saves one per query string
+    copy =
+      Path.join([
+        Bonfire.UI.Common.StaticGenerator.dest_path(),
+        Bonfire.UI.Common.Widgets.embed_tag(:instance_pinned),
+        "_qs_saved",
+        "index.html"
+      ])
+
+    save_copy = fn ->
+      File.mkdir_p!(Path.dirname(copy))
+      File.write!(copy, "a saved copy")
+    end
+
+    on_exit(fn -> File.rm_rf!(Path.dirname(Path.dirname(copy))) end)
+
+    save_copy.()
+    Pins.pin(admin, post, :instance)
+    refute File.exists?(copy)
+
+    save_copy.()
+    Pins.unpin(admin, post, :instance)
+    refute File.exists?(copy)
+  end
+
   # another admin, another tab or an API client: the open dashboard hears of it from `Pins`
   test "a spotlight pin made elsewhere shows on an open dashboard" do
     Process.put([:bonfire, :feed_live_update_many_preload_mode], :inline)
@@ -329,6 +358,36 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
   end
 
   describe "instance pins embed" do
+    # the old embed addresses redirect to the Spotlight widget's embed, so sites that embed them keep working; returns the page it redirects to
+    defp embed_html(path) do
+      conn = get(conn(), path)
+      to = redirected_to(conn, 301)
+      assert "/embed/widget/instance_pinned?" <> _ = to
+
+      conn() |> get(to) |> html_response(200)
+    end
+
+    test "the old addresses redirect to the Spotlight widget's embed, keeping their params, at full width" do
+      for path <- ["/instance/pins/embed", "/instance/pins/carousel/embed"] do
+        to =
+          conn()
+          |> get(
+            path <> "?items=2&theme=dark&embed_parent=https%3A%2F%2Fexample.com&scroll_relay=1"
+          )
+          |> redirected_to(301)
+
+        assert %URI{path: "/embed/widget/instance_pinned", query: query} = URI.parse(to)
+
+        assert %{
+                 "items" => "2",
+                 "theme" => "dark",
+                 "embed_parent" => "https://example.com",
+                 "scroll_relay" => "1",
+                 "width" => "full"
+               } = URI.decode_query(query)
+      end
+    end
+
     # one way to show pins: the list embed is the carousel too, and `?items=` sets how many whole cards show
     test "both embeds render the carousel, with ?items= cards from the sm breakpoint up" do
       account = fake_account!()
@@ -341,14 +400,10 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       end
 
       for path <- ["/instance/pins/embed?items=3", "/instance/pins/carousel/embed?items=3"] do
-        document =
-          conn()
-          |> get(path)
-          |> html_response(200)
-          |> Floki.parse_document!()
+        document = path |> embed_html() |> Floki.parse_document!()
 
         assert [_ | _] =
-                 Floki.find(document, "#instance_pins_carousel-track [data-role=pinned_card]"),
+                 Floki.find(document, "#instance_pinned_widget-track [data-role=pinned_card]"),
                path
 
         assert document
@@ -369,12 +424,10 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
       Pins.pin(admin, post, :instance)
 
-      embed_html =
-        conn()
-        |> get("/instance/pins/embed")
-        |> html_response(200)
+      html = embed_html("/instance/pins/embed")
 
-      refute embed_html =~ "max-w-[720px]"
+      refute html =~ "max-w-[720px]"
+      refute html =~ "max-width"
 
       in_app_html =
         conn(user: admin, account: account)
@@ -399,9 +452,8 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       Pins.pin(admin, post, :instance)
 
       links =
-        conn()
-        |> get("/instance/pins/embed")
-        |> html_response(200)
+        "/instance/pins/embed"
+        |> embed_html()
         |> Floki.parse_document!()
         |> Floki.find(~s(a[target="_blank"]))
 
@@ -424,12 +476,12 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
 
       Pins.pin(admin, post, :instance)
 
-      embed_html = conn() |> get("/instance/pins/embed") |> html_response(200)
+      html = embed_html("/instance/pins/embed")
 
       # the embed opts into rewriting rich-text (mention/hashtag) links to escape
       # the iframe; the shared layout carries the rewriter script keyed on this attr
-      assert embed_html =~ ~s(data-embed-links="_blank")
-      assert embed_html =~ "[data-embed-links]"
+      assert html =~ ~s(data-embed-links="_blank")
+      assert html =~ "[data-embed-links]"
 
       # the in-app page does NOT opt in (its links navigate in place as usual)
       in_app_html =
@@ -450,20 +502,17 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
         Pins.pin(admin, post, :instance)
       end
 
-      html =
-        conn()
-        |> get("/instance/pins/carousel/embed")
-        |> html_response(200)
+      html = embed_html("/instance/pins/carousel/embed")
 
-      assert html =~ ~s(id="instance_pins_carousel-track")
+      assert html =~ ~s(id="instance_pinned_widget-track")
 
       document = Floki.parse_document!(html)
 
-      assert Floki.find(document, "#instance_pins_carousel-track") != []
+      assert Floki.find(document, "#instance_pinned_widget-track") != []
 
       carousel_classes =
         document
-        |> Floki.find("#instance_pins_carousel-track [class]")
+        |> Floki.find("#instance_pinned_widget-track [class]")
         |> Enum.flat_map(&Floki.attribute(&1, "class"))
         |> Enum.flat_map(&String.split/1)
 
@@ -475,7 +524,7 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       refute "!touch-pan-x" in carousel_classes
 
       assert document
-             |> Floki.find("#instance_pins_carousel-track")
+             |> Floki.find("#instance_pinned_widget-track")
              |> Floki.attribute("class")
              |> Enum.flat_map(&String.split/1)
              |> Enum.member?("carousel-scroll")
@@ -504,9 +553,8 @@ defmodule Bonfire.UI.Reactions.Feeds.InstancePinTest do
       Pins.pin(admin, poll, :instance)
 
       [link] =
-        conn()
-        |> get("/instance/pins/embed")
-        |> html_response(200)
+        "/instance/pins/embed"
+        |> embed_html()
         |> Floki.parse_document!()
         |> Floki.find("[data-role=sign-in-to-vote]")
 
