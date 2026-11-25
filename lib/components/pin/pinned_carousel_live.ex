@@ -11,7 +11,8 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
       id: "instance_pinned_widget",
       title: l("Spotlight", [], nil, :bonfire_ui_me),
       hide_empty: true
-    ]
+    ],
+    skeleton: :cards
   )
 
   @doc "Its props when embedded on another site (see `Bonfire.UI.Common.EmbedWidgetLive`): `?items=` whole cards, no title, as the host site gives the section its own heading, and the placeholder when nothing is pinned."
