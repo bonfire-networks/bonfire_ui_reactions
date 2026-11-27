@@ -5,7 +5,7 @@
 >
   <Bonfire.UI.Common.WidgetBlockLive
     :if={@entries != [] or !@hide_empty}
-    class={@wrapper_class || "w-full relative bg-transparent"}
+    class={@wrapper_class || "relative"}
     empty={@entries == []}
     empty_icon="ph:push-pin-fill"
     empty_message={l("Nothing in the spotlight yet. Pinned posts from this instance will show up here.")}
@@ -21,7 +21,6 @@
       id={"#{@id}-track"}
       items={@entries}
       visible_items={@visible_items}
-      class={@carousel_class}
       expandable
     >
       <:card :let={item: entry}>

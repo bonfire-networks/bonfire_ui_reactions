@@ -39,14 +39,12 @@ defmodule Bonfire.UI.Reactions.PinnedCarouselLive do
   @doc "Render nothing (rather than the \"nothing in the spotlight\" placeholder) when there are no pins"
   prop hide_empty, :boolean, default: false
 
-  @doc "Extra classes for the outer element, the card block and the scroll container, eg. a page's own gutters"
+  @doc "Extra classes for the outer element and the card block, eg. a page's gutters."
   prop class, :css_class, default: nil
   prop wrapper_class, :css_class, default: nil
-  prop carousel_class, :css_class, default: nil
 
   @doc "Classes for the header row and the title, as `WidgetBlockLive` takes them: its own defaults on the dashboard, a page's own elsewhere"
-  prop title_class, :css_class,
-    default: "pb-card text-xs font-normal uppercase tracking-wide text-base-content"
+  prop title_class, :css_class, default: nil
 
   prop heading_class, :css_class, default: nil
 
